@@ -9,6 +9,13 @@ export async function GET(request: NextRequest) {
     return authResult.error;
   }
 
+  if (!prisma) {
+    return NextResponse.json(
+      { error: 'Database not available' },
+      { status: 503 }
+    );
+  }
+
   const orders = await prisma.order.findMany({
     include: {
       user: {

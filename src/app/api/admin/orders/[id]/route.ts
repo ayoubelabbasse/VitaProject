@@ -14,6 +14,13 @@ export async function PUT(
   }
 
   try {
+    if (!prisma) {
+      return NextResponse.json(
+        { error: 'Database not available' },
+        { status: 503 }
+      );
+    }
+
     const body = await request.json();
       const order = await prisma.order.update({
         where: { id },

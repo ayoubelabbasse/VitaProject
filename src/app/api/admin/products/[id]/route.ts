@@ -14,6 +14,13 @@ export async function PUT(
   }
 
   try {
+    if (!prisma) {
+      return NextResponse.json(
+        { error: 'Database not available' },
+        { status: 503 }
+      );
+    }
+
     const body = await request.json();
       const product = await prisma.product.update({
         where: { id },
@@ -59,6 +66,13 @@ export async function DELETE(
   }
 
   try {
+    if (!prisma) {
+      return NextResponse.json(
+        { error: 'Database not available' },
+        { status: 503 }
+      );
+    }
+
       await prisma.product.delete({
         where: { id },
       });

@@ -9,6 +9,13 @@ export async function GET(request: NextRequest) {
     return authResult.error;
   }
 
+  if (!prisma) {
+    return NextResponse.json(
+      { error: 'Database not available' },
+      { status: 503 }
+    );
+  }
+
   const products = await prisma.product.findMany({
     orderBy: { createdAt: 'desc' },
   });
@@ -24,6 +31,13 @@ export async function POST(request: NextRequest) {
   }
 
   try {
+    if (!prisma) {
+      return NextResponse.json(
+        { error: 'Database not available' },
+        { status: 503 }
+      );
+    }
+
     const body = await request.json();
     const product = await prisma.product.create({
       data: {
