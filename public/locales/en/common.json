@@ -1,0 +1,207 @@
+{
+  "nav": {
+    "home": "Home",
+    "products": "Products",
+    "categories": "Categories",
+    "about": "About",
+    "contact": "Contact",
+    "cart": "Cart",
+    "login": "Login",
+    "signIn": "Sign In",
+    "search": "Search products..."
+  },
+  "header": {
+    "freeShipping": "Free Shipping over 350 MAD"
+  },
+  "hero": {
+    "title": "Premium Supplements for Your Wellness Journey",
+    "subtitle": "Discover high-quality vitamins, minerals, and supplements imported from trusted global brands",
+    "cta": "Shop Now",
+    "trust": "Trusted by thousands of customers in Morocco"
+  },
+  "homepage": {
+    "carousel": {
+      "slide1": {
+        "title": "Unlock Your Potential",
+        "subtitle": "Premium supplements for peak performance",
+        "description": "From strength training to mental clarity, discover supplements that power your goals",
+        "cta": "Shop Now"
+      },
+      "slide2": {
+        "title": "Science-Backed Results",
+        "subtitle": "Clinically proven formulations",
+        "description": "Every product is formulated with the latest research and highest quality ingredients. Quality that guarantees real results",
+        "cta": "Learn More"
+      },
+      "slide3": {
+        "title": "For Every Lifestyle",
+        "subtitle": "From athletes to families",
+        "description": "Whether you're building muscle, supporting immunity, or maintaining wellness - we have the product that fits you",
+        "cta": "Explore Categories"
+      }
+    },
+    "categories": {
+      "title": "Power Your Goals",
+      "subtitle": "Discover supplements designed for every aspect of your health and performance journey",
+      "strength": {
+        "name": "Strength & Power",
+        "description": "Build muscle and strength"
+      },
+      "immunity": {
+        "name": "Immunity Shield",
+        "description": "Protect your health"
+      },
+      "heart": {
+        "name": "Heart Health",
+        "description": "Support cardiovascular health"
+      },
+      "brain": {
+        "name": "Brain Boost",
+        "description": "Enhance mental performance"
+      }
+    },
+    "featured": {
+      "title": "Featured Products",
+      "subtitle": "Premium supplements trusted by athletes and health enthusiasts",
+      "viewAll": "View All Products"
+    },
+    "cta": {
+      "title": "Ready to Transform Your Health?",
+      "subtitle": "Join thousands of customers who trust Vita for their supplement needs",
+      "button": "Start Shopping Now"
+    }
+  },
+  "categories": {
+    "title": "Shop by Category",
+    "subtitle": "Find the perfect supplements for your health needs"
+  },
+  "products": {
+    "featured": "Featured Products",
+    "viewAll": "View All Products",
+    "addToCart": "Add to Cart",
+    "outOfStock": "Out of Stock",
+    "inStock": "In Stock",
+    "price": "Price",
+    "brand": "Brand",
+    "category": "Category",
+    "benefits": "Benefits",
+    "ingredients": "Ingredients",
+    "description": "Description",
+    "filters": "Filters",
+    "availability": "Availability",
+    "itemsFound": "items found",
+    "noProductsFound": "No products found",
+    "tryAdjustingFilters": "Try adjusting your filters",
+    "sortFeatured": "Featured",
+    "sortPriceLow": "Price: Low to High",
+    "sortPriceHigh": "Price: High to Low",
+    "sortRating": "Highest Rated",
+    "sortName": "Name: A to Z"
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "empty": "Your cart is empty",
+    "emptyTitle": "Your Cart is Empty",
+    "emptyDescription": "Start shopping to add items to your cart",
+    "browseProducts": "Browse Products",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "free": "Free",
+    "vat": "VAT (20%)",
+    "total": "Total",
+    "checkout": "Checkout",
+    "viewCart": "View Cart",
+    "continueShopping": "Continue Shopping",
+    "remove": "Remove",
+    "quantity": "Quantity",
+    "item": "item",
+    "items": "items",
+    "clearCart": "Clear Cart",
+    "orderSummary": "Order Summary",
+    "each": "each",
+    "addMoreForFreeShipping": "Add {amount} more for free shipping!"
+  },
+  "productsPage": {
+    "title": "All Products",
+    "subtitle": "Discover our complete range of premium supplements",
+    "searchPlaceholder": "Search products...",
+    "filter": "Filter",
+    "sort": "Sort by",
+    "clearFilters": "Clear Filters",
+    "applyFilters": "Apply Filters",
+    "showingResults": "Showing",
+    "of": "of",
+    "results": "results",
+    "noResults": "No products match your search",
+    "tryDifferentFilters": "Try adjusting your filters or search terms"
+  },
+  "footer": {
+    "about": "About VitaFlow",
+    "aboutText": "Your trusted source for premium supplements and vitamins in Morocco",
+    "quickLinks": "Quick Links",
+    "customerService": "Customer Service",
+    "contact": "Contact Us",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "shipping": "Shipping Information",
+    "returns": "Returns & Refunds",
+    "newsletter": "Newsletter",
+    "newsletterText": "Stay updated with our latest products and health tips",
+    "subscribe": "Subscribe",
+    "email": "Enter your email",
+    "copyright": "© 2024 VitaFlow. All rights reserved."
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "createAccount": "Create Account",
+    "login": "Login",
+    "logout": "Logout",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
+    "emailRequired": "Email is required",
+    "emailInvalid": "Please enter a valid email",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "passwordRequired": "Password is required",
+    "passwordMinLength": "Password must be at least 6 characters",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Confirm your password",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "firstName": "First Name",
+    "firstNamePlaceholder": "Enter your first name",
+    "firstNameRequired": "First name is required",
+    "lastName": "Last Name",
+    "lastNamePlaceholder": "Enter your last name",
+    "lastNameRequired": "Last name is required",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot Password?",
+    "forgotPasswordTitle": "Reset Your Password",
+    "forgotPasswordDescription": "Enter your email address and we'll send you a link to reset your password.",
+    "sendResetLink": "Send Reset Link",
+    "backToSignIn": "Back to Sign In",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?",
+    "agreeToTerms": "I agree to the",
+    "agreeToTermsRequired": "You must agree to the terms and conditions",
+    "termsOfService": "Terms of Service",
+    "privacyPolicy": "Privacy Policy",
+    "and": "and",
+    "secureConnection": "Secure SSL Connection",
+    "submit": "Sign In",
+    "admin": "Admin Dashboard"
+  },
+  "admin": {
+    "dashboard": "Admin Dashboard",
+    "products": "Manage Products",
+    "addProduct": "Add New Product",
+    "editProduct": "Edit Product",
+    "deleteProduct": "Delete Product",
+    "save": "Save",
+    "cancel": "Cancel",
+    "upload": "Upload Image"
+  },
+  "currency": {
+    "mad": "MAD"
+  }
+} 

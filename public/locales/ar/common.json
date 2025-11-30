@@ -1,0 +1,207 @@
+{
+  "nav": {
+    "home": "الرئيسية",
+    "products": "المنتجات",
+    "categories": "الفئات",
+    "about": "حول",
+    "contact": "اتصل بنا",
+    "cart": "السلة",
+    "login": "تسجيل الدخول",
+    "signIn": "تسجيل الدخول",
+    "search": "البحث عن المنتجات..."
+  },
+  "header": {
+    "freeShipping": "شحن مجاني فوق 350 درهم"
+  },
+  "hero": {
+    "title": "مكملات غذائية ديال جودة عالية لصحتك",
+    "subtitle": "اكتشف فيتامينات ومعادن ديال علامات عالمية معروفة. منتجات موثوقة وخدمة أحسن فالمغرب",
+    "cta": "تسوق دابا",
+    "trust": "مستعملين من آلاف الناس فالمغرب و راضيين بزاف"
+  },
+  "homepage": {
+    "carousel": {
+      "slide1": {
+        "title": "طور قدراتك",
+        "subtitle": "مكملات ديال جودة عالية للي بغيتي تكون فالأفضل",
+        "description": "من التمرين ديال القوة حتى صفاء الذهن، جيب المكملات اللي تساعدك تحقق أهدافك",
+        "cta": "تسوق دابا"
+      },
+      "slide2": {
+        "title": "نتائج مثبتة علمياً",
+        "subtitle": "تركيبات مدروسة و مجربة",
+        "description": "كل منتج مصنوع بأحدث الأبحاث ومكونات ديال أعلى جودة. جودة تضمن نتائج حقيقية",
+        "cta": "تعرف أكثر"
+      },
+      "slide3": {
+        "title": "لجميع الأنماط ديال الحياة",
+        "subtitle": "من الرياضيين حتى العائلات",
+        "description": "سواء كنتي بغيتي تبنى عضلات، تدعم المناعة، أو تحافظ على صحتك - عندنا المنتج اللي يناسبك",
+        "cta": "استكشف الفئات"
+      }
+    },
+    "categories": {
+      "title": "طور أهدافك",
+      "subtitle": "اكتشف المكملات المصممة خصيصاً لكل جانب من جوانب صحتك وأدائك",
+      "strength": {
+        "name": "القوة والطاقة",
+        "description": "ابن عضلات وقوة"
+      },
+      "immunity": {
+        "name": "درع المناعة",
+        "description": "حافظ على صحتك"
+      },
+      "heart": {
+        "name": "صحة القلب",
+        "description": "دعم صحة القلب والشرايين"
+      },
+      "brain": {
+        "name": "تعزيز الدماغ",
+        "description": "حسن الأداء العقلي"
+      }
+    },
+    "featured": {
+      "title": "منتجات مميزة",
+      "subtitle": "مكملات عالية الجودة موثوق بها من الرياضيين ومحبي الصحة",
+      "viewAll": "عرض جميع المنتجات"
+    },
+    "cta": {
+      "title": "جاهز تبدل صحتك؟",
+      "subtitle": "انضم لآلاف العملاء اللي يثقون بفيتا لاحتياجاتهم من المكملات",
+      "button": "ابدأ التسوق دابا"
+    }
+  },
+  "categories": {
+    "title": "تسوق حسب الفئة",
+    "subtitle": "اعثر على المكملات المثالية لاحتياجاتك الصحية"
+  },
+  "products": {
+    "featured": "المنتجات المميزة",
+    "viewAll": "عرض جميع المنتجات",
+    "addToCart": "أضف إلى السلة",
+    "outOfStock": "نفذت الكمية",
+    "inStock": "متوفر",
+    "price": "السعر",
+    "brand": "العلامة التجارية",
+    "category": "الفئة",
+    "benefits": "الفوائد",
+    "ingredients": "المكونات",
+    "description": "الوصف",
+    "filters": "المرشحات",
+    "availability": "التوفر",
+    "itemsFound": "منتج موجود",
+    "noProductsFound": "لم يتم العثور على منتجات",
+    "tryAdjustingFilters": "حاول تعديل المرشحات",
+    "sortFeatured": "مميز",
+    "sortPriceLow": "السعر: من الأقل إلى الأعلى",
+    "sortPriceHigh": "السعر: من الأعلى إلى الأقل",
+    "sortRating": "الأعلى تقييماً",
+    "sortName": "الاسم: أ إلى ي"
+  },
+  "cart": {
+    "title": "سلة التسوق",
+    "empty": "سلة التسوق فارغة",
+    "emptyTitle": "سلة التسوق فارغة",
+    "emptyDescription": "ابدأ التسوق لإضافة منتجات إلى سلة التسوق",
+    "browseProducts": "تصفح المنتجات",
+    "subtotal": "المجموع الفرعي",
+    "shipping": "الشحن",
+    "free": "مجاني",
+    "vat": "الضريبة (20%)",
+    "total": "المجموع",
+    "checkout": "إتمام الشراء",
+    "viewCart": "عرض السلة",
+    "continueShopping": "مواصلة التسوق",
+    "remove": "إزالة",
+    "quantity": "الكمية",
+    "item": "منتج",
+    "items": "منتجات",
+    "clearCart": "مسح السلة",
+    "orderSummary": "ملخص الطلب",
+    "each": "لكل",
+    "addMoreForFreeShipping": "أضف {amount} أكثر للشحن المجاني!"
+  },
+  "productsPage": {
+    "title": "جميع المنتجات",
+    "subtitle": "اكتشف مجموعتنا الكاملة من المكملات الغذائية عالية الجودة",
+    "searchPlaceholder": "البحث عن المنتجات...",
+    "filter": "فلتر",
+    "sort": "ترتيب حسب",
+    "clearFilters": "مسح المرشحات",
+    "applyFilters": "تطبيق المرشحات",
+    "showingResults": "عرض",
+    "of": "من",
+    "results": "نتيجة",
+    "noResults": "لا توجد منتجات تطابق بحثك",
+    "tryDifferentFilters": "حاول تعديل المرشحات أو مصطلحات البحث"
+  },
+  "footer": {
+    "about": "حول فيتا فلو",
+    "aboutText": "مصدرك الموثوق للمكملات والفيتامينات ديال جودة عالية في المغرب. خدمة ممتازة و أسعار مناسبة",
+    "quickLinks": "روابط سريعة",
+    "customerService": "خدمة العملاء",
+    "contact": "اتصل بنا",
+    "privacy": "سياسة الخصوصية",
+    "terms": "شروط الخدمة",
+    "shipping": "معلومات الشحن",
+    "returns": "المرتجعات والاسترداد",
+    "newsletter": "النشرة الإخبارية",
+    "newsletterText": "ابق على اطلاع بأحدث منتجاتنا ونصائح الصحة ديالنا",
+    "subscribe": "اشتراك",
+    "email": "أدخل بريدك الإلكتروني",
+    "copyright": "© 2024 فيتا فلو. جميع الحقوق محفوظة."
+  },
+  "auth": {
+    "signIn": "تسجيل الدخول",
+    "signUp": "إنشاء حساب",
+    "createAccount": "إنشاء حساب",
+    "login": "تسجيل الدخول",
+    "logout": "تسجيل الخروج",
+    "email": "البريد الإلكتروني",
+    "emailPlaceholder": "أدخل بريدك الإلكتروني",
+    "emailRequired": "البريد الإلكتروني مطلوب",
+    "emailInvalid": "يرجى إدخال بريد إلكتروني صحيح",
+    "password": "كلمة المرور",
+    "passwordPlaceholder": "أدخل كلمة المرور",
+    "passwordRequired": "كلمة المرور مطلوبة",
+    "passwordMinLength": "كلمة المرور يجب أن تكون 6 أحرف على الأقل",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "confirmPasswordPlaceholder": "أكد كلمة المرور",
+    "passwordsDoNotMatch": "كلمات المرور غير متطابقة",
+    "firstName": "الاسم الأول",
+    "firstNamePlaceholder": "أدخل اسمك الأول",
+    "firstNameRequired": "الاسم الأول مطلوب",
+    "lastName": "اسم العائلة",
+    "lastNamePlaceholder": "أدخل اسم العائلة",
+    "lastNameRequired": "اسم العائلة مطلوب",
+    "rememberMe": "تذكرني",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "forgotPasswordTitle": "إعادة تعيين كلمة المرور",
+    "forgotPasswordDescription": "أدخل بريدك الإلكتروني وسنرسل لك رابطاً لإعادة تعيين كلمة المرور.",
+    "sendResetLink": "إرسال رابط إعادة التعيين",
+    "backToSignIn": "العودة لتسجيل الدخول",
+    "noAccount": "ليس لديك حساب؟",
+    "haveAccount": "لديك حساب بالفعل؟",
+    "agreeToTerms": "أوافق على",
+    "agreeToTermsRequired": "يجب الموافقة على الشروط والأحكام",
+    "termsOfService": "شروط الخدمة",
+    "privacyPolicy": "سياسة الخصوصية",
+    "and": "و",
+    "secureConnection": "اتصال SSL آمن",
+    "submit": "تسجيل الدخول",
+    "admin": "لوحة الإدارة"
+  },
+  "admin": {
+    "dashboard": "لوحة الإدارة",
+    "products": "إدارة المنتجات",
+    "addProduct": "إضافة منتج جديد",
+    "editProduct": "تعديل المنتج",
+    "deleteProduct": "حذف المنتج",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "upload": "رفع الصورة"
+  },
+  "currency": {
+    "mad": "درهم"
+  }
+} 

@@ -1,0 +1,100 @@
+[
+  {
+    "id": "vitamins",
+    "name": {
+      "en": "Vitamins",
+      "fr": "Vitamines",
+      "ar": "فيتامينات"
+    },
+    "description": {
+      "en": "Essential vitamins for overall health and wellness",
+      "fr": "Vitamines essentielles pour la santé et le bien-être général",
+      "ar": "فيتامينات أساسية للصحة والرفاهية العامة"
+    },
+    "icon": "vitamin"
+  },
+  {
+    "id": "minerals",
+    "name": {
+      "en": "Minerals",
+      "fr": "Minéraux",
+      "ar": "معادن"
+    },
+    "description": {
+      "en": "Essential minerals for body function and health",
+      "fr": "Minéraux essentiels pour le fonctionnement et la santé du corps",
+      "ar": "معادن أساسية لوظيفة الجسم والصحة"
+    },
+    "icon": "mineral"
+  },
+  {
+    "id": "omega-3",
+    "name": {
+      "en": "Omega-3",
+      "fr": "Oméga-3",
+      "ar": "أوميغا 3"
+    },
+    "description": {
+      "en": "Essential fatty acids for heart and brain health",
+      "fr": "Acides gras essentiels pour la santé cardiaque et cérébrale",
+      "ar": "أحماض دهنية أساسية لصحة القلب والدماغ"
+    },
+    "icon": "omega"
+  },
+  {
+    "id": "probiotics",
+    "name": {
+      "en": "Probiotics",
+      "fr": "Probiotiques",
+      "ar": "بروبيوتيك"
+    },
+    "description": {
+      "en": "Beneficial bacteria for digestive and immune health",
+      "fr": "Bactéries bénéfiques pour la santé digestive et immunitaire",
+      "ar": "بكتيريا مفيدة لصحة الجهاز الهضمي والمناعة"
+    },
+    "icon": "probiotic"
+  },
+  {
+    "id": "herbs",
+    "name": {
+      "en": "Herbs",
+      "fr": "Herbes",
+      "ar": "أعشاب"
+    },
+    "description": {
+      "en": "Traditional herbal supplements for natural wellness",
+      "fr": "Compléments à base de plantes traditionnels pour le bien-être naturel",
+      "ar": "مكملات عشبية تقليدية للرفاهية الطبيعية"
+    },
+    "icon": "herb"
+  },
+  {
+    "id": "protein",
+    "name": {
+      "en": "Protein",
+      "fr": "Protéines",
+      "ar": "بروتين"
+    },
+    "description": {
+      "en": "Protein supplements for muscle building and recovery",
+      "fr": "Compléments protéiques pour la construction musculaire et la récupération",
+      "ar": "مكملات بروتينية لبناء العضلات والتعافي"
+    },
+    "icon": "protein"
+  },
+  {
+    "id": "immune",
+    "name": {
+      "en": "Immune Support",
+      "fr": "Soutien Immunitaire",
+      "ar": "دعم المناعة"
+    },
+    "description": {
+      "en": "Supplements to strengthen and support immune function",
+      "fr": "Compléments pour renforcer et soutenir la fonction immunitaire",
+      "ar": "مكملات لتقوية ودعم الوظيفة المناعية"
+    },
+    "icon": "immune"
+  }
+] 

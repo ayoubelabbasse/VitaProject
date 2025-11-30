@@ -1,0 +1,292 @@
+[
+  {
+    "id": "1",
+    "name": {
+      "en": "Solgar Vitamin D3 1000 IU",
+      "fr": "Solgar Vitamine D3 1000 UI",
+      "ar": "سولغار فيتامين د3 1000 وحدة دولية"
+    },
+    "imageURL": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&h=400&fit=crop",
+    "price": 89.99,
+    "currency": "MAD",
+    "brand": "Solgar",
+    "category": "Vitamins",
+    "stock": 45,
+    "benefits": {
+      "en": "Supports bone health, immune function, and calcium absorption",
+      "fr": "Soutient la santé osseuse, la fonction immunitaire et l'absorption du calcium",
+      "ar": "يدعم صحة العظام والوظيفة المناعية وامتصاص الكالسيوم"
+    },
+    "ingredients": {
+      "en": "Vitamin D3 (Cholecalciferol), Microcrystalline Cellulose, Vegetable Cellulose, Vegetable Magnesium Stearate, Silica",
+      "fr": "Vitamine D3 (Cholécalciférol), Cellulose Microcristalline, Cellulose Végétale, Stéarate de Magnésium Végétal, Silice",
+      "ar": "فيتامين د3 (كوليكالسيفيرول)، سليلوز بلوري دقيق، سليلوز نباتي، ستيرات المغنيسيوم النباتي، السيليكا"
+    },
+    "description": {
+      "en": "High-quality Vitamin D3 supplement for optimal bone and immune health",
+      "fr": "Complément de vitamine D3 de haute qualité pour une santé osseuse et immunitaire optimale",
+      "ar": "مكمل فيتامين د3 عالي الجودة لصحة العظام والمناعة المثلى"
+    }
+  },
+  {
+    "id": "2",
+    "name": {
+      "en": "Now Foods Magnesium 400mg",
+      "fr": "Now Foods Magnésium 400mg",
+      "ar": "ناو فودز ماغنيسيوم 400 ملغ"
+    },
+    "imageURL": "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=400&fit=crop",
+    "price": 75.50,
+    "currency": "MAD",
+    "brand": "Now Foods",
+    "category": "Minerals",
+    "stock": 32,
+    "benefits": {
+      "en": "Supports muscle function, nerve health, and energy production",
+      "fr": "Soutient la fonction musculaire, la santé nerveuse et la production d'énergie",
+      "ar": "يدعم وظيفة العضلات وصحة الأعصاب وإنتاج الطاقة"
+    },
+    "ingredients": {
+      "en": "Magnesium (as Magnesium Oxide), Cellulose, Magnesium Stearate, Silica",
+      "fr": "Magnésium (sous forme d'Oxyde de Magnésium), Cellulose, Stéarate de Magnésium, Silice",
+      "ar": "المغنيسيوم (كأكسيد المغنيسيوم)، السليلوز، ستيرات المغنيسيوم، السيليكا"
+    },
+    "description": {
+      "en": "Essential mineral for over 300 biochemical reactions in the body",
+      "fr": "Minéral essentiel pour plus de 300 réactions biochimiques dans le corps",
+      "ar": "معدن أساسي لأكثر من 300 تفاعل كيميائي حيوي في الجسم"
+    }
+  },
+  {
+    "id": "3",
+    "name": {
+      "en": "Nature's Way Zinc 50mg",
+      "fr": "Nature's Way Zinc 50mg",
+      "ar": "نيتشرز واي زنك 50 ملغ"
+    },
+    "imageURL": "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=400&h=400&fit=crop",
+    "price": 65.00,
+    "currency": "MAD",
+    "brand": "Nature's Way",
+    "category": "Minerals",
+    "stock": 28,
+    "benefits": {
+      "en": "Supports immune system, wound healing, and protein synthesis",
+      "fr": "Soutient le système immunitaire, la cicatrisation et la synthèse des protéines",
+      "ar": "يدعم الجهاز المناعي والتئام الجروح وتخليق البروتين"
+    },
+    "ingredients": {
+      "en": "Zinc (as Zinc Gluconate), Cellulose, Magnesium Stearate, Silica",
+      "fr": "Zinc (sous forme de Gluconate de Zinc), Cellulose, Stéarate de Magnésium, Silice",
+      "ar": "الزنك (كغلوكونات الزنك)، السليلوز، ستيرات المغنيسيوم، السيليكا"
+    },
+    "description": {
+      "en": "Essential trace mineral for immune function and cellular health",
+      "fr": "Oligo-élément essentiel pour la fonction immunitaire et la santé cellulaire",
+      "ar": "معدن نادر أساسي لوظيفة المناعة والصحة الخلوية"
+    }
+  },
+  {
+    "id": "4",
+    "name": {
+      "en": "NutriBiotic Omega-3 Fish Oil",
+      "fr": "NutriBiotic Huile de Poisson Oméga-3",
+      "ar": "نوتريبيوتيك زيت السمك أوميغا 3"
+    },
+    "imageURL": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop",
+    "price": 120.00,
+    "currency": "MAD",
+    "brand": "NutriBiotic",
+    "category": "Omega-3",
+    "stock": 15,
+    "benefits": {
+      "en": "Supports heart health, brain function, and reduces inflammation",
+      "fr": "Soutient la santé cardiaque, la fonction cérébrale et réduit l'inflammation",
+      "ar": "يدعم صحة القلب ووظيفة الدماغ ويقلل الالتهاب"
+    },
+    "ingredients": {
+      "en": "Fish Oil, EPA, DHA, Vitamin E, Gelatin, Glycerin",
+      "fr": "Huile de Poisson, EPA, DHA, Vitamine E, Gélatine, Glycérine",
+      "ar": "زيت السمك، إي بي إيه، دي إتش إيه، فيتامين إي، الجيلاتين، الجلسرين"
+    },
+    "description": {
+      "en": "Premium fish oil supplement with high EPA and DHA content",
+      "fr": "Complément d'huile de poisson premium avec une teneur élevée en EPA et DHA",
+      "ar": "مكمل زيت السمك الممتاز مع محتوى عالي من EPA و DHA"
+    }
+  },
+  {
+    "id": "5",
+    "name": {
+      "en": "Solgar B-Complex 50",
+      "fr": "Solgar Complexe B 50",
+      "ar": "سولغار فيتامين ب المركب 50"
+    },
+    "imageURL": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&h=400&fit=crop",
+    "price": 95.00,
+    "currency": "MAD",
+    "brand": "Solgar",
+    "category": "Vitamins",
+    "stock": 22,
+    "benefits": {
+      "en": "Supports energy metabolism, nervous system, and cellular health",
+      "fr": "Soutient le métabolisme énergétique, le système nerveux et la santé cellulaire",
+      "ar": "يدعم التمثيل الغذائي للطاقة والجهاز العصبي والصحة الخلوية"
+    },
+    "ingredients": {
+      "en": "Thiamin, Riboflavin, Niacin, B6, B12, Folic Acid, Biotin, Pantothenic Acid",
+      "fr": "Thiamine, Riboflavine, Niacine, B6, B12, Acide Folique, Biotine, Acide Pantothénique",
+      "ar": "الثيامين، الريبوفلافين، النياسين، ب6، ب12، حمض الفوليك، البيوتين، حمض البانتوثينيك"
+    },
+    "description": {
+      "en": "Complete B-vitamin complex for optimal energy and vitality",
+      "fr": "Complexe complet de vitamines B pour une énergie et une vitalité optimales",
+      "ar": "مجمع فيتامين ب الكامل للطاقة والحيوية المثلى"
+    }
+  },
+  {
+    "id": "6",
+    "name": {
+      "en": "Now Foods Vitamin C 1000mg",
+      "fr": "Now Foods Vitamine C 1000mg",
+      "ar": "ناو فودز فيتامين سي 1000 ملغ"
+    },
+    "imageURL": "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=400&fit=crop",
+    "price": 55.00,
+    "currency": "MAD",
+    "brand": "Now Foods",
+    "category": "Vitamins",
+    "stock": 38,
+    "benefits": {
+      "en": "Supports immune system, collagen production, and antioxidant protection",
+      "fr": "Soutient le système immunitaire, la production de collagène et la protection antioxydante",
+      "ar": "يدعم الجهاز المناعي وإنتاج الكولاجين والحماية المضادة للأكسدة"
+    },
+    "ingredients": {
+      "en": "Vitamin C (as Ascorbic Acid), Cellulose, Magnesium Stearate, Silica",
+      "fr": "Vitamine C (sous forme d'Acide Ascorbique), Cellulose, Stéarate de Magnésium, Silice",
+      "ar": "فيتامين سي (كحمض الأسكوربيك)، السليلوز، ستيرات المغنيسيوم، السيليكا"
+    },
+    "description": {
+      "en": "High-potency Vitamin C for immune support and antioxidant protection",
+      "fr": "Vitamine C à haute puissance pour le soutien immunitaire et la protection antioxydante",
+      "ar": "فيتامين سي عالي الفعالية لدعم المناعة والحماية المضادة للأكسدة"
+    }
+  },
+  {
+    "id": "7",
+    "name": {
+      "en": "Nature's Way Probiotic 10",
+      "fr": "Nature's Way Probiotique 10",
+      "ar": "نيتشرز واي بروبيوتيك 10"
+    },
+    "imageURL": "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=400&h=400&fit=crop",
+    "price": 85.00,
+    "currency": "MAD",
+    "brand": "Nature's Way",
+    "category": "Probiotics",
+    "stock": 18,
+    "benefits": {
+      "en": "Supports digestive health, immune function, and gut microbiome",
+      "fr": "Soutient la santé digestive, la fonction immunitaire et le microbiome intestinal",
+      "ar": "يدعم صحة الجهاز الهضمي والوظيفة المناعية وميكروبيوم الأمعاء"
+    },
+    "ingredients": {
+      "en": "Lactobacillus Acidophilus, Bifidobacterium, Inulin, Cellulose",
+      "fr": "Lactobacillus Acidophilus, Bifidobacterium, Inuline, Cellulose",
+      "ar": "لاكتوباسيلوس أسيدوفيلوس، بيفيدوباكتيريوم، إينولين، سليلوز"
+    },
+    "description": {
+      "en": "Advanced probiotic formula with 10 beneficial bacterial strains",
+      "fr": "Formule probiotique avancée avec 10 souches bactériennes bénéfiques",
+      "ar": "صيغة بروبيوتيك متقدمة مع 10 سلالات بكتيرية مفيدة"
+    }
+  },
+  {
+    "id": "8",
+    "name": {
+      "en": "Solgar Iron 25mg",
+      "fr": "Solgar Fer 25mg",
+      "ar": "سولغار حديد 25 ملغ"
+    },
+    "imageURL": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&h=400&fit=crop",
+    "price": 70.00,
+    "currency": "MAD",
+    "brand": "Solgar",
+    "category": "Minerals",
+    "stock": 25,
+    "benefits": {
+      "en": "Supports oxygen transport, energy production, and red blood cell formation",
+      "fr": "Soutient le transport d'oxygène, la production d'énergie et la formation des globules rouges",
+      "ar": "يدعم نقل الأكسجين وإنتاج الطاقة وتكوين خلايا الدم الحمراء"
+    },
+    "ingredients": {
+      "en": "Iron (as Ferrous Gluconate), Vitamin C, Cellulose, Magnesium Stearate",
+      "fr": "Fer (sous forme de Gluconate Ferreux), Vitamine C, Cellulose, Stéarate de Magnésium",
+      "ar": "الحديد (كغلوكونات الحديدوز)، فيتامين سي، السليلوز، ستيرات المغنيسيوم"
+    },
+    "description": {
+      "en": "Gentle iron supplement with Vitamin C for enhanced absorption",
+      "fr": "Complément de fer doux avec vitamine C pour une absorption améliorée",
+      "ar": "مكمل حديد لطيف مع فيتامين سي لتحسين الامتصاص"
+    }
+  },
+  {
+    "id": "9",
+    "name": {
+      "en": "Now Foods Calcium 600mg",
+      "fr": "Now Foods Calcium 600mg",
+      "ar": "ناو فودز كالسيوم 600 ملغ"
+    },
+    "imageURL": "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=400&fit=crop",
+    "price": 80.00,
+    "currency": "MAD",
+    "brand": "Now Foods",
+    "category": "Minerals",
+    "stock": 30,
+    "benefits": {
+      "en": "Supports bone health, muscle function, and nerve transmission",
+      "fr": "Soutient la santé osseuse, la fonction musculaire et la transmission nerveuse",
+      "ar": "يدعم صحة العظام ووظيفة العضلات ونقل الأعصاب"
+    },
+    "ingredients": {
+      "en": "Calcium (as Calcium Carbonate), Vitamin D3, Magnesium, Cellulose",
+      "fr": "Calcium (sous forme de Carbonate de Calcium), Vitamine D3, Magnésium, Cellulose",
+      "ar": "الكالسيوم (ككربونات الكالسيوم)، فيتامين د3، المغنيسيوم، السليلوز"
+    },
+    "description": {
+      "en": "Complete calcium supplement with Vitamin D3 and Magnesium",
+      "fr": "Complément de calcium complet avec vitamine D3 et magnésium",
+      "ar": "مكمل كالسيوم كامل مع فيتامين د3 والمغنيسيوم"
+    }
+  },
+  {
+    "id": "10",
+    "name": {
+      "en": "Nature's Way Echinacea Goldenseal",
+      "fr": "Nature's Way Échinacée Hydraste",
+      "ar": "نيتشرز واي إشنسا جولدنسيل"
+    },
+    "imageURL": "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=400&h=400&fit=crop",
+    "price": 90.00,
+    "currency": "MAD",
+    "brand": "Nature's Way",
+    "category": "Herbs",
+    "stock": 20,
+    "benefits": {
+      "en": "Supports immune system, natural defense, and respiratory health",
+      "fr": "Soutient le système immunitaire, la défense naturelle et la santé respiratoire",
+      "ar": "يدعم الجهاز المناعي والدفاع الطبيعي وصحة الجهاز التنفسي"
+    },
+    "ingredients": {
+      "en": "Echinacea Purpurea, Goldenseal, Cellulose, Magnesium Stearate",
+      "fr": "Échinacée Pourpre, Hydraste du Canada, Cellulose, Stéarate de Magnésium",
+      "ar": "إشنسا بوربوريا، جولدنسيل، سليلوز، ستيرات المغنيسيوم"
+    },
+    "description": {
+      "en": "Traditional herbal blend for immune support and natural wellness",
+      "fr": "Mélange d'herbes traditionnel pour le soutien immunitaire et le bien-être naturel",
+      "ar": "مزيج عشبي تقليدي لدعم المناعة والرفاهية الطبيعية"
+    }
+  }
+] 

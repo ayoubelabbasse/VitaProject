@@ -1,0 +1,207 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "products": "Produits",
+    "categories": "Catégories",
+    "about": "À propos",
+    "contact": "Contact",
+    "cart": "Panier",
+    "login": "Connexion",
+    "signIn": "Se Connecter",
+    "search": "Rechercher des produits..."
+  },
+  "header": {
+    "freeShipping": "Livraison gratuite à partir de 350 MAD"
+  },
+  "hero": {
+    "title": "Compléments Premium pour Votre Parcours de Bien-être",
+    "subtitle": "Découvrez des vitamines, minéraux et compléments de haute qualité importés de marques mondiales de confiance",
+    "cta": "Acheter Maintenant",
+    "trust": "Approuvé par des milliers de clients au Maroc"
+  },
+  "homepage": {
+    "carousel": {
+      "slide1": {
+        "title": "Libérez Votre Potentiel",
+        "subtitle": "Compléments premium pour des performances optimales",
+        "description": "De l'entraînement en force à la clarté mentale, découvrez des compléments qui alimentent vos objectifs",
+        "cta": "Acheter Maintenant"
+      },
+      "slide2": {
+        "title": "Résultats Basés sur la Science",
+        "subtitle": "Formulations cliniquement prouvées",
+        "description": "Chaque produit est formulé avec les dernières recherches et les ingrédients de la plus haute qualité. Qualité qui garantit de vrais résultats",
+        "cta": "En Savoir Plus"
+      },
+      "slide3": {
+        "title": "Pour Tous les Modes de Vie",
+        "subtitle": "Des athlètes aux familles",
+        "description": "Que vous construisiez du muscle, souteniez l'immunité ou mainteniez le bien-être - nous avons le produit qui vous convient",
+        "cta": "Explorer les Catégories"
+      }
+    },
+    "categories": {
+      "title": "Alimentez Vos Objectifs",
+      "subtitle": "Découvrez des compléments conçus pour chaque aspect de votre parcours de santé et de performance",
+      "strength": {
+        "name": "Force & Puissance",
+        "description": "Développez les muscles et la force"
+      },
+      "immunity": {
+        "name": "Bouclier Immunitaire",
+        "description": "Protégez votre santé"
+      },
+      "heart": {
+        "name": "Santé Cardiaque",
+        "description": "Soutenez la santé cardiovasculaire"
+      },
+      "brain": {
+        "name": "Boost Cérébral",
+        "description": "Améliorez les performances mentales"
+      }
+    },
+    "featured": {
+      "title": "Produits Vedettes",
+      "subtitle": "Compléments premium de confiance par les athlètes et les amateurs de santé",
+      "viewAll": "Voir Tous les Produits"
+    },
+    "cta": {
+      "title": "Prêt à Transformer Votre Santé?",
+      "subtitle": "Rejoignez des milliers de clients qui font confiance à Vita pour leurs besoins en compléments",
+      "button": "Commencer les Achats Maintenant"
+    }
+  },
+  "categories": {
+    "title": "Acheter par Catégorie",
+    "subtitle": "Trouvez les compléments parfaits pour vos besoins de santé"
+  },
+  "products": {
+    "featured": "Produits Vedettes",
+    "viewAll": "Voir Tous les Produits",
+    "addToCart": "Ajouter au Panier",
+    "outOfStock": "Rupture de Stock",
+    "inStock": "En Stock",
+    "price": "Prix",
+    "brand": "Marque",
+    "category": "Catégorie",
+    "benefits": "Avantages",
+    "ingredients": "Ingrédients",
+    "description": "Description",
+    "filters": "Filtres",
+    "availability": "Disponibilité",
+    "itemsFound": "produits trouvés",
+    "noProductsFound": "Aucun produit trouvé",
+    "tryAdjustingFilters": "Essayez d'ajuster vos filtres",
+    "sortFeatured": "Vedettes",
+    "sortPriceLow": "Prix: Croissant",
+    "sortPriceHigh": "Prix: Décroissant",
+    "sortRating": "Mieux Notés",
+    "sortName": "Nom: A à Z"
+  },
+  "cart": {
+    "title": "Panier d'Achat",
+    "empty": "Votre panier est vide",
+    "emptyTitle": "Votre Panier est Vide",
+    "emptyDescription": "Commencez vos achats pour ajouter des articles à votre panier",
+    "browseProducts": "Parcourir les Produits",
+    "subtotal": "Sous-total",
+    "shipping": "Livraison",
+    "free": "Gratuit",
+    "vat": "TVA (20%)",
+    "total": "Total",
+    "checkout": "Paiement",
+    "viewCart": "Voir le Panier",
+    "continueShopping": "Continuer les Achats",
+    "remove": "Supprimer",
+    "quantity": "Quantité",
+    "item": "article",
+    "items": "articles",
+    "clearCart": "Vider le Panier",
+    "orderSummary": "Résumé de la Commande",
+    "each": "chaque",
+    "addMoreForFreeShipping": "Ajoutez {amount} de plus pour la livraison gratuite !"
+  },
+  "productsPage": {
+    "title": "Tous les Produits",
+    "subtitle": "Découvrez notre gamme complète de compléments premium",
+    "searchPlaceholder": "Rechercher des produits...",
+    "filter": "Filtrer",
+    "sort": "Trier par",
+    "clearFilters": "Effacer les Filtres",
+    "applyFilters": "Appliquer les Filtres",
+    "showingResults": "Affichage",
+    "of": "de",
+    "results": "résultats",
+    "noResults": "Aucun produit ne correspond à votre recherche",
+    "tryDifferentFilters": "Essayez d'ajuster vos filtres ou termes de recherche"
+  },
+  "footer": {
+    "about": "À propos de VitaFlow",
+    "aboutText": "Votre source de confiance pour les compléments et vitamines premium au Maroc",
+    "quickLinks": "Liens Rapides",
+    "customerService": "Service Client",
+    "contact": "Nous Contacter",
+    "privacy": "Politique de Confidentialité",
+    "terms": "Conditions de Service",
+    "shipping": "Informations de Livraison",
+    "returns": "Retours et Remboursements",
+    "newsletter": "Newsletter",
+    "newsletterText": "Restez informé de nos derniers produits et conseils de santé",
+    "subscribe": "S'abonner",
+    "email": "Entrez votre email",
+    "copyright": "© 2024 VitaFlow. Tous droits réservés."
+  },
+  "auth": {
+    "signIn": "Se Connecter",
+    "signUp": "S'inscrire",
+    "createAccount": "Créer un Compte",
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "email": "Email",
+    "emailPlaceholder": "Entrez votre email",
+    "emailRequired": "L'email est requis",
+    "emailInvalid": "Veuillez entrer un email valide",
+    "password": "Mot de passe",
+    "passwordPlaceholder": "Entrez votre mot de passe",
+    "passwordRequired": "Le mot de passe est requis",
+    "passwordMinLength": "Le mot de passe doit contenir au moins 6 caractères",
+    "confirmPassword": "Confirmer le Mot de Passe",
+    "confirmPasswordPlaceholder": "Confirmez votre mot de passe",
+    "passwordsDoNotMatch": "Les mots de passe ne correspondent pas",
+    "firstName": "Prénom",
+    "firstNamePlaceholder": "Entrez votre prénom",
+    "firstNameRequired": "Le prénom est requis",
+    "lastName": "Nom de Famille",
+    "lastNamePlaceholder": "Entrez votre nom de famille",
+    "lastNameRequired": "Le nom de famille est requis",
+    "rememberMe": "Se souvenir de moi",
+    "forgotPassword": "Mot de Passe Oublié?",
+    "forgotPasswordTitle": "Réinitialiser Votre Mot de Passe",
+    "forgotPasswordDescription": "Entrez votre adresse email et nous vous enverrons un lien pour réinitialiser votre mot de passe.",
+    "sendResetLink": "Envoyer le Lien de Réinitialisation",
+    "backToSignIn": "Retour à la Connexion",
+    "noAccount": "Vous n'avez pas de compte?",
+    "haveAccount": "Vous avez déjà un compte?",
+    "agreeToTerms": "J'accepte les",
+    "agreeToTermsRequired": "Vous devez accepter les conditions générales",
+    "termsOfService": "Conditions de Service",
+    "privacyPolicy": "Politique de Confidentialité",
+    "and": "et",
+    "secureConnection": "Connexion SSL Sécurisée",
+    "submit": "Se Connecter",
+    "admin": "Tableau de Bord Admin"
+  },
+  "admin": {
+    "dashboard": "Tableau de Bord Admin",
+    "products": "Gérer les Produits",
+    "addProduct": "Ajouter un Nouveau Produit",
+    "editProduct": "Modifier le Produit",
+    "deleteProduct": "Supprimer le Produit",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "upload": "Télécharger l'Image"
+  },
+  "currency": {
+    "mad": "MAD"
+  }
+} 
