@@ -6,6 +6,12 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   try {
+    // Check if database is available
+    if (!prisma) {
+      // Return empty array if database not available (for Vercel deployment)
+      return NextResponse.json({ products: [] });
+    }
+
     const { searchParams } = new URL(request.url);
     const category = searchParams.get('category');
     const search = searchParams.get('search');

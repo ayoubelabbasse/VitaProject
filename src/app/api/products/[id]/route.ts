@@ -18,6 +18,14 @@ export async function GET(
       );
     }
 
+    // Check if database is available
+    if (!prisma) {
+      return NextResponse.json(
+        { error: 'Database not available' },
+        { status: 503 }
+      );
+    }
+
     const product = await prisma.product.findUnique({
       where: { id: id },
     });
