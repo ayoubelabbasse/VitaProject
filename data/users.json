@@ -1,0 +1,24 @@
+[
+  {
+    "id": "1",
+    "email": "admin@vita.ma",
+    "password": "$2b$10$Sc0hyfl1rvRavI.5vqaAb..F8R.ZP.mmUEfqzgcRZw4Jr7aNx/HiS",
+    "firstName": "Admin",
+    "lastName": "User",
+    "phone": "+212 6XX XXX XXX",
+    "role": "admin",
+    "createdAt": "2025-11-06T09:53:40.707Z",
+    "updatedAt": "2025-11-06T09:53:40.709Z"
+  },
+  {
+    "id": "2",
+    "email": "user@test.com",
+    "password": "$2b$10$gLRczsM/vAUDj80GvPZt6O2n33jBeJhhf3nidUOVSI59EO38b7OAi",
+    "firstName": "Test",
+    "lastName": "User",
+    "phone": "+212 6XX XXX XXX",
+    "role": "customer",
+    "createdAt": "2025-11-06T09:53:40.836Z",
+    "updatedAt": "2025-11-06T09:53:40.837Z"
+  }
+]

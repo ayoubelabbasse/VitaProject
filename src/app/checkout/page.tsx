@@ -7,7 +7,7 @@ import { CreditCard, MapPin, Truck, Lock, Check } from 'lucide-react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { useCartStore } from '@/store/cartStore'
-import { formatPrice } from '@/utils/currency'
+import { formatPrice } from '@/utils/formatters/currency'
 
 type ShippingMethod = 'standard' | 'express' | 'pickup'
 

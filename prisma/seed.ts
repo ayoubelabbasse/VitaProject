@@ -49,7 +49,7 @@ async function main() {
       brand: 'NOW Foods',
       price: 119.99,
       originalPrice: 139.99,
-      image: '/assets/hero/88.jpeg',
+      image: '/images/hero/88.jpeg',
       description:
         '<p>Molecularly distilled fish oil delivering 1,000 mg omega-3 per softgel to support heart, brain, and joint health.</p>',
       stock: 75,
@@ -69,7 +69,7 @@ async function main() {
       brand: 'NOW Foods',
       price: 94.99,
       originalPrice: 109.99,
-      image: '/assets/hero/132.jpeg',
+      image: '/images/hero/132.jpeg',
       description:
         '<p>Balanced D3 and MK-7 softgels that help direct calcium into bones while reinforcing immune and cardiovascular health.</p>',
       stock: 90,
@@ -90,7 +90,7 @@ async function main() {
       brand: 'Life Extension',
       price: 129.99,
       originalPrice: 149.99,
-      image: '/assets/hero/196.jpeg',
+      image: '/images/hero/196.jpeg',
       description:
         '<p>Bioavailable magnesium complex combining oxide, citrate, and succinate to relax muscles and support heart rhythm.</p>',
       stock: 60,
@@ -110,7 +110,7 @@ async function main() {
       brand: 'NOW Foods',
       price: 74.99,
       originalPrice: 84.99,
-      image: '/assets/hero/41.jpeg',
+      image: '/images/hero/41.jpeg',
       description:
         '<p>High-potency zinc gluconate tablets formulated to keep immune defenses, skin, and antioxidant activity robust.</p>',
       stock: 110,
@@ -126,7 +126,7 @@ async function main() {
       brand: 'NOW Foods',
       price: 129.99,
       originalPrice: 149.99,
-      image: '/assets/hero/32.jpeg',
+      image: '/images/hero/32.jpeg',
       description:
         '<p>Fully chelated magnesium bisglycinate designed for gentle absorption to ease tension and promote restorative sleep.</p>',
       stock: 85,
@@ -148,7 +148,7 @@ async function main() {
       brand: 'California Gold Nutrition',
       price: 84.99,
       originalPrice: 99.99,
-      image: '/assets/hero/204.jpeg',
+      image: '/images/hero/204.jpeg',
       description:
         '<p>High-potency vitamin D3 softgels sourced from lanolin to support immune vigilance, calcium uptake, and balanced mood.</p>',
       stock: 140,
@@ -168,7 +168,7 @@ async function main() {
       brand: 'NOW Foods',
       price: 92.99,
       originalPrice: 104.99,
-      image: '/assets/hero/41.jpeg',
+      image: '/images/hero/41.jpeg',
       description:
         '<p>Gentle iron bisglycinate capsules that replenish iron stores and energy without the digestive discomfort of traditional iron.</p>',
       stock: 95,
@@ -190,7 +190,7 @@ async function main() {
       brand: "Nature's Way",
       price: 129.99,
       originalPrice: 149.99,
-      image: '/assets/hero/57.jpeg',
+      image: '/images/hero/57.jpeg',
       description:
         '<p>Strawberry gummies with biotin, collagen, and antioxidants to nourish hair, skin, and nails from within.</p>',
       stock: 70,
@@ -206,7 +206,7 @@ async function main() {
       brand: 'NOW Foods',
       price: 159.99,
       originalPrice: 179.99,
-      image: '/assets/hero/63.jpeg',
+      image: '/images/hero/63.jpeg',
       description:
         '<p>Enteric-coated softgels with 500 mg EPA and 250 mg DHA to maintain triglyceride balance and cognitive clarity.</p>',
       stock: 65,
@@ -227,7 +227,7 @@ async function main() {
       brand: '21st Century',
       price: 64.99,
       originalPrice: 74.99,
-      image: '/assets/hero/72.jpeg',
+      image: '/images/hero/72.jpeg',
       description:
         '<p>Essential mineral tablets providing 99 mg elemental potassium to maintain fluid balance and normal muscle function.</p>',
       stock: 120,
@@ -243,7 +243,7 @@ async function main() {
       brand: 'Swanson',
       price: 74.99,
       originalPrice: 89.99,
-      image: '/assets/hero/76.jpeg',
+      image: '/images/hero/76.jpeg',
       description:
         '<p>Organic ashwagandha root capsules helping the body adapt to daily stress while promoting calm focus.</p>',
       stock: 80,
@@ -259,7 +259,7 @@ async function main() {
       brand: 'California Gold Nutrition',
       price: 139.99,
       originalPrice: 159.99,
-      image: '/assets/hero/218.jpeg',
+      image: '/images/hero/218.jpeg',
       description:
         '<p>IFOS 5-star certified fish oil delivering 180 mg EPA and 120 mg DHA per softgel with natural lemon flavour for superior freshness.</p>',
       stock: 105,

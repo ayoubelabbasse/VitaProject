@@ -9,8 +9,8 @@ import { ShoppingCart, Trash2, Plus, Minus, ArrowRight } from 'lucide-react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { useCartStore } from '@/store/cartStore'
-import { formatPrice } from '@/utils/currency'
-import { getProductImage } from '@/utils/imagePlaceholder'
+import { formatPrice } from '@/utils/formatters/currency'
+import { getProductImage } from '@/utils/helpers/imagePlaceholder'
 import { useAuth } from '@/hooks/useAuth'
 
 export default function CartPage() {

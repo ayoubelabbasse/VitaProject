@@ -9,8 +9,8 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { Product } from '@/types'
 import { useCartStore } from '@/store/cartStore'
-import { formatPrice } from '@/utils/currency'
-import { getProductImage } from '@/utils/imagePlaceholder'
+import { formatPrice } from '@/utils/formatters/currency'
+import { getProductImage } from '@/utils/helpers/imagePlaceholder'
 import { productCatalog } from '@/data/products'
 
 export default function ProductDetailPage() {
@@ -18,6 +18,7 @@ export default function ProductDetailPage() {
   const router = useRouter()
   const productId = params?.id as string
   const [product, setProduct] = useState<Product | null>(null)
+  const [loading, setLoading] = useState(true)
   const [quantity, setQuantity] = useState(1)
   const [isWishlisted, setIsWishlisted] = useState(false)
   const [selectedImage, setSelectedImage] = useState(0)
@@ -28,11 +29,13 @@ export default function ProductDetailPage() {
   useEffect(() => {
     if (!productId) {
       setProduct(null)
+      setLoading(false)
       return
     }
     
     // Fetch product from database
     const fetchProduct = async () => {
+      setLoading(true)
       try {
         const response = await fetch(`/api/products/${productId}`)
         const data = await response.json()
@@ -50,6 +53,8 @@ export default function ProductDetailPage() {
         const numId = parseInt(productId)
         const foundProduct = productCatalog.find(p => p.id === productId || p.id === numId)
         setProduct(foundProduct || null)
+      } finally {
+        setLoading(false)
       }
     }
     

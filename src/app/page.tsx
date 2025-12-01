@@ -62,12 +62,17 @@ export default function HomePage() {
         <div className="vita-container py-3 md:py-4">
           <div className="relative w-full h-[263px] sm:h-[300px] md:h-[338px] lg:h-[375px] border border-[#E5E7EB] rounded-lg overflow-hidden bg-white shadow-sm">
             {/* Full Width Background Image */}
-            <div className="absolute inset-0 w-full h-full">
+            <div className="absolute inset-0 w-full h-full bg-white">
               <img
-                src="/assets/hero/imagesProducts.png"
+                src="/images/hero/imagesProducts.png"
                 alt="Premium supplements - TAQA Essentials"
-                className="w-full h-full object-cover object-center"
-                style={{ objectPosition: 'center center' }}
+                className="w-full h-full object-contain object-center"
+                style={{ 
+                  objectPosition: 'center center',
+                  imageRendering: 'crisp-edges',
+                  transform: 'scale(0.9)',
+                  filter: 'contrast(1.05) brightness(1.02)'
+                }}
               />
             </div>
 
@@ -335,7 +340,7 @@ export default function HomePage() {
           </div>
           <div className="relative h-[320px] md:h-[360px] rounded-3xl overflow-hidden shadow-lg">
             <Image
-              src="/assets/hero/front.jpg"
+              src="/images/hero/front.jpg"
               alt="Active lifestyle inspiration"
               fill
               className="object-cover"

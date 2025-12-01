@@ -6,8 +6,8 @@ import Image from 'next/image'
 import { AnimatePresence, motion } from 'framer-motion'
 import { CheckCircle2, X, ShoppingCart, ArrowRight } from 'lucide-react'
 import { useCartStore } from '@/store/cartStore'
-import { getProductImage } from '@/utils/imagePlaceholder'
-import { formatCurrency } from '@/utils/currency'
+import { getProductImage } from '@/utils/helpers/imagePlaceholder'
+import { formatCurrency } from '@/utils/formatters/currency'
 
 const AddToCartDrawer = () => {
   const isDrawerOpen = useCartStore((state) => state.isDrawerOpen)

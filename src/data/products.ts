@@ -12,9 +12,9 @@ export const productCatalog: Product[] = [
     category: 'Heart Health',
     price: 119.99,
     originalPrice: 139.99,
-    image: '/assets/hero/88.jpeg',
+    image: '/images/hero/88.jpeg',
     images: [
-      '/assets/hero/88.jpeg'
+      '/images/hero/88.jpeg'
     ],
     rating: 4.8,
     reviews: 286,
@@ -59,9 +59,9 @@ export const productCatalog: Product[] = [
     category: 'Immune Support',
     price: 94.99,
     originalPrice: 109.99,
-    image: '/assets/hero/132.jpeg',
+    image: '/images/hero/132.jpeg',
     images: [
-      '/assets/hero/196.jpeg'
+      '/images/hero/196.jpeg'
     ],
     rating: 4.9,
     reviews: 198,
@@ -106,9 +106,9 @@ export const productCatalog: Product[] = [
     category: 'Minerals',
     price: 129.99,
     originalPrice: 149.99,
-    image: '/assets/hero/196.jpeg',
+    image: '/images/hero/196.jpeg',
     images: [
-      '/assets/hero/204.jpeg'
+      '/images/hero/204.jpeg'
     ],
     rating: 4.8,
     reviews: 164,
@@ -152,9 +152,9 @@ export const productCatalog: Product[] = [
     category: 'Minerals',
     price: 74.99,
     originalPrice: 84.99,
-    image: '/assets/hero/41.jpeg',
+    image: '/images/hero/41.jpeg',
     images: [
-      '/assets/hero/218.jpeg'
+      '/images/hero/218.jpeg'
     ],
     rating: 4.7,
     reviews: 142,
@@ -200,9 +200,9 @@ export const productCatalog: Product[] = [
     category: 'Relaxation & Sleep',
     price: 129.99,
     originalPrice: 149.99,
-    image: '/assets/hero/32.jpeg',
+    image: '/images/hero/32.jpeg',
     images: [
-      '/assets/hero/32.jpeg'
+      '/images/hero/32.jpeg'
     ],
     rating: 4.9,
     reviews: 214,
@@ -248,9 +248,9 @@ export const productCatalog: Product[] = [
     category: 'Immune Support',
     price: 84.99,
     originalPrice: 99.99,
-    image: '/assets/hero/204.jpeg',
+    image: '/images/hero/204.jpeg',
     images: [
-      '/assets/hero/38.jpeg'
+      '/images/hero/38.jpeg'
     ],
     rating: 4.9,
     reviews: 328,
@@ -294,9 +294,9 @@ export const productCatalog: Product[] = [
     category: 'Minerals',
     price: 92.99,
     originalPrice: 104.99,
-    image: '/assets/hero/41.jpeg',
+    image: '/images/hero/41.jpeg',
     images: [
-      '/assets/hero/41.jpeg'
+      '/images/hero/41.jpeg'
     ],
     rating: 4.6,
     reviews: 88,
@@ -342,9 +342,9 @@ export const productCatalog: Product[] = [
     category: 'Beauty Nutrition',
     price: 129.99,
     originalPrice: 149.99,
-    image: '/assets/hero/57.jpeg',
+    image: '/images/hero/57.jpeg',
     images: [
-      '/assets/hero/57.jpeg'
+      '/images/hero/57.jpeg'
     ],
     rating: 4.7,
     reviews: 244,
@@ -391,9 +391,9 @@ export const productCatalog: Product[] = [
     category: 'Heart Health',
     price: 159.99,
     originalPrice: 179.99,
-    image: '/assets/hero/63.jpeg',
+    image: '/images/hero/63.jpeg',
     images: [
-      '/assets/hero/63.jpeg'
+      '/images/hero/63.jpeg'
     ],
     rating: 4.9,
     reviews: 193,
@@ -438,9 +438,9 @@ export const productCatalog: Product[] = [
     category: 'Minerals',
     price: 64.99,
     originalPrice: 74.99,
-    image: '/assets/hero/72.jpeg',
+    image: '/images/hero/72.jpeg',
     images: [
-      '/assets/hero/72.jpeg'
+      '/images/hero/72.jpeg'
     ],
     rating: 4.6,
     reviews: 156,
@@ -486,9 +486,9 @@ export const productCatalog: Product[] = [
     category: 'Stress Support',
     price: 74.99,
     originalPrice: 89.99,
-    image: '/assets/hero/76.jpeg',
+    image: '/images/hero/76.jpeg',
     images: [
-      '/assets/hero/76.jpeg'
+      '/images/hero/76.jpeg'
     ],
     rating: 4.8,
     reviews: 176,
@@ -532,9 +532,9 @@ export const productCatalog: Product[] = [
     category: 'Heart Health',
     price: 139.99,
     originalPrice: 159.99,
-    image: '/assets/hero/218.jpeg',
+    image: '/images/hero/218.jpeg',
     images: [
-      '/assets/hero/88.jpeg'
+      '/images/hero/88.jpeg'
     ],
     rating: 4.9,
     reviews: 412,

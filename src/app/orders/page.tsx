@@ -7,7 +7,7 @@ import { motion } from 'framer-motion'
 import { Package, Truck, CheckCircle, Clock, ArrowRight } from 'lucide-react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import { formatPrice } from '@/utils/currency'
+import { formatPrice } from '@/utils/formatters/currency'
 
 // Mock order data - replace with API call
 const mockOrders = [

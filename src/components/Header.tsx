@@ -31,9 +31,9 @@ import LanguageSwitcher from './LanguageSwitcher';
 import Logo from './Logo';
 import AskAIVitaButton from './AskAIVitaButton';
 import AddToCartDrawer from './AddToCartDrawer';
-import { formatPrice } from '@/utils/currency';
+import { formatPrice } from '@/utils/formatters/currency';
 import { useAuth } from '@/hooks/useAuth';
-import { getProductImage } from '@/utils/imagePlaceholder';
+import { getProductImage } from '@/utils/helpers/imagePlaceholder';
 import { productCatalog } from '@/data/products';
 import type { Product } from '@/types';
 

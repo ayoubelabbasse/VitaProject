@@ -9,8 +9,8 @@ import { ShoppingCart, Star, Heart, Eye, Package, GaugeCircle, ArrowRight } from
 import { Product } from '@/types';
 import { useCartStore } from '@/store/cartStore';
 import { useTranslation } from 'react-i18next';
-import { formatPrice } from '@/utils/currency';
-import { getProductImage } from '@/utils/imagePlaceholder';
+import { formatPrice } from '@/utils/formatters/currency';
+import { getProductImage } from '@/utils/helpers/imagePlaceholder';
 
 interface ProductCardProps {
   product: Product;
