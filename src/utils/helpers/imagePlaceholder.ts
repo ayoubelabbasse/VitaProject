@@ -2,12 +2,11 @@
  * Image placeholder utilities
  * Generates SVG placeholders for products without images
  */
+import { normalizeProductImagePath } from '@/constants/paths'
 
 function generateSVGPlaceholder(productId: string | number, width: number = 720, height: number = 960): string {
   const id = String(productId)
-  const colors = [
-    '#11998E', '#38EF7D', '#1A8F5A', '#0D5C3A'
-  ]
+  const colors = ['#11998E', '#38EF7D', '#1A8F5A', '#0D5C3A']
   const colorIndex = id.length % colors.length
   const primaryColor = colors[colorIndex]
   const secondaryColor = colors[(colorIndex + 1) % colors.length]
@@ -24,7 +23,7 @@ function generateSVGPlaceholder(productId: string | number, width: number = 720,
   <circle cx="50%" cy="40%" r="15%" fill="${primaryColor}" opacity="0.1"/>
   <text x="50%" y="60%" font-family="Inter, sans-serif" font-size="24" fill="${primaryColor}" opacity="0.3" text-anchor="middle" font-weight="600">TAQA</text>
 </svg>
-`.trim();
+`.trim()
 
   return `data:image/svg+xml;base64,${btoa(svg)}`
 }
@@ -33,21 +32,29 @@ function generateSVGPlaceholder(productId: string | number, width: number = 720,
  * Get product image - uses SVG placeholder if no image provided
  * Supports both single image string and array of images
  */
-export function getProductImage(product: { id: string | number; image?: string | string[] | null }, width: number = 600, height: number = 600): string {
+export function getProductImage(
+  product: { id: string | number; image?: string | string[] | null },
+  width: number = 600,
+  height: number = 600,
+): string {
   if (!product.image) {
-    return generateSVGPlaceholder(product.id, width, height);
+    return generateSVGPlaceholder(product.id, width, height)
   }
-  
-  // Handle array of images
+
+  const fallback = generateSVGPlaceholder(product.id, width, height)
+
+  const normalize = (value?: string | null) => normalizeProductImagePath(value) || value
+
   if (Array.isArray(product.image)) {
-    const validImage = product.image.find(img => img && img.trim() !== '');
-    return validImage || generateSVGPlaceholder(product.id, width, height);
+    const validImage = product.image.find((img) => img && img.trim() !== '')
+    const normalized = normalize(validImage)
+    return normalized || fallback
   }
-  
-  // Handle string image
+
   if (typeof product.image === 'string' && product.image.trim() !== '') {
-    return product.image;
+    const normalized = normalize(product.image)
+    return normalized || fallback
   }
-  
-  return generateSVGPlaceholder(product.id, width, height);
+
+  return fallback
 }

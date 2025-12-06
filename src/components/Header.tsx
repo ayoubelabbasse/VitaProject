@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect, useMemo } from 'react';
+import { useState, useRef, useEffect, useMemo, type CSSProperties } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -36,6 +36,13 @@ import { useAuth } from '@/hooks/useAuth';
 import { getProductImage } from '@/utils/helpers/imagePlaceholder';
 import { productCatalog } from '@/data/products';
 import type { Product } from '@/types';
+
+const headerThemeVars = {
+  '--text-main': '#1f1f1f',
+  '--text-muted': '#5f5f5f',
+  '--bg-card': '#ffffff',
+  '--border-soft': 'rgba(0,0,0,0.08)',
+} as CSSProperties;
 
 const Header = () => {
   const { t } = useTranslation();
@@ -74,9 +81,9 @@ const Header = () => {
   const itemCount = mounted ? getItemCount() : 0;
 
   const navItems = [
-    { href: '/', label: t('nav.home'), key: 'home' },
-    { href: '/products', label: t('nav.products'), key: 'products' },
+    { href: '/products', label: t('nav.shop', { defaultValue: 'Shop' }), key: 'products' },
     { href: '/about', label: t('nav.about'), key: 'about' },
+    { href: '/contact', label: t('nav.contact', { defaultValue: 'Contact' }), key: 'contact' },
   ];
 
   const supplementCollections = useMemo(() => {
@@ -216,14 +223,22 @@ const Header = () => {
 
   return (
     <>
-      <header className="bg-white/95 backdrop-blur-md border-b border-[#E5E7EB] sticky top-0 z-50 shadow-sm transition-shadow duration-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <header
+        className="bg-white border-b border-[#E5E7EB] sticky top-0 z-50 shadow-sm transition-shadow duration-200"
+        style={headerThemeVars}
+      >
+        <div className="w-full px-4 sm:px-6 lg:px-10">
           <div className="flex justify-between items-center h-14 md:h-16 gap-3 md:gap-4">
           {/* Logo */}
-          <Logo variant="wordmark" className="h-7 md:h-8 flex-shrink-0" />
+          <Logo
+            variant="wordmark"
+            scale={0.55}
+            sizes="(max-width: 640px) 90px, (max-width: 1024px) 100px, 112px"
+            className="flex-shrink-0"
+          />
 
           {/* Desktop Navigation - Always LTR, never flips */}
-          <nav className="hidden md:flex items-center space-x-4 lg:space-x-6" dir="ltr" style={{ direction: 'ltr' }}>
+          <nav className="hidden md:flex flex-1 items-center justify-center space-x-4 lg:space-x-6" dir="ltr" style={{ direction: 'ltr' }}>
             <div
               className="relative"
               ref={productsMenuRef}
@@ -233,9 +248,9 @@ const Header = () => {
               <Link
                 href="/products"
                 onFocus={() => setIsProductsMenuOpen(true)}
-                className="flex items-center space-x-1 text-[#111827] hover:text-[#11998E] transition-colors duration-200 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-[#11998E] focus:ring-offset-2 rounded px-3 py-2 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-gradient-to-r after:from-[#11998E] after:to-[#38EF7D] after:transition-all hover:after:w-full"
+                className="flex items-center space-x-1 text-[#1F2933] hover:text-[#11998E] transition-colors duration-200 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-[#11998E]/40 focus:ring-offset-0 rounded px-3 py-2 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-gradient-to-r after:from-[#11998E] after:to-[#38EF7D] after:transition-all hover:after:w-full"
               >
-                <span>{t('nav.products')}</span>
+                <span>{t('nav.shop', { defaultValue: 'Shop' })}</span>
                 <motion.span animate={{ rotate: isProductsMenuOpen ? 180 : 0 }}>
                   <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
@@ -321,7 +336,7 @@ const Header = () => {
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-text hover:text-primary transition-colors duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded px-2 py-1"
+                className="text-[#1F2933] hover:text-[#11998E] transition-colors duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-[#11998E]/40 focus:ring-offset-0 rounded px-2 py-1"
               >
                 {item.label}
               </Link>
@@ -333,19 +348,19 @@ const Header = () => {
           </nav>
 
           {/* Right side items - Fixed order, never changes, always LTR */}
-          <div className="flex items-center space-x-3" dir="ltr" style={{ direction: 'ltr' }}>
+          <div className="flex items-center space-x-2.5" dir="ltr" style={{ direction: 'ltr' }}>
             {/* Search - Rounded Pill Style */}
-            <div className="hidden sm:flex items-center border border-[#E5E7EB] rounded-full px-4 py-2 bg-[#F5F7FA] focus-within:ring-2 focus-within:ring-[#11998E] focus-within:border-[#11998E] transition-all h-9">
+            <div className="hidden sm:flex items-center border border-[#D9D2C3] rounded-full px-3.5 py-1.5 bg-white focus-within:ring-2 focus-within:ring-[#11998E]/30 focus-within:border-[#11998E]/40 transition-all h-8">
               <Search className="w-4 h-4 text-[#6B7280] mr-2" />
               <input
                 type="text"
                 placeholder={t('nav.search')}
-                className="bg-transparent outline-none text-sm w-48 text-[#111827] placeholder:text-[#6B7280] focus:outline-none"
+                className="bg-transparent outline-none text-sm w-40 text-[#1F2933] placeholder:text-[#9CA3AF] focus:outline-none"
               />
             </div>
 
             {/* Language Switcher (includes Google Translate) - Fixed width to prevent layout shift */}
-            <div className="flex-shrink-0 flex items-center h-9">
+            <div className="flex-shrink-0 flex items-center h-8">
               <LanguageSwitcher />
             </div>
 
@@ -353,10 +368,10 @@ const Header = () => {
             <div className="relative flex items-center h-9" ref={cartRef}>
               <button
                 onClick={() => setIsCartOpen(!isCartOpen)}
-                className="relative p-2 rounded-lg hover:bg-[#F5F7FA] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#11998E] focus:ring-offset-2"
+                className="relative p-1.5 rounded-lg hover:bg-[#E7E1D4] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#11998E]/30 focus:ring-offset-0"
                 aria-label={`Shopping cart with ${itemCount} items`}
               >
-                <ShoppingCart className="w-5 h-5 text-[#111827] hover:text-[#11998E] transition-colors duration-200" />
+                <ShoppingCart className="w-4 h-4 text-[#1F2933] hover:text-[#11998E] transition-colors duration-200" />
                 {mounted && itemCount > 0 && (
                   <motion.div
                     initial={{ scale: 0 }}
@@ -456,13 +471,13 @@ const Header = () => {
                   <div className="hidden sm:block relative flex items-center h-9" ref={userMenuRef}>
                     <button
                       onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                      className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-bg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                      className="flex items-center gap-2 px-3 py-1.5 rounded-full hover:bg-[#EDE7DB] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#11998E]/30 focus:ring-offset-0"
                       aria-label="User menu"
                     >
-                      <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-sm font-semibold">
+                      <div className="w-7 h-7 rounded-full bg-[#111827] text-white flex items-center justify-center text-xs font-semibold">
                         {getUserInitials(user.firstName, user.lastName)}
                       </div>
-                      <span className="text-sm font-medium text-text hidden lg:block">
+                      <span className="text-sm font-medium text-[#1F2933] hidden lg:block">
                         {user.role === 'admin' ? 'Admin' : getUserInitials(user.firstName, user.lastName)}
                       </span>
                     </button>
@@ -619,10 +634,10 @@ const Header = () => {
                 ) : (
                   <Link
                     href="/login"
-                    className="hidden sm:flex items-center text-text hover:text-primary transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-bg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 h-9"
+                    className="hidden sm:flex h-8 items-center text-[#1F2933] hover:text-[#11998E] transition-colors duration-200 px-3 py-1.5 rounded-full hover:bg-[#EDE7DB] focus:outline-none focus:ring-2 focus:ring-[#11998E]/30 focus:ring-offset-0"
                     aria-label={t('nav.login')}
                   >
-                    <User className="w-5 h-5 mr-2" />
+                    <User className="w-4 h-4 mr-2" />
                     <span className="text-sm font-medium">{t('nav.login')}</span>
                   </Link>
                 )}

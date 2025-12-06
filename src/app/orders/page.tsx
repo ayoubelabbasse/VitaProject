@@ -151,8 +151,8 @@ export default function OrdersPage() {
                           {formatPrice(order.total)}
                         </p>
                       </div>
-                      <div className="px-4 py-2 bg-primary/10 border border-primary rounded-lg">
-                        <span className="text-sm font-medium text-primary">
+                      <div className="px-4 py-2 bg-[#11998E]/10 border border-[#11998E] rounded-lg">
+                        <span className="text-sm font-medium text-[#11998E]">
                           {getStatusLabel(order.status)}
                         </span>
                       </div>

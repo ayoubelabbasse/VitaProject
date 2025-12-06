@@ -23,7 +23,6 @@ const getDefaultVariant = (product: Product) => {
 };
 
 const ProductCard = ({ product, viewMode = 'grid' }: ProductCardProps) => {
-  const [isHovered, setIsHovered] = useState(false);
   const [isWishlisted, setIsWishlisted] = useState(false);
   const { addItem } = useCartStore();
   const { t } = useTranslation();
@@ -31,6 +30,8 @@ const ProductCard = ({ product, viewMode = 'grid' }: ProductCardProps) => {
 
   const defaultVariant = getDefaultVariant(product);
   const displayPrice = defaultVariant?.price ?? product.price;
+  const imageSrc = getProductImage(product);
+  const isDataUri = imageSrc.startsWith('data:');
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -95,19 +96,26 @@ const ProductCard = ({ product, viewMode = 'grid' }: ProductCardProps) => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         whileHover={{ y: -2 }}
-        onHoverStart={() => setIsHovered(true)}
-        onHoverEnd={() => setIsHovered(false)}
         className="group bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden"
       >
         <Link href={`/product/${product.id}`}>
           <div className="flex">
             <div className="relative w-48 h-48 flex-shrink-0 bg-white">
-              <Image
-                src={getProductImage(product)}
-                alt={product.name}
-                fill
-                className="object-contain group-hover:scale-105 transition-transform duration-300"
-              />
+              {isDataUri ? (
+                <img
+                  src={imageSrc}
+                  alt={product.name}
+                  className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
+                />
+              ) : (
+                <Image
+                  src={imageSrc}
+                  alt={product.name}
+                  fill
+                  sizes="192px"
+                  className="object-contain group-hover:scale-105 transition-transform duration-300"
+                />
+              )}
 
               <button
                 onClick={handleWishlist}
@@ -223,13 +231,22 @@ const ProductCard = ({ product, viewMode = 'grid' }: ProductCardProps) => {
           <div className="relative mt-2 rounded-xl bg-[#F9FAFB] h-[140px] sm:h-[150px] md:h-[160px] flex items-center justify-center overflow-hidden">
             <div className="absolute inset-x-8 bottom-3 h-3 bg-black/10 rounded-full blur-xl opacity-20" />
             <div className="relative w-full h-[75%]">
-              <Image
-                src={getProductImage(product)}
-                alt={product.name}
-                fill
-                className="object-contain transition-transform duration-300 group-hover:scale-105"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-              />
+              {isDataUri ? (
+                <img
+                  src={imageSrc}
+                  alt={product.name}
+                  className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
+                  loading="lazy"
+                />
+              ) : (
+                <Image
+                  src={imageSrc}
+                  alt={product.name}
+                  fill
+                  className="object-contain transition-transform duration-300 group-hover:scale-105"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                />
+              )}
             </div>
           </div>
         </div>

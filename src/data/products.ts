@@ -1,3 +1,4 @@
+import { getProductMediaFields } from '@/constants/paths';
 import { Product } from '@/types';
 
 /**
@@ -12,10 +13,7 @@ export const productCatalog: Product[] = [
     category: 'Heart Health',
     price: 119.99,
     originalPrice: 139.99,
-    image: '/images/hero/88.jpeg',
-    images: [
-      '/images/hero/88.jpeg'
-    ],
+    ...getProductMediaFields('now-omega-3-fish-oil'),
     rating: 4.8,
     reviews: 286,
     inStock: true,
@@ -59,10 +57,7 @@ export const productCatalog: Product[] = [
     category: 'Immune Support',
     price: 94.99,
     originalPrice: 109.99,
-    image: '/images/hero/132.jpeg',
-    images: [
-      '/images/hero/196.jpeg'
-    ],
+    ...getProductMediaFields('now-vitamin-d3-k2'),
     rating: 4.9,
     reviews: 198,
     inStock: true,
@@ -106,10 +101,7 @@ export const productCatalog: Product[] = [
     category: 'Minerals',
     price: 129.99,
     originalPrice: 149.99,
-    image: '/images/hero/196.jpeg',
-    images: [
-      '/images/hero/204.jpeg'
-    ],
+    ...getProductMediaFields('life-extension-magnesium-caps'),
     rating: 4.8,
     reviews: 164,
     inStock: true,
@@ -152,10 +144,7 @@ export const productCatalog: Product[] = [
     category: 'Minerals',
     price: 74.99,
     originalPrice: 84.99,
-    image: '/images/hero/41.jpeg',
-    images: [
-      '/images/hero/218.jpeg'
-    ],
+    ...getProductMediaFields('now-zinc-50mg'),
     rating: 4.7,
     reviews: 142,
     inStock: true,
@@ -200,10 +189,7 @@ export const productCatalog: Product[] = [
     category: 'Relaxation & Sleep',
     price: 129.99,
     originalPrice: 149.99,
-    image: '/images/hero/32.jpeg',
-    images: [
-      '/images/hero/32.jpeg'
-    ],
+    ...getProductMediaFields('now-magnesium-glycinate'),
     rating: 4.9,
     reviews: 214,
     inStock: true,
@@ -248,10 +234,7 @@ export const productCatalog: Product[] = [
     category: 'Immune Support',
     price: 84.99,
     originalPrice: 99.99,
-    image: '/images/hero/204.jpeg',
-    images: [
-      '/images/hero/38.jpeg'
-    ],
+    ...getProductMediaFields('cgn-vitamin-d3-5000'),
     rating: 4.9,
     reviews: 328,
     inStock: true,
@@ -294,10 +277,7 @@ export const productCatalog: Product[] = [
     category: 'Minerals',
     price: 92.99,
     originalPrice: 104.99,
-    image: '/images/hero/41.jpeg',
-    images: [
-      '/images/hero/41.jpeg'
-    ],
+    ...getProductMediaFields('now-iron-36mg'),
     rating: 4.6,
     reviews: 88,
     inStock: true,
@@ -342,10 +322,7 @@ export const productCatalog: Product[] = [
     category: 'Beauty Nutrition',
     price: 129.99,
     originalPrice: 149.99,
-    image: '/images/hero/57.jpeg',
-    images: [
-      '/images/hero/57.jpeg'
-    ],
+    ...getProductMediaFields('natures-way-alive-hair-skin-nails'),
     rating: 4.7,
     reviews: 244,
     inStock: true,
@@ -391,10 +368,7 @@ export const productCatalog: Product[] = [
     category: 'Heart Health',
     price: 159.99,
     originalPrice: 179.99,
-    image: '/images/hero/63.jpeg',
-    images: [
-      '/images/hero/63.jpeg'
-    ],
+    ...getProductMediaFields('now-ultra-omega-3'),
     rating: 4.9,
     reviews: 193,
     inStock: true,
@@ -438,10 +412,7 @@ export const productCatalog: Product[] = [
     category: 'Minerals',
     price: 64.99,
     originalPrice: 74.99,
-    image: '/images/hero/72.jpeg',
-    images: [
-      '/images/hero/72.jpeg'
-    ],
+    ...getProductMediaFields('21st-century-potassium-gluconate'),
     rating: 4.6,
     reviews: 156,
     inStock: true,
@@ -486,10 +457,7 @@ export const productCatalog: Product[] = [
     category: 'Stress Support',
     price: 74.99,
     originalPrice: 89.99,
-    image: '/images/hero/76.jpeg',
-    images: [
-      '/images/hero/76.jpeg'
-    ],
+    ...getProductMediaFields('swanson-ashwagandha'),
     rating: 4.8,
     reviews: 176,
     inStock: true,
@@ -532,10 +500,7 @@ export const productCatalog: Product[] = [
     category: 'Heart Health',
     price: 139.99,
     originalPrice: 159.99,
-    image: '/images/hero/218.jpeg',
-    images: [
-      '/images/hero/88.jpeg'
-    ],
+    ...getProductMediaFields('cgn-omega-3-premium'),
     rating: 4.9,
     reviews: 412,
     inStock: true,

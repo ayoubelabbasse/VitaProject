@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/middleware';
 import { prisma } from '@/lib/prisma';
+import { normalizeProductImagePath, resolveProductMedia } from '@/constants/paths';
 
 export async function GET(request: NextRequest) {
   const authResult = await requireAdmin(request);
@@ -20,7 +21,20 @@ export async function GET(request: NextRequest) {
     orderBy: { createdAt: 'desc' },
   });
 
-  return NextResponse.json({ products });
+  const transformed = products.map((product) => {
+    const media = resolveProductMedia({
+      name: product.name,
+      fallbackImage: product.image,
+    });
+
+    return {
+      ...product,
+      image: media.primary,
+      images: media.gallery,
+    };
+  });
+
+  return NextResponse.json({ products: transformed });
 }
 
 export async function POST(request: NextRequest) {
@@ -49,7 +63,7 @@ export async function POST(request: NextRequest) {
         weight: body.weight ? parseFloat(body.weight) : null,
         price: parseFloat(body.price),
         originalPrice: body.originalPrice ? parseFloat(body.originalPrice) : null,
-        image: body.image,
+        image: normalizeProductImagePath(body.image) || body.image,
         description: body.description || '',
         stock: parseInt(body.stock) || 0,
         inStock: body.inStock !== false,
@@ -60,7 +74,18 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    return NextResponse.json({ product });
+    const media = resolveProductMedia({
+      name: product.name,
+      fallbackImage: product.image,
+    });
+
+    return NextResponse.json({
+      product: {
+        ...product,
+        image: media.primary,
+        images: media.gallery,
+      },
+    });
   } catch (error: any) {
     console.error('Error creating product:', error);
     return NextResponse.json(

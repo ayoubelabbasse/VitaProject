@@ -1,8 +1,11 @@
 import 'dotenv/config';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
+import { getProductMediaByName } from '../src/constants/paths';
 
 const prisma = new PrismaClient();
+
+const productImage = (name: string) => getProductMediaByName(name).primary;
 
 async function main() {
   console.log('🌱 Seeding database...');
@@ -49,7 +52,7 @@ async function main() {
       brand: 'NOW Foods',
       price: 119.99,
       originalPrice: 139.99,
-      image: '/images/hero/88.jpeg',
+      image: productImage('Omega-3 Fish Oil'),
       description:
         '<p>Molecularly distilled fish oil delivering 1,000 mg omega-3 per softgel to support heart, brain, and joint health.</p>',
       stock: 75,
@@ -69,7 +72,7 @@ async function main() {
       brand: 'NOW Foods',
       price: 94.99,
       originalPrice: 109.99,
-      image: '/images/hero/132.jpeg',
+      image: productImage('Vitamin D3 & K2'),
       description:
         '<p>Balanced D3 and MK-7 softgels that help direct calcium into bones while reinforcing immune and cardiovascular health.</p>',
       stock: 90,
@@ -90,7 +93,7 @@ async function main() {
       brand: 'Life Extension',
       price: 129.99,
       originalPrice: 149.99,
-      image: '/images/hero/196.jpeg',
+      image: productImage('Magnesium Caps 500 mg'),
       description:
         '<p>Bioavailable magnesium complex combining oxide, citrate, and succinate to relax muscles and support heart rhythm.</p>',
       stock: 60,
@@ -110,7 +113,7 @@ async function main() {
       brand: 'NOW Foods',
       price: 74.99,
       originalPrice: 84.99,
-      image: '/images/hero/41.jpeg',
+      image: productImage('Zinc 50 mg'),
       description:
         '<p>High-potency zinc gluconate tablets formulated to keep immune defenses, skin, and antioxidant activity robust.</p>',
       stock: 110,
@@ -126,7 +129,7 @@ async function main() {
       brand: 'NOW Foods',
       price: 129.99,
       originalPrice: 149.99,
-      image: '/images/hero/32.jpeg',
+      image: productImage('Magnesium Glycinate'),
       description:
         '<p>Fully chelated magnesium bisglycinate designed for gentle absorption to ease tension and promote restorative sleep.</p>',
       stock: 85,
@@ -148,7 +151,7 @@ async function main() {
       brand: 'California Gold Nutrition',
       price: 84.99,
       originalPrice: 99.99,
-      image: '/images/hero/204.jpeg',
+      image: productImage('Vitamin D3 5,000 IU'),
       description:
         '<p>High-potency vitamin D3 softgels sourced from lanolin to support immune vigilance, calcium uptake, and balanced mood.</p>',
       stock: 140,
@@ -168,7 +171,7 @@ async function main() {
       brand: 'NOW Foods',
       price: 92.99,
       originalPrice: 104.99,
-      image: '/images/hero/41.jpeg',
+      image: productImage('Iron 36 mg'),
       description:
         '<p>Gentle iron bisglycinate capsules that replenish iron stores and energy without the digestive discomfort of traditional iron.</p>',
       stock: 95,
@@ -190,7 +193,7 @@ async function main() {
       brand: "Nature's Way",
       price: 129.99,
       originalPrice: 149.99,
-      image: '/images/hero/57.jpeg',
+      image: productImage("Alive! Hair, Skin & Nails Gummies"),
       description:
         '<p>Strawberry gummies with biotin, collagen, and antioxidants to nourish hair, skin, and nails from within.</p>',
       stock: 70,
@@ -206,7 +209,7 @@ async function main() {
       brand: 'NOW Foods',
       price: 159.99,
       originalPrice: 179.99,
-      image: '/images/hero/63.jpeg',
+      image: productImage('Ultra Omega-3 Fish Oil'),
       description:
         '<p>Enteric-coated softgels with 500 mg EPA and 250 mg DHA to maintain triglyceride balance and cognitive clarity.</p>',
       stock: 65,
@@ -227,7 +230,7 @@ async function main() {
       brand: '21st Century',
       price: 64.99,
       originalPrice: 74.99,
-      image: '/images/hero/72.jpeg',
+      image: productImage('Potassium Gluconate 595 mg'),
       description:
         '<p>Essential mineral tablets providing 99 mg elemental potassium to maintain fluid balance and normal muscle function.</p>',
       stock: 120,
@@ -243,7 +246,7 @@ async function main() {
       brand: 'Swanson',
       price: 74.99,
       originalPrice: 89.99,
-      image: '/images/hero/76.jpeg',
+      image: productImage('Full Spectrum Ashwagandha'),
       description:
         '<p>Organic ashwagandha root capsules helping the body adapt to daily stress while promoting calm focus.</p>',
       stock: 80,
@@ -259,7 +262,7 @@ async function main() {
       brand: 'California Gold Nutrition',
       price: 139.99,
       originalPrice: 159.99,
-      image: '/images/hero/218.jpeg',
+      image: productImage('Omega-3 Premium Fish Oil'),
       description:
         '<p>IFOS 5-star certified fish oil delivering 180 mg EPA and 120 mg DHA per softgel with natural lemon flavour for superior freshness.</p>',
       stock: 105,

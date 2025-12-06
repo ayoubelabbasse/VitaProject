@@ -97,9 +97,9 @@ export default function CheckoutPage() {
                   <div
                     className={`w-12 h-12 rounded-full flex items-center justify-center font-bold transition-colors ${
                       step === s
-                        ? 'bg-primary text-white'
+                        ? 'bg-gradient-to-br from-[#11998E] to-[#38EF7D] text-white'
                         : idx < ['shipping', 'payment', 'review'].indexOf(step)
-                        ? 'bg-primary text-white'
+                        ? 'bg-gradient-to-br from-[#11998E] to-[#38EF7D] text-white'
                         : 'bg-border text-muted'
                     }`}
                   >
@@ -115,7 +115,7 @@ export default function CheckoutPage() {
                   <div
                     className={`flex-1 h-1 mx-4 transition-colors ${
                       idx < ['shipping', 'payment', 'review'].indexOf(step)
-                        ? 'bg-primary'
+                        ? 'bg-gradient-to-r from-[#11998E] to-[#38EF7D]'
                         : 'bg-border'
                     }`}
                   />
@@ -135,7 +135,7 @@ export default function CheckoutPage() {
                   className="bg-bg border border-border rounded-lg shadow-soft p-6"
                 >
                   <h2 className="text-2xl font-bold text-text mb-6 flex items-center">
-                    <MapPin className="w-6 h-6 mr-2 text-primary" />
+                    <MapPin className="w-6 h-6 mr-2 text-[#11998E]" />
                     Shipping Information
                   </h2>
 
@@ -150,7 +150,7 @@ export default function CheckoutPage() {
                         onChange={(e) =>
                           setShippingInfo({ ...shippingInfo, firstName: e.target.value })
                         }
-                        className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-bg text-text"
+                        className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-[#11998E] focus:border-[#11998E] bg-bg text-text"
                         required
                       />
                     </div>
@@ -164,7 +164,7 @@ export default function CheckoutPage() {
                         onChange={(e) =>
                           setShippingInfo({ ...shippingInfo, lastName: e.target.value })
                         }
-                        className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-bg text-text"
+                        className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-[#11998E] focus:border-[#11998E] bg-bg text-text"
                         required
                       />
                     </div>
@@ -227,7 +227,7 @@ export default function CheckoutPage() {
                         onChange={(e) =>
                           setShippingInfo({ ...shippingInfo, city: e.target.value })
                         }
-                        className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-bg text-text"
+                        className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-[#11998E] focus:border-[#11998E] bg-bg text-text"
                         required
                       />
                     </div>
@@ -241,7 +241,7 @@ export default function CheckoutPage() {
                         onChange={(e) =>
                           setShippingInfo({ ...shippingInfo, postalCode: e.target.value })
                         }
-                        className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-bg text-text"
+                        className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-[#11998E] focus:border-[#11998E] bg-bg text-text"
                         required
                       />
                     </div>
@@ -254,7 +254,7 @@ export default function CheckoutPage() {
                         onChange={(e) =>
                           setShippingInfo({ ...shippingInfo, region: e.target.value })
                         }
-                        className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-bg text-text"
+                        className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-[#11998E] focus:border-[#11998E] bg-bg text-text"
                         required
                       >
                         <option value="">Select Region</option>
@@ -279,8 +279,8 @@ export default function CheckoutPage() {
                           key={option.id}
                           className={`flex items-center p-4 border rounded-lg cursor-pointer transition-all duration-200 ${
                             selectedShipping === option.id
-                              ? 'border-primary bg-primary/5'
-                              : 'border-border hover:border-primary/50'
+                              ? 'border-[#11998E] bg-[#11998E]/5'
+                              : 'border-border hover:border-[#11998E]/50'
                           }`}
                         >
                           <input
@@ -291,7 +291,7 @@ export default function CheckoutPage() {
                             onChange={(e) =>
                               setSelectedShipping(e.target.value as ShippingMethod)
                             }
-                            className="mr-4 text-primary focus:ring-primary"
+                            className="mr-4 text-[#11998E] focus:ring-[#11998E]"
                           />
                           <div className="flex-1">
                             <div className="flex justify-between items-center">
@@ -326,7 +326,7 @@ export default function CheckoutPage() {
                   className="bg-bg border border-border rounded-lg shadow-soft p-6"
                 >
                   <h2 className="text-2xl font-bold text-text mb-6 flex items-center">
-                    <CreditCard className="w-6 h-6 mr-2 text-primary" />
+                    <CreditCard className="w-6 h-6 mr-2 text-[#11998E]" />
                     Payment Information
                   </h2>
 
@@ -381,7 +381,7 @@ export default function CheckoutPage() {
                         }
                         placeholder="MM/YY"
                         maxLength={5}
-                        className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-bg text-text"
+                        className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-[#11998E] focus:border-[#11998E] bg-bg text-text"
                         required
                       />
                     </div>
@@ -398,7 +398,7 @@ export default function CheckoutPage() {
                         }
                         placeholder="123"
                         maxLength={3}
-                        className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-bg text-text"
+                        className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-[#11998E] focus:border-[#11998E] bg-bg text-text"
                         required
                       />
                     </div>
@@ -464,7 +464,7 @@ export default function CheckoutPage() {
                       <span className="text-text">{formatPrice(vat)}</span>
                     </div>
                     {discount > 0 && (
-                      <div className="flex justify-between text-primary">
+                      <div className="flex justify-between text-[#11998E]">
                         <span>Discount</span>
                         <span>-{formatPrice(discount)}</span>
                       </div>

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { resolveProductMedia } from '@/constants/paths';
 
 // Mark route as dynamic
 export const dynamic = 'force-dynamic';
@@ -57,6 +58,11 @@ export async function GET(
       console.warn('Error parsing ingredients for product:', product.id);
     }
 
+    const media = resolveProductMedia({
+      name: product.name,
+      fallbackImage: product.image,
+    });
+
     const transformedProduct = {
       id: product.id,
       name: product.name,
@@ -64,8 +70,8 @@ export async function GET(
       category: product.category,
       price: product.price,
       originalPrice: product.originalPrice || undefined,
-      image: product.image,
-      images: [product.image],
+      image: media.primary,
+      images: media.gallery,
       rating: product.rating,
       reviews: product.reviews,
       inStock: product.inStock,

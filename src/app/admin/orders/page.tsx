@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Edit, Search, Package, User, DollarSign } from 'lucide-react';
+import { getProductImage } from '@/utils/helpers/imagePlaceholder';
 
 interface Order {
   id: string;
@@ -21,8 +22,9 @@ interface Order {
     quantity: number;
     price: number;
     product: {
+      id?: string | number;
       name: string;
-      image: string;
+      image?: string | string[];
     };
   }>;
 }
@@ -232,7 +234,7 @@ export default function OrdersPage() {
                     >
                       <div className="w-16 h-16 bg-bg border border-border rounded-lg overflow-hidden">
                         <img
-                          src={item.product.image}
+                          src={getProductImage({ id: item.product.id ?? item.id, image: item.product.image })}
                           alt={item.product.name}
                           className="w-full h-full object-cover"
                         />

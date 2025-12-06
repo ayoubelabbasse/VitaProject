@@ -12,6 +12,7 @@ import { useCartStore } from '@/store/cartStore'
 import { formatPrice } from '@/utils/formatters/currency'
 import { getProductImage } from '@/utils/helpers/imagePlaceholder'
 import { productCatalog } from '@/data/products'
+import { normalizeProductImagePath } from '@/constants/paths'
 
 export default function ProductDetailPage() {
   const params = useParams()
@@ -133,15 +134,25 @@ export default function ProductDetailPage() {
     })
   }
 
-  // Get product images - support multiple images or use placeholder
-  const productImages: string[] = product.image 
-    ? (typeof product.image === 'string' ? [product.image] : product.image)
-    : [getProductImage(product, 800, 800)];
-  
+  const gallerySources = (Array.isArray(product.images) && product.images.length > 0
+    ? product.images
+    : Array.isArray(product.image)
+      ? product.image
+      : [product.image]
+  )
+    .map((img) => normalizeProductImagePath(img))
+    .filter((img): img is string => Boolean(img))
+
+  const productImages: string[] = gallerySources.length > 0 ? gallerySources : [getProductImage(product, 800, 800)]
+
   // Ensure we have at least 3 images for gallery (repeat if needed)
-  const images: string[] = productImages.length >= 3 
-    ? productImages.slice(0, 3)
-    : [...productImages, ...Array(3 - productImages.length).fill(productImages[0] || getProductImage(product, 800, 800))];
+  const images: string[] =
+    productImages.length >= 3
+      ? productImages.slice(0, 3)
+      : [
+          ...productImages,
+          ...Array(3 - productImages.length).fill(productImages[0] || getProductImage(product, 800, 800)),
+        ]
 
   return (
     <div className="min-h-screen bg-bg">

@@ -20,15 +20,6 @@ const nextConfig = {
       },
     ],
   },
-  // Optimize caching
-  onDemandEntries: {
-    maxInactiveAge: 60 * 1000,
-    pagesBufferLength: 5,
-  },
-  // Enable SWC minification
-  swcMinify: true,
-  // Optimize production builds
-  compress: true,
 }
 
 module.exports = nextConfig 

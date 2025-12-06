@@ -7,20 +7,20 @@ import WhatsAppFloating from '@/components/WhatsAppFloating'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'TAQA - Premium Supplements Morocco | Imported Vitamins & Health Products',
+  title: 'Vita - Premium Supplements Morocco | Imported Vitamins & Health Products',
   description: 'Your trusted source for premium supplements and vitamins in Morocco. Imported from trusted global brands. Free shipping on orders over 300 MAD.',
   keywords: 'supplements, vitamins, Morocco, health, wellness, imported, protein, omega-3, vitamin D, fitness, nutrition',
-  authors: [{ name: 'TAQA' }],
+  authors: [{ name: 'Vita' }],
   openGraph: {
-    title: 'TAQA - Premium Supplements Morocco',
+    title: 'Vita - Premium Supplements Morocco',
     description: 'Your trusted source for premium supplements and vitamins in Morocco',
     type: 'website',
     locale: 'en_US',
-    siteName: 'TAQA',
+    siteName: 'Vita',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'TAQA - Premium Supplements Morocco',
+    title: 'Vita - Premium Supplements Morocco',
     description: 'Your trusted source for premium supplements and vitamins in Morocco',
   },
   robots: {
@@ -28,9 +28,9 @@ export const metadata: Metadata = {
     follow: true,
   },
   icons: {
-    icon: '/images/brand/vita_logo_capsule_leaf.svg',
-    shortcut: '/images/brand/vita_logo_capsule_leaf.svg',
-    apple: '/images/brand/vita_logo_capsule_leaf.svg',
+    icon: '/assets/brand/vita_logo_capsule_leaf.svg',
+    shortcut: '/assets/brand/vita_logo_capsule_leaf.svg',
+    apple: '/assets/brand/vita_logo_capsule_leaf.svg',
   },
 }
 

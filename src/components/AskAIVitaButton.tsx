@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Sparkles } from 'lucide-react'
+import { FlaskConical } from 'lucide-react'
 import { motion } from 'framer-motion'
 import dynamic from 'next/dynamic'
 
@@ -23,11 +23,12 @@ const AskAIVitaButton = () => {
   if (!mounted) {
     return (
       <button
-        className="relative flex items-center justify-center p-2.5 rounded-lg bg-primary/10 text-primary"
-        aria-label="Ask AI Vita"
+        className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.3em] text-[#111827]"
+        aria-label="Make Your Formula"
         disabled
       >
-        <Sparkles className="w-5 h-5" />
+        <FlaskConical className="w-4 h-4" />
+        <span>Formula</span>
       </button>
     )
   }
@@ -36,18 +37,13 @@ const AskAIVitaButton = () => {
     <>
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative flex items-center justify-center p-2.5 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary transition-all duration-200 group focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-        aria-label={isArabic ? 'اسأل فيتا الذكي' : 'Ask AI Vita'}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
+        className="inline-flex items-center gap-2 rounded-full bg-[#111827] px-4 py-1.5 text-[10px] font-semibold uppercase tracking-[0.3em] text-white shadow-sm transition hover:bg-[#1f2a35] focus:outline-none focus:ring-2 focus:ring-[#11998E]/30 focus:ring-offset-0"
+        aria-label={isArabic ? 'اصنع تركيبتك' : 'Make your formula'}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
       >
-        <Sparkles className="w-5 h-5" />
-        {/* Pulse animation indicator */}
-        <motion.div
-          className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-primary rounded-full"
-          animate={{ scale: [1, 1.2, 1] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        />
+        <FlaskConical className="w-3.5 h-3.5" />
+        <span>Make Your Formula</span>
       </motion.button>
 
       {/* Render VitaAI modal when button is clicked */}
