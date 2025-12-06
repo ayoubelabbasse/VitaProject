@@ -8,6 +8,7 @@ interface LogoProps {
   className?: string
   width?: number
   height?: number
+  tone?: 'full' | 'mono'
   /** Optional scale multiplier to fine-tune rendered size */
   scale?: number
   /** Override responsive sizes descriptor for Next/Image */
@@ -27,6 +28,7 @@ export default function Logo({
   className = '',
   width,
   height,
+  tone = 'full',
   scale = 1,
   sizes = DEFAULT_SIZES,
 }: LogoProps) {
@@ -46,7 +48,7 @@ export default function Logo({
         height={logoHeight}
         sizes={sizes}
         priority={variant === 'wordmark'}
-        className="h-auto w-auto object-contain"
+        className={`h-auto w-auto object-contain${tone === 'mono' ? ' grayscale' : ''}`}
       />
     </Link>
   )
