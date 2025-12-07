@@ -1,21 +1,42 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { normalizeProductImagePath, resolveProductMedia } from '@/constants/paths';
+import { productCatalog } from '@/data/products';
 
 // Mark route as dynamic
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   try {
-    // Check if database is available
-    if (!prisma) {
-      // Return empty array if database not available (for Vercel deployment)
-      return NextResponse.json({ products: [] });
-    }
-
     const { searchParams } = new URL(request.url);
     const category = searchParams.get('category');
     const search = searchParams.get('search');
+
+    const getStaticFallback = () => {
+      let products = productCatalog;
+
+      if (category) {
+        products = products.filter((p) => p.category === category);
+      }
+
+      if (search) {
+        const q = search.toLowerCase();
+        products = products.filter(
+          (p) =>
+            p.name.toLowerCase().includes(q) ||
+            p.brand.toLowerCase().includes(q) ||
+            (p.description || '').toLowerCase().includes(q),
+        );
+      }
+
+      return products;
+    };
+
+    // Check if database is available
+    if (!prisma) {
+      // Fallback to static catalog if database not available (e.g. Vercel preview)
+      return NextResponse.json({ products: getStaticFallback() });
+    }
 
     const where: any = {};
 
@@ -36,6 +57,12 @@ export async function GET(request: NextRequest) {
       where,
       orderBy: { createdAt: 'desc' },
     });
+
+    // If database has no products yet (e.g. production DB not seeded),
+    // fall back to the static catalog so the storefront is never empty.
+    if (!products || products.length === 0) {
+      return NextResponse.json({ products: getStaticFallback() });
+    }
 
     // Transform products to match Product type
     const transformedProducts = products.map((product) => {
