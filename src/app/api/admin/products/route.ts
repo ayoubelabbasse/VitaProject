@@ -73,14 +73,19 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const normalizedPrimary = normalizeProductImagePath(body.image || (body.images?.[0])) || body.image;
+    const normalizedPrimary =
+      normalizeProductImagePath(body.image || (body.images?.[0])) || body.image;
+
     const galleryImages: string[] =
       Array.isArray(body.images) && body.images.length > 0
         ? body.images
             .map((entry: unknown) =>
               typeof entry === 'string' ? normalizeProductImagePath(entry) || entry : null
             )
-            .filter((entry): entry is string => Boolean(entry))
+            .filter(
+              (entry: unknown): entry is string =>
+                typeof entry === 'string' && Boolean(entry)
+            )
         : [];
 
     const product = await prisma.product.create({
