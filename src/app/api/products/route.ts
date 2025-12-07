@@ -39,9 +39,19 @@ export async function GET(request: NextRequest) {
 
     // Transform products to match Product type
     const transformedProducts = products.map((product) => {
+      let gallery: string[] = [];
+      try {
+        gallery = product.galleryImages
+          ? (JSON.parse(product.galleryImages) as string[] | null) ?? []
+          : [];
+      } catch {
+        gallery = [];
+      }
+
       const media = resolveProductMedia({
         name: product.name,
         fallbackImage: product.image,
+        fallbackImages: gallery,
       });
 
       return {

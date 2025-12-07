@@ -10,7 +10,9 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "db:push": "prisma db push",
+    "db:seed": "prisma db seed"
   },
   "dependencies": {
     "@prisma/client": "^6.19.0",
@@ -23,16 +25,19 @@
     "i18next": "^23.7.6",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.294.0",
-    "next": "14.0.4",
+    "next": "^14.2.33",
     "next-i18next": "^15.2.0",
     "prisma": "^6.19.0",
     "quill": "^2.0.3",
     "react": "^18",
     "react-dom": "^18",
     "react-i18next": "^13.5.0",
-    "react-quill": "^2.0.0",
+    "react-quill": "^0.0.2",
     "tailwind-merge": "^2.2.0",
     "zustand": "^4.4.7"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.9.1",

@@ -58,9 +58,19 @@ export async function GET(
       console.warn('Error parsing ingredients for product:', product.id);
     }
 
+    let gallery: string[] = [];
+    try {
+      gallery = product.galleryImages
+        ? (JSON.parse(product.galleryImages) as string[] | null) ?? []
+        : [];
+    } catch {
+      gallery = [];
+    }
+
     const media = resolveProductMedia({
       name: product.name,
       fallbackImage: product.image,
+      fallbackImages: gallery,
     });
 
     const transformedProduct = {

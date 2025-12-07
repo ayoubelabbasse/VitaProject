@@ -11,30 +11,50 @@ export async function GET(request: NextRequest) {
   }
 
   if (!prisma) {
+    console.error('Admin products GET: prisma client not available');
     return NextResponse.json(
-      { error: 'Database not available' },
+      { products: [], error: 'Database not available. Please configure DATABASE_URL and run migrations.' },
       { status: 503 }
     );
   }
 
-  const products = await prisma.product.findMany({
-    orderBy: { createdAt: 'desc' },
-  });
-
-  const transformed = products.map((product) => {
-    const media = resolveProductMedia({
-      name: product.name,
-      fallbackImage: product.image,
+  try {
+    const products = await prisma.product.findMany({
+      orderBy: { createdAt: 'desc' },
     });
 
-    return {
-      ...product,
-      image: media.primary,
-      images: media.gallery,
-    };
-  });
+    const transformed = products.map((product) => {
+      let gallery: string[] = [];
+      try {
+        gallery = product.galleryImages
+          ? (JSON.parse(product.galleryImages) as string[] | null) ?? []
+          : [];
+      } catch {
+        gallery = [];
+      }
 
-  return NextResponse.json({ products: transformed });
+      const media = resolveProductMedia({
+        name: product.name,
+        fallbackImage: product.image,
+        fallbackImages: gallery,
+      });
+
+      return {
+        ...product,
+        image: media.primary,
+        images: media.gallery,
+        galleryImages: gallery,
+      };
+    });
+
+    return NextResponse.json({ products: transformed });
+  } catch (error: any) {
+    console.error('Error fetching admin products:', error);
+    return NextResponse.json(
+      { products: [], error: 'Failed to load products from database' },
+      { status: 500 }
+    );
+  }
 }
 
 export async function POST(request: NextRequest) {
@@ -47,12 +67,22 @@ export async function POST(request: NextRequest) {
   try {
     if (!prisma) {
       return NextResponse.json(
-        { error: 'Database not available' },
+        { error: 'Database not available. Please configure DATABASE_URL and run migrations.' },
         { status: 503 }
       );
     }
 
     const body = await request.json();
+    const normalizedPrimary = normalizeProductImagePath(body.image || (body.images?.[0])) || body.image;
+    const galleryImages: string[] =
+      Array.isArray(body.images) && body.images.length > 0
+        ? body.images
+            .map((entry: unknown) =>
+              typeof entry === 'string' ? normalizeProductImagePath(entry) || entry : null
+            )
+            .filter((entry): entry is string => Boolean(entry))
+        : [];
+
     const product = await prisma.product.create({
       data: {
         name: body.name,
@@ -63,7 +93,8 @@ export async function POST(request: NextRequest) {
         weight: body.weight ? parseFloat(body.weight) : null,
         price: parseFloat(body.price),
         originalPrice: body.originalPrice ? parseFloat(body.originalPrice) : null,
-        image: normalizeProductImagePath(body.image) || body.image,
+        image: normalizedPrimary,
+        galleryImages: galleryImages.length > 0 ? JSON.stringify(galleryImages) : null,
         description: body.description || '',
         stock: parseInt(body.stock) || 0,
         inStock: body.inStock !== false,
@@ -77,6 +108,7 @@ export async function POST(request: NextRequest) {
     const media = resolveProductMedia({
       name: product.name,
       fallbackImage: product.image,
+      fallbackImages: galleryImages,
     });
 
     return NextResponse.json({

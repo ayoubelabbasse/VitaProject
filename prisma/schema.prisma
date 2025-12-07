@@ -6,8 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./prisma/dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -35,6 +35,7 @@ model Product {
   price       Float
   originalPrice Float?
   image       String
+  galleryImages String?  // JSON string array of extra image paths
   description String   @default("") // Rich text HTML
   stock       Int      @default(0)
   inStock     Boolean  @default(true)

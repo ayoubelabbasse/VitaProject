@@ -28,9 +28,9 @@ export const metadata: Metadata = {
     follow: true,
   },
   icons: {
-    icon: '/assets/brand/vita_logo_capsule_leaf.svg',
-    shortcut: '/assets/brand/vita_logo_capsule_leaf.svg',
-    apple: '/assets/brand/vita_logo_capsule_leaf.svg',
+    icon: '/images/brand/vita_logo_capsule_leaf.svg',
+    shortcut: '/images/brand/vita_logo_capsule_leaf.svg',
+    apple: '/images/brand/vita_logo_capsule_leaf.svg',
   },
 }
 

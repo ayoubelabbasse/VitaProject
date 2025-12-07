@@ -20,6 +20,14 @@ const nextConfig = {
       },
     ],
   },
+  // Disable Webpack's persistent filesystem cache in dev to avoid
+  // EBUSY/locking issues on Windows + OneDrive (.next/vendor-chunks).
+  webpack: (config, { dev }) => {
+    if (dev) {
+      config.cache = false
+    }
+    return config
+  },
 }
 
-module.exports = nextConfig 
+module.exports = nextConfig

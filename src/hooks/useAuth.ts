@@ -20,13 +20,28 @@ export function useAuth() {
 
   const checkAuth = async () => {
     try {
-      const response = await fetch('/api/auth/me');
-      if (response.ok) {
-        const data = await response.json();
-        setUser(data.user);
-      } else {
-        setUser(null);
+      // Skip network call entirely when there's no auth-token cookie
+      if (typeof document !== 'undefined') {
+        const hasToken = document.cookie
+          .split(';')
+          .some((cookie) => cookie.trim().startsWith('auth-token='));
+
+        if (!hasToken) {
+          setUser(null);
+          setLoading(false);
+          return;
+        }
       }
+
+      const response = await fetch('/api/auth/me');
+      if (!response.ok) {
+        setUser(null);
+        setLoading(false);
+        return;
+      }
+
+      const data = await response.json();
+      setUser(data.user ?? null);
     } catch (error) {
       setUser(null);
     } finally {

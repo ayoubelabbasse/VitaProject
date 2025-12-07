@@ -1,24 +1,33 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { requireAuth } from '@/lib/middleware';
+import { getAuthToken } from '@/lib/middleware';
+import { verifyToken } from '@/lib/auth';
 import { getUserById } from '@/lib/users';
 
 export async function GET(request: NextRequest) {
-  const authResult = await requireAuth(request);
-  
-  if (authResult.error) {
-    return authResult.error;
+  try {
+    const token = getAuthToken(request);
+
+    // No token -> not logged in
+    if (!token) {
+      return NextResponse.json({ user: null });
+    }
+
+    const decoded = verifyToken(token);
+    if (!decoded) {
+      return NextResponse.json({ user: null });
+    }
+
+    const user = getUserById(decoded.id);
+
+    if (!user) {
+      return NextResponse.json({ user: null });
+    }
+
+    // Return user without password
+    const { password, ...userWithoutPassword } = user;
+    return NextResponse.json({ user: userWithoutPassword });
+  } catch (error) {
+    console.error('Error in /api/auth/me:', error);
+    return NextResponse.json({ user: null });
   }
-
-  const user = getUserById(authResult.user.id);
-
-  if (!user) {
-    return NextResponse.json(
-      { error: 'User not found' },
-      { status: 404 }
-    );
-  }
-
-  // Return user without password
-  const { password, ...userWithoutPassword } = user;
-  return NextResponse.json({ user: userWithoutPassword });
 }

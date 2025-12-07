@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/middleware';
 import { prisma } from '@/lib/prisma';
+import { normalizeProductImagePath, resolveProductMedia } from '@/constants/paths';
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
-  const { id } = await params;
+  const { id } = params;
   const authResult = await requireAdmin(request);
   
   if (authResult.error) {
@@ -22,8 +23,20 @@ export async function PUT(
     }
 
     const body = await request.json();
-      const product = await prisma.product.update({
-        where: { id },
+    const normalizedPrimary =
+      normalizeProductImagePath(body.image || (body.images?.[0])) || body.image;
+
+    const galleryImages: string[] =
+      Array.isArray(body.images) && body.images.length > 0
+        ? body.images
+            .map((entry: unknown) =>
+              typeof entry === 'string' ? normalizeProductImagePath(entry) || entry : null
+            )
+            .filter((entry): entry is string => Boolean(entry))
+        : [];
+
+    const product = await prisma.product.update({
+      where: { id },
       data: {
         name: body.name,
         category: body.category,
@@ -33,7 +46,8 @@ export async function PUT(
         weight: body.weight ? parseFloat(body.weight) : null,
         price: parseFloat(body.price),
         originalPrice: body.originalPrice ? parseFloat(body.originalPrice) : null,
-        image: body.image,
+        image: normalizedPrimary,
+        galleryImages: galleryImages.length > 0 ? JSON.stringify(galleryImages) : null,
         description: body.description || '',
         stock: parseInt(body.stock) || 0,
         inStock: body.inStock !== false,
@@ -44,7 +58,19 @@ export async function PUT(
       },
     });
 
-    return NextResponse.json({ product });
+    const media = resolveProductMedia({
+      name: product.name,
+      fallbackImage: product.image,
+      fallbackImages: galleryImages,
+    });
+
+    return NextResponse.json({
+      product: {
+        ...product,
+        image: media.primary,
+        images: media.gallery,
+      },
+    });
   } catch (error: any) {
     console.error('Error updating product:', error);
     return NextResponse.json(
@@ -56,9 +82,9 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
-  const { id } = await params;
+  const { id } = params;
   const authResult = await requireAdmin(request);
   
   if (authResult.error) {
