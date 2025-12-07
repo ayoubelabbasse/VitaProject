@@ -32,7 +32,10 @@ export async function PUT(
             .map((entry: unknown) =>
               typeof entry === 'string' ? normalizeProductImagePath(entry) || entry : null
             )
-            .filter((entry): entry is string => Boolean(entry))
+            .filter(
+              (entry: unknown): entry is string =>
+                typeof entry === 'string' && Boolean(entry)
+            )
         : [];
 
     const product = await prisma.product.update({
