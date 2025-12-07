@@ -60,8 +60,12 @@ export async function GET(
 
     let gallery: string[] = [];
     try {
-      gallery = product.galleryImages
-        ? (JSON.parse(product.galleryImages) as string[] | null) ?? []
+      const rawGallery = (product as any).galleryImages as
+        | string
+        | null
+        | undefined;
+      gallery = rawGallery
+        ? ((JSON.parse(rawGallery) as string[] | null) ?? [])
         : [];
     } catch {
       gallery = [];

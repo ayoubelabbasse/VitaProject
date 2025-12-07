@@ -3,6 +3,9 @@ import { getAuthToken } from '@/lib/middleware';
 import { verifyToken } from '@/lib/auth';
 import { getUserById } from '@/lib/users';
 
+// Mark this route as dynamic because it reads request cookies
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: NextRequest) {
   try {
     const token = getAuthToken(request);

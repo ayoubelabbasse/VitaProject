@@ -41,8 +41,12 @@ export async function GET(request: NextRequest) {
     const transformedProducts = products.map((product) => {
       let gallery: string[] = [];
       try {
-        gallery = product.galleryImages
-          ? (JSON.parse(product.galleryImages) as string[] | null) ?? []
+        const rawGallery = (product as any).galleryImages as
+          | string
+          | null
+          | undefined;
+        gallery = rawGallery
+          ? ((JSON.parse(rawGallery) as string[] | null) ?? [])
           : [];
       } catch {
         gallery = [];
@@ -70,7 +74,9 @@ export async function GET(request: NextRequest) {
         benefits: (() => {
           try {
             if (!product.benefits) return [];
-            return typeof product.benefits === 'string' ? JSON.parse(product.benefits) : product.benefits;
+            return typeof product.benefits === 'string'
+              ? JSON.parse(product.benefits)
+              : product.benefits;
           } catch {
             return [];
           }
@@ -78,7 +84,9 @@ export async function GET(request: NextRequest) {
         ingredients: (() => {
           try {
             if (!product.ingredients) return [];
-            return typeof product.ingredients === 'string' ? JSON.parse(product.ingredients) : product.ingredients;
+            return typeof product.ingredients === 'string'
+              ? JSON.parse(product.ingredients)
+              : product.ingredients;
           } catch {
             return [];
           }

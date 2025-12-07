@@ -26,8 +26,12 @@ export async function GET(request: NextRequest) {
     const transformed = products.map((product) => {
       let gallery: string[] = [];
       try {
-        gallery = product.galleryImages
-          ? (JSON.parse(product.galleryImages) as string[] | null) ?? []
+        const rawGallery = (product as any).galleryImages as
+          | string
+          | null
+          | undefined;
+        gallery = rawGallery
+          ? ((JSON.parse(rawGallery) as string[] | null) ?? [])
           : [];
       } catch {
         gallery = [];
@@ -88,26 +92,29 @@ export async function POST(request: NextRequest) {
             )
         : [];
 
+    const createData: any = {
+      name: body.name,
+      category: body.category,
+      brand: body.brand,
+      color: body.color,
+      colorFamily: body.colorFamily,
+      weight: body.weight ? parseFloat(body.weight) : null,
+      price: parseFloat(body.price),
+      originalPrice: body.originalPrice ? parseFloat(body.originalPrice) : null,
+      image: normalizedPrimary,
+      galleryImages:
+        galleryImages.length > 0 ? JSON.stringify(galleryImages) : null,
+      description: body.description || '',
+      stock: parseInt(body.stock) || 0,
+      inStock: body.inStock !== false,
+      rating: body.rating ? parseFloat(body.rating) : 0,
+      reviews: body.reviews ? parseInt(body.reviews) : 0,
+      benefits: body.benefits ? JSON.stringify(body.benefits) : null,
+      ingredients: body.ingredients ? JSON.stringify(body.ingredients) : null,
+    };
+
     const product = await prisma.product.create({
-      data: {
-        name: body.name,
-        category: body.category,
-        brand: body.brand,
-        color: body.color,
-        colorFamily: body.colorFamily,
-        weight: body.weight ? parseFloat(body.weight) : null,
-        price: parseFloat(body.price),
-        originalPrice: body.originalPrice ? parseFloat(body.originalPrice) : null,
-        image: normalizedPrimary,
-        galleryImages: galleryImages.length > 0 ? JSON.stringify(galleryImages) : null,
-        description: body.description || '',
-        stock: parseInt(body.stock) || 0,
-        inStock: body.inStock !== false,
-        rating: body.rating ? parseFloat(body.rating) : 0,
-        reviews: body.reviews ? parseInt(body.reviews) : 0,
-        benefits: body.benefits ? JSON.stringify(body.benefits) : null,
-        ingredients: body.ingredients ? JSON.stringify(body.ingredients) : null,
-      },
+      data: createData,
     });
 
     const media = resolveProductMedia({
