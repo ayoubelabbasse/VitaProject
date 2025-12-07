@@ -62,6 +62,36 @@ export default function ProductDetailPage() {
     fetchProduct()
   }, [productId])
 
+  // Track recently viewed products in localStorage for homepage carousel
+  useEffect(() => {
+    if (!product) return
+    if (typeof window === 'undefined') return
+
+    try {
+      const STORAGE_KEY = 'vita_recent_products'
+      const raw = window.localStorage.getItem(STORAGE_KEY)
+      let items: Product[] = []
+
+      if (raw) {
+        items = JSON.parse(raw)
+      }
+
+      // Remove existing entry for this product id, then add to front
+      items = items.filter((p) => p.id !== product.id)
+      items.unshift(product)
+
+      // Limit to 12 items to keep storage small
+      if (items.length > 12) {
+        items = items.slice(0, 12)
+      }
+
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items))
+    } catch (e) {
+      // Fail silently if localStorage is unavailable
+      console.warn('Failed to update recently viewed products', e)
+    }
+  }, [product])
+
   // Fetch related products
   useEffect(() => {
     if (product?.category) {
@@ -95,6 +125,21 @@ export default function ProductDetailPage() {
       setSelectedVariantId(null)
     }
   }, [product])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-bg">
+        <Header />
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="flex flex-col items-center gap-3">
+            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary" />
+            <p className="text-muted text-sm">Loading product…</p>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    )
+  }
 
   if (!product) {
     return (

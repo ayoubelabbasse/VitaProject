@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/middleware';
 import { prisma } from '@/lib/prisma';
-import { normalizeProductImagePath, resolveProductMedia } from '@/constants/paths';
+import { normalizeProductImagePath, PRODUCT_IMAGE_FALLBACK } from '@/constants/paths';
 
 export async function GET(request: NextRequest) {
   const authResult = await requireAdmin(request);
@@ -24,30 +24,32 @@ export async function GET(request: NextRequest) {
     });
 
     const transformed = products.map((product) => {
-      let gallery: string[] = [];
+      // Parse stored gallery JSON from DB
+      let rawGallery: string[] = [];
       try {
-        const rawGallery = (product as any).galleryImages as
-          | string
-          | null
-          | undefined;
-        gallery = rawGallery
-          ? ((JSON.parse(rawGallery) as string[] | null) ?? [])
-          : [];
+        const stored = (product as any).galleryImages as string | null | undefined;
+        rawGallery = stored ? ((JSON.parse(stored) as string[] | null) ?? []) : [];
       } catch {
-        gallery = [];
+        rawGallery = [];
       }
 
-      const media = resolveProductMedia({
-        name: product.name,
-        fallbackImage: product.image,
-        fallbackImages: gallery,
-      });
+      // Normalize primary + gallery paths without applying curated mappings.
+      // Admin should always see exactly what is stored, not auto-overridden media.
+      const primary =
+        normalizeProductImagePath(product.image) || PRODUCT_IMAGE_FALLBACK;
+
+      const normalizedGallery = rawGallery
+        .map((entry) => normalizeProductImagePath(entry) || entry)
+        .filter(
+          (entry): entry is string =>
+            typeof entry === 'string' && Boolean(entry) && entry !== primary,
+        );
 
       return {
         ...product,
-        image: media.primary,
-        images: media.gallery,
-        galleryImages: gallery,
+        image: primary,
+        images: [primary, ...normalizedGallery],
+        galleryImages: normalizedGallery,
       };
     });
 

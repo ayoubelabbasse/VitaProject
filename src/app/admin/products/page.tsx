@@ -9,6 +9,8 @@ import {
   Trash2,
   AlertCircle,
   CheckCircle2,
+  Image as ImageIcon,
+  RefreshCw,
 } from 'lucide-react';
 import { getProductImage } from '@/utils/helpers/imagePlaceholder';
 import { productCatalog } from '@/data/products';
@@ -335,49 +337,76 @@ export default function AdminProductsPage() {
     return Array.from(set).sort((a, b) => a.localeCompare(b));
   }, [products]);
 
-  const addGalleryImageField = () => {
-    setForm((prev) => {
-      if (prev.galleryImages.length >= 7) return prev;
-      return { ...prev, galleryImages: [...prev.galleryImages, ''] };
-    });
-  };
+  // Image helpers for nicer image management UI
+  const allImages = useMemo(
+    () => [form.image, ...form.galleryImages],
+    [form.image, form.galleryImages],
+  );
 
-  const updateGalleryImage = (index: number, value: string) => {
+  const updateImageAt = (index: number, value: string) => {
     setForm((prev) => {
-      const next = [...prev.galleryImages];
+      const next = [...[prev.image, ...prev.galleryImages]];
       next[index] = value;
-      return { ...prev, galleryImages: next };
+      const [primary, ...rest] = next;
+      return {
+        ...prev,
+        image: primary ?? '',
+        galleryImages: rest,
+      };
     });
   };
 
-  const removeGalleryImage = (index: number) => {
+  const removeImageAt = (index: number) => {
     setForm((prev) => {
-      const next = [...prev.galleryImages];
-      next.splice(index, 1);
-      return { ...prev, galleryImages: next };
+      const existing = [...[prev.image, ...prev.galleryImages]];
+      const filtered = existing.filter((_, i) => i !== index);
+      const [primary, ...rest] = filtered;
+      return {
+        ...prev,
+        image: primary ?? '',
+        galleryImages: rest,
+      };
     });
   };
 
-  const previewImages = useMemo(() => {
-    const all = [
-      form.image.trim(),
-      ...form.galleryImages.map((entry) => entry.trim()),
-    ].filter(Boolean);
-    if (all.length === 0 && selectedProduct) {
-      // fallback to currently selected product media if editing
-      const primary = getProductImage({
-        id: selectedProduct.id,
-        image:
-          selectedProduct.image ??
-          (Array.isArray(selectedProduct.images) &&
-          selectedProduct.images.length > 0
-            ? selectedProduct.images
-            : undefined),
-      });
-      return [primary];
-    }
-    return all.slice(0, 8);
-  }, [form.image, form.galleryImages, selectedProduct]);
+  const addImageSlot = () => {
+    setForm((prev) => {
+      const existing = [prev.image, ...prev.galleryImages].filter(
+        (v) => v && v.trim() !== '',
+      );
+      if (existing.length >= 8) return prev;
+      return {
+        ...prev,
+        galleryImages: [...prev.galleryImages, ''],
+      };
+    });
+  };
+
+  const makePrimary = (index: number) => {
+    if (index === 0) return;
+    setForm((prev) => {
+      const all = [...[prev.image, ...prev.galleryImages]];
+      if (!all[index]) return prev;
+      const chosen = all[index];
+      const remaining = all.filter((_, i) => i !== index);
+      return {
+        ...prev,
+        image: chosen,
+        galleryImages: remaining,
+      };
+    });
+  };
+
+  const handleImageFileChange = (index: number, file: File | null) => {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result;
+      if (typeof result !== 'string') return;
+      updateImageAt(index, result);
+    };
+    reader.readAsDataURL(file);
+  };
 
   return (
     <div className="space-y-6">
@@ -423,7 +452,7 @@ export default function AdminProductsPage() {
             placeholder="Search by name, brand or category..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 border border-border rounded-lg bg-bg text-text text-sm focus:ring-2 focus:ring-primary focus:border-primary"
+            className="w-full pl-9 pr-3 py-2 border border-border rounded-md bg-bg text-text text-sm focus:ring-2 focus:ring-primary focus:border-primary"
           />
         </div>
         <div className="text-sm text-muted">
@@ -439,7 +468,7 @@ export default function AdminProductsPage() {
           </div>
         </div>
       ) : (
-        <div className="bg-bg border border-border rounded-lg overflow-hidden">
+        <div className="bg-bg border border-border rounded-md overflow-hidden">
           {filteredProducts.length === 0 ? (
             <div className="py-12 text-center">
               <Package className="w-10 h-10 text-muted/30 mx-auto mb-3" />
@@ -568,7 +597,7 @@ export default function AdminProductsPage() {
 
       {isFormOpen && (
         <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/40 p-4">
-          <div className="w-full max-w-2xl rounded-lg bg-bg border border-border shadow-xl max-h-[90vh] overflow-y-auto">
+          <div className="w-full max-w-2xl rounded-md bg-bg border border-border shadow-xl max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between px-6 py-4 border-b border-border">
               <div>
                 <h2 className="text-xl font-semibold text-text">
@@ -590,27 +619,110 @@ export default function AdminProductsPage() {
             </div>
 
             <form onSubmit={handleSubmit} className="px-6 py-5 space-y-4">
-              {previewImages.length > 0 && (
-                <div className="mb-2">
-                  <p className="text-xs font-medium text-text mb-2">
-                    Image preview (up to 8 images)
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {previewImages.map((src, idx) => (
+              {/* Product images section */}
+              <div className="space-y-3">
+                <p className="text-xs font-semibold text-text uppercase tracking-wide">
+                  Product images
+                </p>
+                <p className="text-xs text-muted">
+                  Add up to 8 images. Paste a URL, a filename like{' '}
+                  <code className="text-[11px]">218.jpeg</code>, or upload a
+                  file. The first image is used as the main product image.
+                </p>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  {allImages.map((src, index) => {
+                    const displaySrc = getProductImage({
+                      id: `${selectedProduct?.id ?? 'new'}-${index}`,
+                      image: src || undefined,
+                    });
+                    const isPrimary = index === 0;
+                    return (
                       <div
-                        key={`${src}-${idx}`}
-                        className="w-14 h-14 rounded-md border border-border bg-bg overflow-hidden"
+                        key={index}
+                        className="flex flex-col gap-2 border border-border rounded-md p-2 bg-bg"
                       >
-                        <img
-                          src={src}
-                          alt={`Preview ${idx + 1}`}
-                          className="w-full h-full object-cover"
-                        />
+                        <div className="relative w-full pb-[75%] bg-border/20 rounded-md overflow-hidden">
+                          <img
+                            src={displaySrc}
+                            alt={src || 'Product image'}
+                            className="absolute inset-0 w-full h-full object-cover"
+                          />
+                          <div className="absolute inset-0 flex items-start justify-between p-1.5 pointer-events-none">
+                            <span className="inline-flex items-center rounded-full bg-black/60 text-[10px] text-white px-1.5 py-0.5">
+                              {isPrimary ? 'Main' : 'Extra'}
+                            </span>
+                            <ImageIcon className="w-3 h-3 text-white/80" />
+                          </div>
+                        </div>
+                        <div className="flex flex-col gap-1">
+                          <input
+                            type="text"
+                            value={src || ''}
+                            onChange={(e) =>
+                              updateImageAt(index, e.target.value)
+                            }
+                            placeholder={
+                              isPrimary
+                                ? 'Main image URL or filename'
+                                : 'Additional image URL or filename'
+                            }
+                            className="w-full px-2 py-1.5 border border-border rounded-md bg-bg text-xs text-text focus:ring-1 focus:ring-primary focus:border-primary"
+                          />
+                          <div className="flex items-center justify-between gap-1">
+                            <label className="flex-1">
+                              <span className="sr-only">Upload image</span>
+                              <input
+                                type="file"
+                                accept="image/*"
+                                className="hidden"
+                                onChange={(e) =>
+                                  handleImageFileChange(
+                                    index,
+                                    e.target.files?.[0] || null,
+                                  )
+                                }
+                              />
+                              <span className="inline-flex items-center justify-center w-full px-2 py-1 text-[11px] border border-dashed border-border rounded-md cursor-pointer hover:border-primary hover:text-primary">
+                                <Plus className="w-3 h-3 mr-1" />
+                                Upload
+                              </span>
+                            </label>
+                            {!isPrimary && (
+                              <button
+                                type="button"
+                                onClick={() => makePrimary(index)}
+                                className="inline-flex items-center justify-center px-2 py-1 text-[11px] border border-border rounded-md hover:border-primary hover:text-primary"
+                              >
+                                <RefreshCw className="w-3 h-3 mr-1" />
+                                Main
+                              </button>
+                            )}
+                            <button
+                              type="button"
+                              onClick={() => removeImageAt(index)}
+                              className="inline-flex items-center justify-center px-1.5 py-1 text-[11px] border border-red-200 text-red-600 rounded-md hover:bg-red-50"
+                            >
+                              <Trash2 className="w-3 h-3" />
+                            </button>
+                          </div>
+                        </div>
                       </div>
-                    ))}
-                  </div>
+                    );
+                  })}
+                  {allImages.length < 8 && (
+                    <button
+                      type="button"
+                      onClick={addImageSlot}
+                      className="flex items-center justify-center border-2 border-dashed border-border rounded-md text-xs text-muted hover:border-primary hover:text-primary min-h-[96px]"
+                    >
+                      <div className="flex flex-col items-center gap-1">
+                        <Plus className="w-4 h-4" />
+                        <span>Add image</span>
+                      </div>
+                    </button>
+                  )}
                 </div>
-              )}
+              </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -622,7 +734,7 @@ export default function AdminProductsPage() {
                     value={form.name}
                     onChange={(e) => handleInputChange('name', e.target.value)}
                     required
-                    className="w-full px-3 py-2 border border-border rounded-lg bg-bg text-sm text-text focus:ring-2 focus:ring-primary focus:border-primary"
+                    className="w-full px-3 py-2 border border-border rounded-md bg-bg text-sm text-text focus:ring-2 focus:ring-primary focus:border-primary"
                   />
                 </div>
                 <div>
@@ -635,7 +747,7 @@ export default function AdminProductsPage() {
                     onChange={(e) => handleInputChange('brand', e.target.value)}
                     required
                     list="admin-brand-options"
-                    className="w-full px-3 py-2 border border-border rounded-lg bg-bg text-sm text-text focus:ring-2 focus:ring-primary focus:border-primary"
+                    className="w-full px-3 py-2 border border-border rounded-md bg-bg text-sm text-text focus:ring-2 focus:ring-primary focus:border-primary"
                   />
                 </div>
               </div>
@@ -653,7 +765,7 @@ export default function AdminProductsPage() {
                     }
                     required
                     list="admin-category-options"
-                    className="w-full px-3 py-2 border border-border rounded-lg bg-bg text-sm text-text focus:ring-2 focus:ring-primary focus:border-primary"
+                    className="w-full px-3 py-2 border border-border rounded-md bg-bg text-sm text-text focus:ring-2 focus:ring-primary focus:border-primary"
                   />
                 </div>
                 <div>
@@ -667,7 +779,7 @@ export default function AdminProductsPage() {
                     value={form.price}
                     onChange={(e) => handleInputChange('price', e.target.value)}
                     required
-                    className="w-full px-3 py-2 border border-border rounded-lg bg-bg text-sm text-text focus:ring-2 focus:ring-primary focus:border-primary"
+                    className="w-full px-3 py-2 border border-border rounded-md bg-bg text-sm text-text focus:ring-2 focus:ring-primary focus:border-primary"
                   />
                 </div>
                 <div>
@@ -682,7 +794,7 @@ export default function AdminProductsPage() {
                     onChange={(e) =>
                       handleInputChange('originalPrice', e.target.value)
                     }
-                    className="w-full px-3 py-2 border border-border rounded-lg bg-bg text-sm text-text focus:ring-2 focus:ring-primary focus:border-primary"
+                    className="w-full px-3 py-2 border border-border rounded-md bg-bg text-sm text-text focus:ring-2 focus:ring-primary focus:border-primary"
                   />
                 </div>
               </div>
@@ -738,63 +850,6 @@ export default function AdminProductsPage() {
 
               <div>
                 <label className="block text-xs font-medium text-text mb-1.5">
-                  Image path or URL
-                </label>
-                <input
-                  type="text"
-                  value={form.image}
-                  onChange={(e) => handleInputChange('image', e.target.value)}
-                  placeholder="e.g. /images/products/alive-omega3-nature.jpg or https://..."
-                  className="w-full px-3 py-2 border border-border rounded-lg bg-bg text-sm text-text focus:ring-2 focus:ring-primary focus:border-primary"
-                />
-                <p className="text-[11px] text-muted mt-1.5">
-                  For best performance, upload product images under{' '}
-                  <code className="text-[11px]">public/images/products</code>{' '}
-                  and reference them here. Leave empty to use a generated
-                  placeholder.
-                </p>
-              </div>
-
-              <div>
-                <label className="block text-xs font-medium text-text mb-1.5">
-                  Additional images (up to 7 more, one path or URL per field)
-                </label>
-                <div className="space-y-2">
-                  {form.galleryImages.map((value, index) => (
-                    <div key={index} className="flex items-center gap-2">
-                      <input
-                        type="text"
-                        value={value}
-                        onChange={(e) =>
-                          updateGalleryImage(index, e.target.value)
-                        }
-                        placeholder="/images/products/another-image.jpg"
-                        className="flex-1 px-3 py-2 border border-border rounded-lg bg-bg text-sm text-text focus:ring-2 focus:ring-primary focus:border-primary"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => removeGalleryImage(index)}
-                        className="px-2 py-1 text-xs rounded-lg border border-border text-text hover:bg-border/60"
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  ))}
-                  {form.galleryImages.length < 7 && (
-                    <button
-                      type="button"
-                      onClick={addGalleryImageField}
-                      className="mt-1 inline-flex items-center text-xs px-3 py-1.5 rounded-lg border border-border text-text hover:bg-border/60"
-                    >
-                      <Plus className="w-3 h-3 mr-1" />
-                      Add image
-                    </button>
-                  )}
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-medium text-text mb-1.5">
                   Description
                 </label>
                 <textarea
@@ -803,7 +858,7 @@ export default function AdminProductsPage() {
                     handleInputChange('description', e.target.value)
                   }
                   rows={4}
-                  className="w-full px-3 py-2 border border-border rounded-lg bg-bg text-sm text-text focus:ring-2 focus:ring-primary focus:border-primary"
+                  className="w-full px-3 py-2 border border-border rounded-md bg-bg text-sm text-text focus:ring-2 focus:ring-primary focus:border-primary"
                 />
               </div>
 
@@ -821,7 +876,7 @@ export default function AdminProductsPage() {
                     onChange={(e) =>
                       handleInputChange('rating', e.target.value)
                     }
-                    className="w-full px-3 py-2 border border-border rounded-lg bg-bg text-sm text-text focus:ring-2 focus:ring-primary focus:border-primary"
+                    className="w-full px-3 py-2 border border-border rounded-md bg-bg text-sm text-text focus:ring-2 focus:ring-primary focus:border-primary"
                   />
                 </div>
                 <div>
@@ -836,7 +891,7 @@ export default function AdminProductsPage() {
                     onChange={(e) =>
                       handleInputChange('reviews', e.target.value)
                     }
-                    className="w-full px-3 py-2 border border-border rounded-lg bg-bg text-sm text-text focus:ring-2 focus:ring-primary focus:border-primary"
+                    className="w-full px-3 py-2 border border-border rounded-md bg-bg text-sm text-text focus:ring-2 focus:ring-primary focus:border-primary"
                   />
                 </div>
               </div>
@@ -852,7 +907,7 @@ export default function AdminProductsPage() {
                       handleInputChange('benefits', e.target.value)
                     }
                     rows={4}
-                    className="w-full px-3 py-2 border border-border rounded-lg bg-bg text-sm text-text focus:ring-2 focus:ring-primary focus:border-primary"
+                  className="w-full px-3 py-2 border border-border rounded-md bg-bg text-sm text-text focus:ring-2 focus:ring-primary focus:border-primary"
                   />
                 </div>
                 <div>
@@ -875,14 +930,14 @@ export default function AdminProductsPage() {
                   type="button"
                   onClick={closeForm}
                   disabled={isSubmitting}
-                  className="px-4 py-2 text-sm rounded-lg border border-border text-text hover:bg-border/60 disabled:opacity-50"
+                  className="px-4 py-2 text-sm rounded-md border border-border text-text hover:bg-border/60 disabled:opacity-50"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="px-5 py-2 text-sm rounded-lg bg-primary text-white hover:bg-primary/90 disabled:opacity-50"
+                  className="px-5 py-2 text-sm rounded-md bg-primary text-white hover:bg-primary/90 disabled:opacity-50"
                 >
                   {isSubmitting
                     ? selectedProduct

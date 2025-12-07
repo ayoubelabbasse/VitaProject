@@ -16,14 +16,14 @@ const WhatsAppFloating = () => {
   return (
     <motion.button
       onClick={handleClick}
-      className="fixed bottom-6 md:bottom-8 right-6 md:right-8 z-50 bg-[#25D366] text-white rounded-full shadow-soft-lg hover:shadow-soft-md transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#25D366] focus:ring-offset-2 w-14 h-14 flex items-center justify-center"
+      className="fixed bottom-5 md:bottom-6 right-5 md:right-6 z-50 bg-[#25D366] text-white rounded-full shadow-soft-lg hover:shadow-soft-md transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#25D366] focus:ring-offset-2 w-11 h-11 md:w-12 md:h-12 flex items-center justify-center"
       aria-label={isArabic ? 'تواصل مع فيتا عبر واتساب' : 'Contact Vita via WhatsApp'}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
     >
       {/* WhatsApp Icon SVG */}
       <svg
-        className="w-7 h-7"
+        className="w-5 h-5 md:w-6 md:h-6"
         fill="currentColor"
         viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"

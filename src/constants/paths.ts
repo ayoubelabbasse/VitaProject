@@ -57,6 +57,15 @@ export function normalizeProductImagePath(path?: string | null): string | undefi
 
   let normalized = path.trim()
 
+   // If the value looks like a bare image filename (e.g. "218.jpeg"),
+   // assume it's one of the hero assets under /images/hero/
+   if (
+     !normalized.includes('/') &&
+     /\.(jpe?g|png|webp|gif)$/i.test(normalized)
+   ) {
+     return `/images/hero/${normalized}`
+   }
+
   // Leave remote URLs untouched
   if (/^[a-z]+:/i.test(normalized)) {
     return normalized

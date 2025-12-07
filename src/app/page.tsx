@@ -3,14 +3,14 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { useState, useEffect } from 'react'
-import { Zap, Shield, Heart, ArrowRight, ShieldCheck, CreditCard, Truck, Leaf, Moon } from 'lucide-react'
+import { useState, useEffect, useRef } from 'react'
+import { Zap, Shield, Heart, ArrowRight, ShieldCheck, CreditCard, Truck, Leaf, Moon, ChevronLeft, ChevronRight, Play, Pause } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import ProductCard from '@/components/ProductCard'
 import { Product } from '@/types'
-
+import { getProductImage } from '@/utils/helpers/imagePlaceholder'
 import { productCatalog } from '@/data/products'
 
 const curatedCollections = [
@@ -44,16 +44,74 @@ const curatedCollections = [
   },
 ]
 
-// Trust signals for Moroccan customers
+const heroSlides = [
+  {
+    key: 'classics',
+    image: '/images/products/hero-carousel-1.png',
+    alt: 'TAQA hero – classics curated for daily rituals',
+    eyebrow: 'TAQA ESSENTIALS',
+    titleLines: ['Classics Curated', 'for Daily Rituals'],
+    subtitle: '',
+    mode: 'light' as const,
+    ctaLabel: 'Shop Now',
+    ctaHref: '/products',
+    ctaVariant: 'dark' as const,
+  },
+  {
+    key: 'build-save',
+    image: '/images/products/hero-carousel-2.jpg',
+    alt: 'Build your TAQA routine and save 25 MAD',
+    eyebrow: 'BUILD ROUTINE · 25 MAD OFF',
+    titleLines: ['Build your TAQA routine', 'and pay less'],
+    subtitle: 'Answer a few questions and get a stack with savings.',
+    mode: 'dark' as const,
+    ctaLabel: 'Build Routine',
+    ctaHref: '/products',
+    ctaVariant: 'green' as const,
+  },
+  {
+    key: 'morocco-first',
+    image: '/images/products/hero-carousel-3.jpg',
+    alt: 'Take the TAQA quiz and save 25 MAD',
+    eyebrow: 'TAQA QUIZ · 25 MAD OFF',
+    titleLines: ['Take the TAQA quiz', 'and save 25 MAD'],
+    subtitle: 'Find your routine in under a minute.',
+    mode: 'dark' as const,
+    ctaLabel: 'Take Quiz',
+    ctaHref: '/products',
+    ctaVariant: 'green' as const,
+  },
+]
+
+// Trust signals – simple 3-step flow
 const trustSignals = [
-  { icon: ShieldCheck, title: 'Imported Quality', description: 'Sourced from trusted global brands' },
-  { icon: CreditCard, title: 'Secure Payments', description: 'Encrypted checkout in MAD' },
-  { icon: Truck, title: 'Fast Delivery', description: 'Nationwide shipping across Morocco' },
+  {
+    icon: ShieldCheck,
+    step: 'Step 1',
+    title: 'Quality & authenticity',
+    description: 'We source original brands and check products before shipping.',
+  },
+  {
+    icon: CreditCard,
+    step: 'Step 2',
+    title: 'Choose how you pay',
+    description: 'Cash on delivery or secure online payment in MAD.',
+  },
+  {
+    icon: Truck,
+    step: 'Step 3',
+    title: 'Fast delivery',
+    description: 'Your order is packed and delivered quickly to your address.',
+  },
 ]
 
 export default function HomePage() {
   const { t } = useTranslation()
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([])
+  const [recentlyViewed, setRecentlyViewed] = useState<Product[]>([])
+  const [heroIndex, setHeroIndex] = useState(0)
+  const [isHeroPlaying, setIsHeroPlaying] = useState(true)
+  const heroFirstRun = useRef(true)
 
   // Fetch featured products from database
   useEffect(() => {
@@ -62,10 +120,10 @@ export default function HomePage() {
         const response = await fetch('/api/products')
         const data = await response.json()
         if (data.products && data.products.length > 0) {
-          setFeaturedProducts(data.products.slice(0, 4))
+          setFeaturedProducts(data.products.slice(0, 5))
         } else {
           // Fallback to static catalog
-          setFeaturedProducts(productCatalog.slice(0, 4))
+          setFeaturedProducts(productCatalog.slice(0, 5))
         }
       } catch (error) {
         console.error('Error fetching featured products:', error)
@@ -76,44 +134,199 @@ export default function HomePage() {
     fetchFeaturedProducts()
   }, [])
 
+  // Load recently viewed products from localStorage (if any)
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    try {
+      const STORAGE_KEY = 'vita_recent_products'
+      const raw = window.localStorage.getItem(STORAGE_KEY)
+      if (!raw) return
+      const items: Product[] = JSON.parse(raw)
+      if (Array.isArray(items) && items.length > 0) {
+        // Only show when the customer has a meaningful history (at least 3 items)
+        setRecentlyViewed(items.slice(0, 8))
+      }
+    } catch (e) {
+      console.warn('Failed to load recently viewed products', e)
+    }
+  }, [])
+
+  // Hero carousel autoplay
+  useEffect(() => {
+    if (!isHeroPlaying) return
+    const delay = heroFirstRun.current ? 8000 : 5000
+    const timer = setTimeout(() => {
+      setHeroIndex((prev) => (prev + 1) % heroSlides.length)
+      heroFirstRun.current = false
+    }, delay)
+    return () => clearTimeout(timer)
+  }, [heroIndex, isHeroPlaying])
+
+  const goToNextHero = () => {
+    heroFirstRun.current = false
+    setHeroIndex((prev) => (prev + 1) % heroSlides.length)
+  }
+
+  const goToPrevHero = () => {
+    heroFirstRun.current = false
+    setHeroIndex((prev) => (prev - 1 + heroSlides.length) % heroSlides.length)
+  }
+
+  const toggleHeroPlay = () => {
+    setIsHeroPlaying((prev) => !prev)
+  }
+
+  const currentHero = heroSlides[heroIndex]
+  const isLightMode = currentHero.mode === 'light'
+
   return (
     <div className="min-h-screen bg-bg-main">
       <Header />
       
-      {/* Hero Section - Edge-to-edge image */}
+      {/* Hero Section - Carousel */}
       <section className="bg-gradient-to-br from-[#ECE9E6] to-[#FFFFFF]">
         <div className="vita-container py-6">
           <div className="relative h-[280px] sm:h-[340px] md:h-[380px] border-x border-[#E5E7EB] overflow-hidden rounded-none">
-            <Image
-              src="/images/products/Hero-Image-taqa.png"
-              alt="TAQA hero"
-              fill
-              priority
-              className="object-cover"
-              sizes="100vw"
-            />
+            <motion.div
+              key={currentHero.key}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+              className="absolute inset-0"
+            >
+              <Image
+                src={currentHero.image}
+                alt={currentHero.alt}
+                fill
+                priority={heroIndex === 0}
+                className="object-cover"
+                sizes="100vw"
+              />
+            </motion.div>
+
+            {/* Content overlay */}
             <div className="absolute inset-y-0 left-6 sm:left-10 flex items-center px-4">
-              <div className="text-left text-white space-y-4 max-w-md">
-                <p className="text-xs tracking-[0.5em] uppercase">TAQA ESSENTIALS</p>
-                <h1 className="text-3xl sm:text-4xl font-semibold leading-tight text-white">
-                  Classics Curated
-                  <br />
-                  for Daily Rituals
-                </h1>
-                <Link
-                  href="/products"
-                  className="inline-flex items-center justify-center rounded-sm bg-gradient-to-br from-[#232526] to-[#414345] px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.4em] text-white shadow-lg transition hover:opacity-90"
+              <motion.div
+                key={`${currentHero.key}-content`}
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.05 }}
+                className="text-left space-y-3 max-w-md"
+              >
+                <p
+                  className={`text-[11px] tracking-[0.45em] uppercase font-semibold ${
+                    isLightMode ? 'text-white drop-shadow-md' : 'text-[#11998E]'
+                  }`}
                 >
-                  Shop Now
+                  {currentHero.eyebrow}
+                </p>
+                <h1
+                  className={`text-3xl sm:text-[2.3rem] font-semibold leading-tight ${
+                    isLightMode ? 'text-white drop-shadow-md' : 'text-[#111827]'
+                  }`}
+                >
+                  {currentHero.titleLines.map((line) => (
+                    <span key={line} className="block">
+                      {line}
+                    </span>
+                  ))}
+                </h1>
+                {currentHero.subtitle && (
+                  <p
+                    className={`text-sm sm:text-base max-w-sm ${
+                      isLightMode ? 'text-white/90 drop-shadow' : 'text-[#4B5563]'
+                    }`}
+                  >
+                    {currentHero.subtitle}
+                  </p>
+                )}
+                <Link
+                  href={currentHero.ctaHref}
+                  className={`inline-flex items-center justify-center rounded-sm px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.4em] shadow-lg transition hover:opacity-95 ${
+                    currentHero.ctaVariant === 'green'
+                      ? 'bg-gradient-to-br from-[#11998E] to-[#38EF7D] text-white'
+                      : 'bg-gradient-to-br from-[#232526] to-[#414345] text-white'
+                  }`}
+                >
+                  {currentHero.ctaLabel}
                 </Link>
-              </div>
+              </motion.div>
             </div>
+
+            {/* Carousel controls */}
+            <button
+              type="button"
+              onClick={goToPrevHero}
+              className="absolute left-3 top-1/2 -translate-y-1/2 inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/30 text-white hover:bg-white/50 transition-colors"
+              aria-label="Previous slide"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={goToNextHero}
+              className="absolute right-3 top-1/2 -translate-y-1/2 inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/30 text-white hover:bg-white/50 transition-colors"
+              aria-label="Next slide"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+
+            {/* Play / pause tiny control */}
+            <button
+              type="button"
+              onClick={toggleHeroPlay}
+              className="absolute bottom-3 left-3 inline-flex h-6 w-6 items-center justify-center rounded-full bg-white/80 text-[#111827] hover:bg-white transition-colors shadow-sm"
+              aria-label={isHeroPlaying ? 'Pause carousel' : 'Play carousel'}
+            >
+              {isHeroPlaying ? <Pause className="w-3 h-3" /> : <Play className="w-3 h-3" />}
+            </button>
           </div>
         </div>
       </section>
 
+      {/* Recently Viewed Products */}
+      {recentlyViewed.length >= 3 && (
+        <section className="bg-white py-8">
+          <div className="vita-container">
+            <div className="mb-4 text-center">
+              <p className="text-[11px] uppercase tracking-[0.3em] text-text-main font-semibold">
+                Recently viewed
+              </p>
+            </div>
+            <div className="overflow-x-auto">
+              <div className="flex gap-4 md:gap-6 py-1">
+                {recentlyViewed.slice(0, 8).map((product) => (
+                  <Link
+                    key={product.id}
+                    href={`/product/${product.id}`}
+                    className="flex-shrink-0"
+                  >
+                    <motion.div
+                      whileHover={{ y: -6, scale: 1.03 }}
+                      transition={{ type: 'spring', stiffness: 260, damping: 20 }}
+                      className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-xl flex items-center justify-center border border-border-soft/60 bg-transparent hover:border-primary/70 hover:shadow-md transition-all duration-200"
+                    >
+                      <div className="relative w-[78%] h-[78%]">
+                        <Image
+                          src={getProductImage(product)}
+                          alt={product.name}
+                          fill
+                          sizes="128px"
+                          className="object-contain"
+                        />
+                      </div>
+                    </motion.div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Spotlight Collections */}
-      <section className="bg-white py-10">
+      <section className="bg-white py-8">
         <div className="vita-container">
           <div className="text-center mb-6">
             <p className="inline-block text-xs uppercase tracking-[0.4em] text-[#6B7280] font-semibold">Your Arsenal</p>
@@ -149,24 +362,41 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Trust Signals */}
-      <section className="bg-white">
-        <div className="vita-container py-4 md:py-6">
+      {/* Trust Signals / Value Props */}
+      <section className="bg-[#F5F7FA] py-8">
+        <div className="vita-container">
+          <div className="text-center mb-6">
+            <p className="text-[11px] uppercase tracking-[0.3em] text-text-muted font-semibold">
+              How TAQA works
+            </p>
+            <h2 className="mt-2 text-2xl md:text-3xl font-semibold text-text-main">
+              From order to delivery in 3 clear steps
+            </h2>
+          </div>
           <div className="grid gap-4 md:gap-6 md:grid-cols-3">
             {trustSignals.map((signal) => {
               const Icon = signal.icon
               return (
                 <div
                   key={signal.title}
-                  className="flex items-center gap-4 rounded-2xl border border-border-soft p-4 md:p-5 bg-[#F9FAFB]"
+                  className="rounded-2xl bg-white border border-border-soft/80 px-5 py-4 md:px-6 md:py-5 flex flex-col gap-3 shadow-sm"
                 >
-                  <div className="w-12 h-12 flex-shrink-0 rounded-full bg-[#E8F0F3] flex items-center justify-center">
-                    <Icon className="w-6 h-6 text-[#11998E]" />
+                  <div className="flex items-center gap-3 mb-1">
+                    <div className="w-8 h-8 flex-shrink-0 rounded-full bg-[#E8F0F3] flex items-center justify-center">
+                      <Icon className="w-4 h-4 text-[#11998E]" />
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-[11px] uppercase tracking-[0.18em] text-text-muted">
+                        {signal.step}
+                      </span>
+                      <h3 className="text-sm md:text-base font-semibold text-text-main">
+                        {signal.title}
+                      </h3>
+                    </div>
                   </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="font-semibold text-text-main text-sm md:text-base">{signal.title}</p>
-                    <p className="text-xs md:text-sm text-text-muted">{signal.description}</p>
-                  </div>
+                  <p className="text-xs md:text-sm text-text-muted leading-relaxed">
+                    {signal.description}
+                  </p>
                 </div>
               )
             })}
@@ -174,9 +404,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Categories Section - Your Arsenal */}
       {/* Featured Products - Champion's Choice */}
-      <section className="pt-10 pb-6 bg-[#F5F7FA]">
+      <section className="pt-8 pb-6 bg-[#F5F7FA]">
         <div className="vita-container">
           <div className="text-center mb-6">
             <motion.span
@@ -207,18 +436,18 @@ export default function HomePage() {
             </motion.p>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
             {featuredProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
           
-          <div className="text-center mt-16">
+          <div className="text-center mt-12">
             <Link href="/products">
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="bg-white border-2 border-[#11998E] text-[#11998E] hover:bg-gradient-to-br hover:from-[#11998E] hover:to-[#38EF7D] hover:text-white font-medium px-8 py-3 rounded-full text-sm transition-all duration-200 inline-flex items-center gap-2"
+                className="inline-flex items-center justify-center rounded-xl bg-gradient-to-br from-[#232526] to-[#414345] px-6 py-2.5 text-[11px] font-semibold uppercase tracking-[0.3em] text-white shadow-md transition-all hover:from-[#11998E] hover:to-[#38EF7D] focus:outline-none focus:ring-2 focus:ring-[#11998E]/40 focus:ring-offset-2"
               >
                 <span>{t('homepage.featured.viewAll')}</span>
                 <ArrowRight className="w-4 h-4" />
@@ -229,8 +458,8 @@ export default function HomePage() {
       </section>
 
       {/* Lifestyle Motivation */}
-      <section className="bg-white pt-10">
-        <div className="vita-container py-16 grid gap-10 lg:grid-cols-[1.1fr,0.9fr] items-center">
+      <section className="bg-white pt-4">
+        <div className="vita-container py-12 grid gap-10 lg:grid-cols-[1.1fr,0.9fr] items-center">
           <div className="space-y-4">
             <span className="text-xs uppercase tracking-[0.3em] text-text-muted">
               Stronger Every Day
@@ -242,7 +471,10 @@ export default function HomePage() {
               Pair targeted stacks with intentional movement. TAQA curates performance-driven protocols so you can lift, recover, and show up energized — all week.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Link href="/products?category=Performance" className="btn-primary">
+              <Link
+                href="/products?category=Performance"
+                className="inline-flex items-center justify-center rounded-sm bg-gradient-to-br from-[#232526] to-[#414345] px-6 py-2.5 text-[11px] font-semibold uppercase tracking-[0.3em] text-white shadow-md transition-all hover:from-[#11998E] hover:to-[#38EF7D] focus:outline-none focus:ring-2 focus:ring-[#11998E]/40 focus:ring-offset-2"
+              >
                 Explore Stacks
               </Link>
               <Link href="/about" className="btn-link flex items-center gap-2">
@@ -253,7 +485,7 @@ export default function HomePage() {
           </div>
           <div className="relative h-[320px] md:h-[360px] rounded-3xl overflow-hidden shadow-lg">
             <Image
-              src="/images/hero/front.jpg"
+              src="/images/hero/front-1.jpg"
               alt="Active lifestyle inspiration"
               fill
               className="object-cover"

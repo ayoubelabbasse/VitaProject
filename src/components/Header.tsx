@@ -52,10 +52,12 @@ const Header = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isProductsMenuOpen, setIsProductsMenuOpen] = useState(false);
+  const [isExploreMenuOpen, setIsExploreMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const cartRef = useRef<HTMLDivElement>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
   const productsMenuRef = useRef<HTMLDivElement>(null);
+  const exploreMenuRef = useRef<HTMLDivElement>(null);
   const { items, getItemCount, removeItem, getTotal } = useCartStore();
 
   // Get user initials
@@ -82,8 +84,7 @@ const Header = () => {
 
   const navItems = [
     { href: '/products', label: t('nav.shop', { defaultValue: 'Shop' }), key: 'products' },
-    { href: '/about', label: t('nav.about'), key: 'about' },
-    { href: '/contact', label: t('nav.contact', { defaultValue: 'Contact' }), key: 'contact' },
+    { href: '/blog', label: 'Explore', key: 'explore' },
   ];
 
   const supplementCollections = useMemo(() => {
@@ -124,6 +125,14 @@ const Header = () => {
           { label: 'Zinc Defense', href: '/products?category=Immune' },
           { label: 'Performance Electrolytes', href: '/products?category=Performance' },
           { label: 'Trace Mineral Blends', href: '/products' },
+        ],
+      },
+      {
+        title: 'Explore',
+        description: 'Guides, articles and coaching support',
+        items: [
+          { label: 'Blog', href: '/blog' },
+          { label: 'Nutrition coaches', href: '/coaches' },
         ],
       },
     ];
@@ -210,16 +219,19 @@ const Header = () => {
       if (productsMenuRef.current && !productsMenuRef.current.contains(event.target as Node)) {
         setIsProductsMenuOpen(false);
       }
+      if (exploreMenuRef.current && !exploreMenuRef.current.contains(event.target as Node)) {
+        setIsExploreMenuOpen(false);
+      }
     };
 
-    if (isCartOpen || isUserMenuOpen || isProductsMenuOpen) {
+    if (isCartOpen || isUserMenuOpen || isProductsMenuOpen || isExploreMenuOpen) {
       document.addEventListener('mousedown', handleClickOutside);
     }
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isCartOpen, isUserMenuOpen, isProductsMenuOpen]);
+  }, [isCartOpen, isUserMenuOpen, isProductsMenuOpen, isExploreMenuOpen]);
 
   return (
     <>
@@ -245,18 +257,26 @@ const Header = () => {
               onMouseEnter={() => setIsProductsMenuOpen(true)}
               onMouseLeave={() => setIsProductsMenuOpen(false)}
             >
-              <Link
-                href="/products"
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setIsProductsMenuOpen((open) => !open);
+                }}
                 onFocus={() => setIsProductsMenuOpen(true)}
-                className="flex items-center space-x-1 text-[#1F2933] hover:text-[#11998E] transition-colors duration-200 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-[#11998E]/40 focus:ring-offset-0 rounded px-3 py-2 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-gradient-to-r after:from-[#11998E] after:to-[#38EF7D] after:transition-all hover:after:w-full"
+                className={`flex items-center space-x-1 font-medium text-sm px-3 py-2 rounded relative transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#11998E]/40 focus:ring-offset-0 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-gradient-to-r after:from-[#11998E] after:to-[#38EF7D] after:transition-all ${
+                  isProductsMenuOpen
+                    ? 'text-[#11998E] after:w-full'
+                    : 'text-[#1F2933] hover:text-[#11998E] after:w-0 hover:after:w-full'
+                }`}
               >
-                <span>{t('nav.shop', { defaultValue: 'Shop' })}</span>
+                <span>{navItems[0].label}</span>
                 <motion.span animate={{ rotate: isProductsMenuOpen ? 180 : 0 }}>
                   <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                   </svg>
                 </motion.span>
-              </Link>
+              </button>
 
               <AnimatePresence>
                 {isProductsMenuOpen && (
@@ -332,18 +352,64 @@ const Header = () => {
                 )}
               </AnimatePresence>
             </div>
-            {navItems.filter((item) => item.key !== 'products').map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="text-[#1F2933] hover:text-[#11998E] transition-colors duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-[#11998E]/40 focus:ring-offset-0 rounded px-2 py-1"
+            {/* Explore dropdown */}
+            <div
+              className="relative"
+              ref={exploreMenuRef}
+              onMouseEnter={() => setIsExploreMenuOpen(true)}
+              onMouseLeave={() => setIsExploreMenuOpen(false)}
+            >
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setIsExploreMenuOpen((open) => !open);
+                }}
+                onFocus={() => setIsExploreMenuOpen(true)}
+                className={`flex items-center space-x-1 font-medium text-sm px-3 py-2 rounded relative transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#11998E]/40 focus:ring-offset-0 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-gradient-to-r after:from-[#11998E] after:to-[#38EF7D] after:transition-all ${
+                  isExploreMenuOpen
+                    ? 'text-[#11998E] after:w-full'
+                    : 'text-[#1F2933] hover:text-[#11998E] after:w-0 hover:after:w-full'
+                }`}
               >
-                {item.label}
-              </Link>
-            ))}
-            {/* Ask AI Vita Button - in navigation */}
-            <div className="flex-shrink-0">
-              <AskAIVitaButton />
+                <span>{navItems[1].label}</span>
+                <motion.span animate={{ rotate: isExploreMenuOpen ? 180 : 0 }}>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </motion.span>
+              </button>
+
+              <AnimatePresence>
+                {isExploreMenuOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute left-0 top-full mt-3 w-60 bg-bg border border-border rounded-2xl shadow-2xl p-4 z-50"
+                  >
+                    <div className="flex flex-col gap-2">
+                      <Link
+                        href="/coaches"
+                        onClick={() => setIsExploreMenuOpen(false)}
+                        className="flex flex-col rounded-lg px-3 py-2 hover:bg-primary/5 transition-colors"
+                      >
+                        <span className="text-sm font-semibold text-text">Health coaches & nutrition</span>
+                        <span className="text-xs text-muted">Personalised advice for your routine</span>
+                      </Link>
+                      <Link
+                        href="/blog"
+                        onClick={() => setIsExploreMenuOpen(false)}
+                        className="flex flex-col rounded-lg px-3 py-2 hover:bg-primary/5 transition-colors"
+                      >
+                        <span className="text-sm font-semibold text-text">Blog</span>
+                        <span className="text-xs text-muted">Guides, tips and TAQA stories</span>
+                      </Link>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </nav>
 
@@ -360,109 +426,17 @@ const Header = () => {
             </div>
 
             {/* Language Switcher (includes Google Translate) - Fixed width to prevent layout shift */}
-            <div className="flex-shrink-0 flex items-center h-8">
+            <div className="flex-shrink-0 flex items-center h-6 scale-75 origin-center">
               <LanguageSwitcher />
             </div>
 
-            {/* Cart Dropdown */}
-            <div className="relative flex items-center h-9" ref={cartRef}>
-              <button
-                onClick={() => setIsCartOpen(!isCartOpen)}
-                className="relative p-1.5 rounded-lg hover:bg-[#E7E1D4] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#11998E]/30 focus:ring-offset-0"
-                aria-label={`Shopping cart with ${itemCount} items`}
-              >
-                <ShoppingCart className="w-4 h-4 text-[#1F2933] hover:text-[#11998E] transition-colors duration-200" />
-                {mounted && itemCount > 0 && (
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    className="absolute -top-1 -right-1 bg-gradient-to-br from-[#11998E] to-[#38EF7D] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium"
-                    aria-label={`${itemCount} items in cart`}
-                  >
-                    {itemCount}
-                  </motion.div>
-                )}
-              </button>
-
-              {/* Cart Dropdown Menu */}
-              <AnimatePresence>
-                {isCartOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute right-0 mt-2 w-80 bg-bg border border-border rounded-lg shadow-soft-lg z-50 max-h-96 overflow-hidden flex flex-col"
-                  >
-                    <div className="p-4 border-b border-border">
-                      <h3 className="font-semibold text-text">{t('cart.title')}</h3>
-                      <p className="text-sm text-muted">{itemCount} {itemCount === 1 ? t('cart.item') : t('cart.items')}</p>
-                    </div>
-                    
-                    {items.length > 0 ? (
-                      <>
-                        <div className="overflow-y-auto flex-1 max-h-64">
-                          <div className="p-4 space-y-3">
-                            {items.map((item) => (
-                              <div key={item.product.id} className="flex items-center space-x-3">
-                                <div className="relative w-16 h-16 bg-bg border border-border rounded-lg overflow-hidden flex-shrink-0">
-                                  <Image
-                                    src={getProductImage(item.product)}
-                                    alt={item.product.name}
-                                    fill
-                                    className="object-contain"
-                                  />
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                  <p className="text-sm font-medium text-text truncate">{item.product.name}</p>
-                                  <p className="text-xs text-muted">Qty: {item.quantity}</p>
-                                  <p className="text-sm font-semibold text-text">{formatPrice(item.product.price * item.quantity)}</p>
-                                </div>
-                                <button
-                                  onClick={() => removeItem(Number(item.product.id))}
-                                  className="p-1 text-muted hover:text-red-500 transition-colors"
-                                  aria-label="Remove item"
-                                >
-                                  <Trash2 className="w-4 h-4" />
-                                </button>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                        <div className="p-4 border-t border-border bg-bg">
-                          <div className="flex justify-between items-center mb-4">
-                            <span className="font-semibold text-text">{t('cart.total')}:</span>
-                            <span className="font-bold text-lg text-text">{formatPrice(getTotal())}</span>
-                          </div>
-                          <div className="flex gap-2">
-                            <Link
-                              href="/checkout"
-                              onClick={() => setIsCartOpen(false)}
-                              className="flex-1 btn-primary flex items-center justify-center gap-2 py-2.5 text-sm"
-                            >
-                              <ShoppingCart className="w-4 h-4" />
-                              <span>{t('cart.checkout')}</span>
-                            </Link>
-                            <Link
-                              href="/cart"
-                              onClick={() => setIsCartOpen(false)}
-                              className="flex-1 bg-white border border-border text-text hover:bg-gray-50 hover:border-primary hover:text-primary flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg font-medium text-sm transition-all duration-200"
-                            >
-                              <span>{t('cart.viewCart')}</span>
-                            </Link>
-                          </div>
-                        </div>
-                      </>
-                    ) : (
-                      <div className="p-8 text-center">
-                        <ShoppingCart className="w-12 h-12 text-muted/30 mx-auto mb-3" />
-                        <p className="text-muted text-sm">{t('cart.empty')}</p>
-                      </div>
-                    )}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+            {/* Support link */}
+            <Link
+              href="/contact"
+              className="hidden md:inline text-sm font-medium text-[#1F2933] hover:text-[#11998E] px-2 py-1 rounded-full hover:bg-[#EDE7DB] transition-colors duration-200"
+            >
+              Support
+            </Link>
 
             {/* User Menu / Login */}
             {!authLoading && (
@@ -632,17 +606,147 @@ const Header = () => {
                     </AnimatePresence>
                   </div>
                 ) : (
-                  <Link
-                    href="/login"
-                    className="hidden sm:flex h-8 items-center text-[#1F2933] hover:text-[#11998E] transition-colors duration-200 px-3 py-1.5 rounded-full hover:bg-[#EDE7DB] focus:outline-none focus:ring-2 focus:ring-[#11998E]/30 focus:ring-offset-0"
-                    aria-label={t('nav.login')}
-                  >
-                    <User className="w-4 h-4 mr-2" />
-                    <span className="text-sm font-medium">{t('nav.login')}</span>
-                  </Link>
+                  <div className="hidden sm:block relative h-9" ref={userMenuRef}>
+                    <button
+                      onClick={() => setIsUserMenuOpen((open) => !open)}
+                      className="px-3 py-1.5 text-sm font-medium text-[#1F2933] rounded-full hover:bg-[#EDE7DB] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#11998E]/30 focus:ring-offset-0"
+                    >
+                      My Account
+                    </button>
+                    <AnimatePresence>
+                      {isUserMenuOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -6 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -6 }}
+                          className="absolute right-0 mt-2 w-44 bg-bg border border-border rounded-xl shadow-2xl z-50 py-2"
+                        >
+                          <Link
+                            href="/login"
+                            onClick={() => setIsUserMenuOpen(false)}
+                            className="block px-4 py-2 text-sm text-text hover:bg-border/40"
+                          >
+                            Login
+                          </Link>
+                          <Link
+                            href="/register"
+                            onClick={() => setIsUserMenuOpen(false)}
+                            className="block px-4 py-2 text-sm text-text hover:bg-border/40"
+                          >
+                            Register
+                          </Link>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 )}
               </>
             )}
+
+            {/* Cart Dropdown */}
+            <div className="relative flex items-center h-9" ref={cartRef}>
+              <button
+                onClick={() => setIsCartOpen(!isCartOpen)}
+                className="relative p-1.5 rounded-lg hover:bg-[#E7E1D4] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#11998E]/30 focus:ring-offset-0"
+                aria-label={`Shopping cart with ${itemCount} items`}
+              >
+                <ShoppingCart className="w-4 h-4 text-[#1F2933] hover:text-[#11998E] transition-colors duration-200" />
+                {mounted && itemCount > 0 && (
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="absolute -top-1 -right-1 bg-gradient-to-br from-[#11998E] to-[#38EF7D] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium"
+                    aria-label={`${itemCount} items in cart`}
+                  >
+                    {itemCount}
+                  </motion.div>
+                )}
+              </button>
+
+              {/* Cart Dropdown Menu */}
+              <AnimatePresence>
+                {isCartOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute right-0 mt-2 w-80 bg-bg border border-border rounded-lg shadow-soft-lg z-50 max-h-96 overflow-hidden flex flex-col"
+                  >
+                    <div className="p-4 border-b border-border">
+                      <h3 className="font-semibold text-text">{t('cart.title')}</h3>
+                      <p className="text-sm text-muted">{itemCount} {itemCount === 1 ? t('cart.item') : t('cart.items')}</p>
+                    </div>
+                    
+                    {items.length > 0 ? (
+                      <>
+                        <div className="overflow-y-auto flex-1 max-h-64">
+                          <div className="p-4 space-y-3">
+                            {items.map((item) => (
+                              <div key={item.product.id} className="flex items-center space-x-3">
+                                <div className="relative w-16 h-16 bg-bg border border-border rounded-lg overflow-hidden flex-shrink-0">
+                                  <Image
+                                    src={getProductImage(item.product)}
+                                    alt={item.product.name}
+                                    fill
+                                    className="object-contain"
+                                  />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <p className="text-sm font-medium text-text truncate">{item.product.name}</p>
+                                  <p className="text-xs text-muted">Qty: {item.quantity}</p>
+                                  <p className="text-sm font-semibold text-text">{formatPrice(item.product.price * item.quantity)}</p>
+                                </div>
+                                <button
+                                  onClick={() => removeItem(Number(item.product.id))}
+                                  className="p-1 text-muted hover:text-red-500 transition-colors"
+                                  aria-label="Remove item"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                        <div className="p-4 border-t border-border bg-bg">
+                          <div className="flex justify-between items-center mb-4">
+                            <span className="font-semibold text-text">{t('cart.total')}:</span>
+                            <span className="font-bold text-lg text-text">{formatPrice(getTotal())}</span>
+                          </div>
+                          <div className="flex gap-2">
+                            <Link
+                              href="/checkout"
+                              onClick={() => setIsCartOpen(false)}
+                              className="flex-1 btn-primary flex items-center justify-center gap-2 py-2.5 text-sm"
+                            >
+                              <ShoppingCart className="w-4 h-4" />
+                              <span>{t('cart.checkout')}</span>
+                            </Link>
+                            <Link
+                              href="/cart"
+                              onClick={() => setIsCartOpen(false)}
+                              className="flex-1 bg-white border border-border text-text hover:bg-gray-50 hover:border-primary hover:text-primary flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg font-medium text-sm transition-all duration-200"
+                            >
+                              <span>{t('cart.viewCart')}</span>
+                            </Link>
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="p-8 text-center">
+                        <ShoppingCart className="w-12 h-12 text-muted/30 mx-auto mb-3" />
+                        <p className="text-muted text-sm">{t('cart.empty')}</p>
+                      </div>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Build Routine CTA */}
+            <div className="hidden md:block flex-shrink-0">
+              <AskAIVitaButton />
+            </div>
 
             {/* Mobile menu button */}
             <button

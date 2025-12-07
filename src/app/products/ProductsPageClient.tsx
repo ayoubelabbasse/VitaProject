@@ -417,13 +417,15 @@ export default function ProductsPageClient() {
           {/* Results Count and Sort - iHerb Style */}
           <div className="flex items-center justify-between mb-4 pb-3 border-b border-border-soft">
             <div className="text-sm text-text-muted">
-              {(() => {
-                const totalProducts = products.length
-                const filteredCount = filteredProducts.length
-                const start = filteredCount > 0 ? 1 : 0
-                const end = filteredCount
-                return `${start} - ${end} of ${totalProducts.toLocaleString()} results`
-              })()}
+              {loading
+                ? 'Loading products…'
+                : (() => {
+                    const totalProducts = products.length
+                    const filteredCount = filteredProducts.length
+                    const start = filteredCount > 0 ? 1 : 0
+                    const end = filteredCount
+                    return `${start} - ${end} of ${totalProducts.toLocaleString()} results`
+                  })()}
             </div>
             <div className="flex items-center gap-2">
               <label htmlFor="sort-select" className="text-sm text-text-muted hidden sm:block">
@@ -685,7 +687,24 @@ export default function ProductsPageClient() {
 
             {/* Products Grid */}
             <div className="w-full">
-              {filteredProducts.length > 0 ? (
+              {loading ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+                  {Array.from({ length: 8 }).map((_, index) => (
+                    <div
+                      key={index}
+                      className="animate-pulse bg-white rounded-2xl border border-border-soft shadow-sm h-full flex flex-col"
+                    >
+                      <div className="h-40 bg-[#F3F4F6] rounded-t-2xl" />
+                      <div className="p-3 space-y-2">
+                        <div className="h-3 w-20 bg-[#E5E7EB] rounded-full" />
+                        <div className="h-4 w-32 bg-[#E5E7EB] rounded-full" />
+                        <div className="h-3 w-16 bg-[#E5E7EB] rounded-full" />
+                        <div className="h-8 w-full bg-[#E5E7EB] rounded-full mt-3" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : filteredProducts.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
                   {filteredProducts.map((product) => (
                     <ProductCard key={product.id} product={product} />

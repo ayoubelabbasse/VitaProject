@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { resolveProductMedia } from '@/constants/paths';
+import { normalizeProductImagePath, resolveProductMedia } from '@/constants/paths';
 
 // Mark route as dynamic
 export const dynamic = 'force-dynamic';
@@ -58,6 +58,7 @@ export async function GET(
       console.warn('Error parsing ingredients for product:', product.id);
     }
 
+    // Gallery from DB JSON
     let gallery: string[] = [];
     try {
       const rawGallery = (product as any).galleryImages as
@@ -71,11 +72,24 @@ export async function GET(
       gallery = [];
     }
 
-    const media = resolveProductMedia({
-      name: product.name,
-      fallbackImage: product.image,
-      fallbackImages: gallery,
-    });
+    // Prefer DB-defined images; fall back to curated only if none
+    const normalizedFromDb = [product.image, ...gallery]
+      .map((entry) => normalizeProductImagePath(entry))
+      .filter((entry): entry is string => Boolean(entry));
+
+    let primary: string;
+    let images: string[];
+
+    if (normalizedFromDb.length > 0) {
+      primary = normalizedFromDb[0];
+      images = normalizedFromDb;
+    } else {
+      const media = resolveProductMedia({
+        name: product.name,
+      });
+      primary = media.primary;
+      images = media.gallery;
+    }
 
     const transformedProduct = {
       id: product.id,
@@ -84,8 +98,8 @@ export async function GET(
       category: product.category,
       price: product.price,
       originalPrice: product.originalPrice || undefined,
-      image: media.primary,
-      images: media.gallery,
+      image: primary,
+      images,
       rating: product.rating,
       reviews: product.reviews,
       inStock: product.inStock,

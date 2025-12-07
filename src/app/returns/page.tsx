@@ -14,29 +14,36 @@ export default function ReturnsPage() {
           <div className="bg-bg border border-border rounded-lg shadow-soft p-8">
             <RotateCcw className="w-8 h-8 text-primary mb-4" />
             <h2 className="text-2xl font-bold text-text mb-4">Return Policy</h2>
-            <p className="text-muted mb-4">We offer a 30-day return policy for unopened products in their original packaging.</p>
+            <p className="text-muted mb-4">
+              Returns are available only for online orders that were paid in advance by bank card, and only for
+              unopened products.
+            </p>
             <ul className="list-disc list-inside space-y-2 text-muted">
-              <li>Products must be unopened and in original packaging</li>
-              <li>Return requests must be made within 30 days of purchase</li>
-              <li>Return shipping is free for defective or damaged items</li>
-              <li>Refunds are processed within 5-7 business days after we receive the returned item</li>
+              <li>Only orders paid online by bank card are eligible for return.</li>
+              <li>Products must be completely unopened and in their original sealed packaging.</li>
+              <li>Return requests must be made within 3 days of receiving your order.</li>
+              <li>For non‑defective items, return shipping may be at the customer&apos;s expense.</li>
+              <li>Refunds are processed back to the same bank card once the products are inspected.</li>
             </ul>
           </div>
           <div className="bg-bg border border-border rounded-lg shadow-soft p-8">
             <Clock className="w-8 h-8 text-primary mb-4" />
             <h2 className="text-2xl font-bold text-text mb-4">How to Return</h2>
             <ol className="list-decimal list-inside space-y-2 text-muted">
-              <li>Contact our customer service team to initiate a return</li>
-              <li>We'll provide a return authorization and shipping label</li>
-              <li>Package the item securely in its original packaging</li>
-              <li>Ship the item back to us using the provided label</li>
-              <li>Once received, we'll process your refund</li>
+              <li>Contact our customer service team within 3 days of receiving your order.</li>
+              <li>Provide your order number and confirm that products are unopened.</li>
+              <li>We will share return instructions and the address for sending back the items.</li>
+              <li>Package the items securely in the original packaging and ship them back to us.</li>
+              <li>After inspection, your refund will be issued to the original bank card.</li>
             </ol>
           </div>
           <div className="bg-bg border border-border rounded-lg shadow-soft p-8">
             <CheckCircle className="w-8 h-8 text-primary mb-4" />
             <h2 className="text-2xl font-bold text-text mb-4">Exchanges</h2>
-            <p className="text-muted">We offer product exchanges within 30 days of purchase. Contact customer service to arrange an exchange.</p>
+            <p className="text-muted">
+              At this time, exchanges are handled as a return and new purchase. If you need a different product,
+              please request a refund for the eligible items and place a new order.
+            </p>
           </div>
         </div>
       </main>

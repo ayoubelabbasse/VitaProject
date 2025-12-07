@@ -193,20 +193,20 @@ a {
 
 /* Premium Button System */
 .btn-primary {
-  @apply bg-gradient-to-br from-[#11998E] to-[#38EF7D] hover:from-[#1AB99A] hover:to-[#4DFF8F] text-white font-medium py-3 px-8 rounded-full text-sm uppercase tracking-wide shadow-md hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#11998E] focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+  @apply bg-gradient-to-br from-[#232526] to-[#414345] hover:from-[#111827] hover:to-[#232526] text-white font-medium py-3 px-8 rounded-full text-sm uppercase tracking-wide shadow-md hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#232526] focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
 }
 
 .btn-outline {
-  @apply bg-transparent border-2 text-[#11998E] hover:bg-gradient-to-br hover:from-[#11998E] hover:to-[#38EF7D] hover:text-white font-medium py-3 px-8 rounded-full text-sm uppercase tracking-wide transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#11998E] focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
-  border-color: #11998E;
+  @apply bg-transparent border-2 text-[#232526] hover:bg-gradient-to-br hover:from-[#232526] hover:to-[#414345] hover:text-white font-medium py-3 px-8 rounded-full text-sm uppercase tracking-wide transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#232526] focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+  border-color: #232526;
 }
 
 .btn-ghost {
-  @apply bg-transparent text-[#11998E] hover:bg-gradient-to-br hover:from-[#11998E]/10 hover:to-[#38EF7D]/10 font-medium py-2 px-4 rounded-full text-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#11998E] focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+  @apply bg-transparent text-[#232526] hover:bg-neutral-900/5 font-medium py-2 px-4 rounded-full text-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#232526] focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
 }
 
 .btn-link {
-  @apply text-[#11998E] hover:text-[#38EF7D] underline-offset-4 hover:underline font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#11998E] focus:ring-offset-2 rounded;
+  @apply text-[#232526] hover:text-[#414345] underline-offset-4 hover:underline font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#232526] focus:ring-offset-2 rounded;
 }
 
 /* Global Add to Cart button style */
