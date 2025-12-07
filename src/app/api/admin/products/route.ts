@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/middleware';
 import { prisma } from '@/lib/prisma';
-import { normalizeProductImagePath, PRODUCT_IMAGE_FALLBACK } from '@/constants/paths';
+import { normalizeProductImagePath, PRODUCT_IMAGE_FALLBACK, resolveProductMedia } from '@/constants/paths';
 
 export async function GET(request: NextRequest) {
   const authResult = await requireAdmin(request);
