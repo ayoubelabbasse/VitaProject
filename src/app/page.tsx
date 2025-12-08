@@ -13,7 +13,7 @@ import { Product } from '@/types'
 import { getProductImage } from '@/utils/helpers/imagePlaceholder'
 import { productCatalog } from '@/data/products'
 
-// NOTE: Minor content tweak to trigger new deployment on Vercel.
+// NOTE: Tiny homepage comment change to trigger a fresh Vercel deployment.
 
 const curatedCollections = [
   {
