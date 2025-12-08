@@ -4,9 +4,10 @@ import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { Star, Heart, ShoppingCart, Check, Truck, Shield, RotateCcw, Minus, Plus, ArrowLeft, ArrowRight, Plus as PlusIcon } from 'lucide-react'
+import { Star, Heart, ShoppingCart, Check, Truck, Shield, RotateCcw, Minus, Plus, ArrowLeft, ArrowRight } from 'lucide-react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import ProductCard from '@/components/ProductCard'
 import { Product } from '@/types'
 import { useCartStore } from '@/store/cartStore'
 import { formatPrice } from '@/utils/formatters/currency'
@@ -95,23 +96,24 @@ export default function ProductDetailPage() {
   // Fetch related products
   useEffect(() => {
     if (product?.category) {
+      const MAX_RELATED = 8
       fetch(`/api/products?category=${encodeURIComponent(product.category)}`)
         .then(res => res.json())
         .then(data => {
           if (data.products) {
             const related = data.products
               .filter((p: Product) => p.id !== product.id)
-              .slice(0, 4);
-            setRelatedProducts(related);
+              .slice(0, MAX_RELATED)
+            setRelatedProducts(related)
           }
         })
         .catch(() => {
           // Fallback to static catalog
           const related = productCatalog
             .filter(p => p.category === product.category && p.id !== product.id)
-            .slice(0, 4);
-          setRelatedProducts(related);
-        });
+            .slice(0, MAX_RELATED)
+          setRelatedProducts(related)
+        })
     }
   }, [product])
 
@@ -213,7 +215,7 @@ export default function ProductDetailPage() {
           Back
         </button>
 
-        <div className="grid lg:grid-cols-2 gap-12 mb-16">
+        <div className="grid lg:grid-cols-2 gap-10 mb-14">
           {/* Product Images */}
           <div className="space-y-4">
             <div className="relative aspect-square bg-gradient-to-br from-white via-white to-primary/10 border border-border rounded-2xl overflow-hidden shadow-soft p-6">
@@ -261,10 +263,10 @@ export default function ProductDetailPage() {
           </div>
 
           {/* Product Info */}
-          <div className="space-y-6">
+          <div className="space-y-7">
             <div>
               <p className="text-primary font-medium text-sm mb-2">{product.brand}</p>
-              <h1 className="text-2xl md:text-3xl font-bold text-text mb-4">{product.name}</h1>
+              <h1 className="text-2xl md:text-3xl font-bold text-text mb-3">{product.name}</h1>
               
               {/* Rating */}
               <div className="flex items-center space-x-2 mb-4">
@@ -286,7 +288,7 @@ export default function ProductDetailPage() {
               </div>
 
               {/* Price */}
-              <div className="flex items-center flex-wrap gap-3 mb-6">
+              <div className="flex items-center flex-wrap gap-3 mb-5">
                 <span className="text-2xl font-bold text-text">
                   {formatPrice(displayPrice)}
                 </span>
@@ -395,28 +397,28 @@ export default function ProductDetailPage() {
               </div>
             </div>
 
-                {/* Action Buttons */}
-                <div className="grid grid-cols-2 gap-4">
-                  <button
-                    onClick={(e) => handleAddToCart(e)}
-                    disabled={!product.inStock}
-                    className="btn-secondary py-3 flex items-center justify-center space-x-2"
-                  >
-                    <ShoppingCart className="w-4 h-4" />
-                    <span>Add to Cart</span>
-                  </button>
-                  <button
-                    onClick={(e) => {
-                      handleAddToCart(e, { openDrawer: false });
-                      router.push('/checkout');
-                    }}
-                    disabled={!product.inStock}
-                    className="btn-primary py-3 flex items-center justify-center space-x-2"
-                  >
-                    <span>Buy Now</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
-                </div>
+            {/* Action Buttons */}
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                onClick={(e) => handleAddToCart(e)}
+                disabled={!product.inStock}
+                className="inline-flex items-center justify-center gap-2 rounded-lg border border-border bg-white px-4 py-2.5 text-sm font-semibold text-text hover:border-[#232526] hover:text-[#232526] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <ShoppingCart className="w-4 h-4" />
+                <span>Add to Cart</span>
+              </button>
+              <button
+                onClick={(e) => {
+                  handleAddToCart(e, { openDrawer: false });
+                  router.push('/checkout');
+                }}
+                disabled={!product.inStock}
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-br from-[#232526] to-[#414345] px-4 py-2.5 text-sm font-semibold uppercase tracking-[0.16em] text-white shadow-md hover:from-[#111827] hover:to-[#232526] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <span>Buy Now</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
 
             {/* Trust Badges */}
             <div className="grid grid-cols-3 gap-4 pt-6 border-t border-border">
@@ -461,42 +463,16 @@ export default function ProductDetailPage() {
         </div>
 
         {/* Related Products */}
-        <div>
-          <h2 className="text-3xl font-bold text-text mb-8">You May Also Like</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {relatedProducts.map((relatedProduct) => (
-              <motion.div
-                key={relatedProduct.id}
-                whileHover={{ y: -5 }}
-                className="bg-bg border border-border rounded-lg shadow-soft hover:shadow-soft-md transition-all duration-300 overflow-hidden cursor-pointer"
-                onClick={() => router.push(`/product/${relatedProduct.id}`)}
-              >
-                <div className="relative aspect-square">
-                  <Image
-                    src={getProductImage(relatedProduct)}
-                    alt={relatedProduct.name}
-                    fill
-                    className="object-contain"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="p-4">
-                  <h3 className="font-semibold text-text mb-2">{relatedProduct.name}</h3>
-                  <p className="text-muted text-sm mb-3">{relatedProduct.brand}</p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-xl font-bold text-text">
-                      {formatPrice(relatedProduct.price)}
-                    </span>
-                    <div className="flex items-center space-x-1">
-                      <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                      <span className="text-sm text-muted">{relatedProduct.rating}</span>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
+        {relatedProducts.length > 0 && (
+          <section className="pt-4">
+            <h2 className="text-2xl md:text-3xl font-semibold text-text mb-6">You May Also Like</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
+              {relatedProducts.map((relatedProduct) => (
+                <ProductCard key={relatedProduct.id} product={relatedProduct} />
+              ))}
+            </div>
+          </section>
+        )}
       </main>
       
       <Footer />

@@ -363,7 +363,7 @@ export default function ProductsPageClient() {
       <main className="bg-[#F5F7FA]">
         {/* Header Section */}
         <div className="bg-white border-b border-border-soft">
-          <div className="vita-container py-6 md:py-8">
+              <div className="vita-container py-5 md:py-7">
             {/* Title and Subtitle */}
             <div className="mb-6">
               <div className="flex items-baseline gap-4 mb-2">
@@ -435,7 +435,7 @@ export default function ProductsPageClient() {
                 id="sort-select"
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="px-3 py-1.5 md:px-4 md:py-2 border border-border-soft rounded-full focus:ring-2 focus:ring-[#11998E] bg-white text-[#111827] text-sm"
+                className="px-3 py-1.5 md:px-4 md:py-2 border border-border-soft rounded-lg focus:ring-2 focus:ring-[#11998E] bg-white text-[#111827] text-sm"
               >
                 <option value="featured">{t('products.sortFeatured')}</option>
                 <option value="price-low">{t('products.sortPriceLow')}</option>
@@ -448,8 +448,8 @@ export default function ProductsPageClient() {
 
           <div className="grid gap-4 md:gap-6 lg:grid-cols-[240px,1fr]">
             {/* Sidebar Filters */}
-            <div className={`${isMobileFiltersOpen ? 'block' : 'hidden'} md:block`}>
-              <div className="bg-white rounded-2xl shadow-md border border-border-soft p-4 md:sticky md:top-20">
+              <div className={`${isMobileFiltersOpen ? 'block' : 'hidden'} md:block`}>
+              <div className="bg-white rounded-xl shadow-md border border-border-soft p-4 md:sticky md:top-20">
                 <h3 className="text-sm font-semibold text-[#111827] mb-3 flex items-baseline">
                   <Filter className="w-3.5 h-3.5 mr-2 text-[#11998E] mt-0.5" />
                   <span className="leading-none">{t('products.filters')}</span>

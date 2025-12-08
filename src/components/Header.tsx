@@ -250,7 +250,7 @@ const Header = () => {
           />
 
           {/* Desktop Navigation - Always LTR, never flips */}
-          <nav className="hidden md:flex flex-1 items-center justify-center space-x-4 lg:space-x-6" dir="ltr" style={{ direction: 'ltr' }}>
+          <nav className="hidden md:flex flex-1 items-center justify-start ml-4 space-x-4 lg:space-x-6" dir="ltr" style={{ direction: 'ltr' }}>
             <div
               className="relative"
               ref={productsMenuRef}
@@ -423,11 +423,6 @@ const Header = () => {
                 placeholder={t('nav.search')}
                 className="bg-transparent outline-none text-sm w-40 text-[#1F2933] placeholder:text-[#9CA3AF] focus:outline-none"
               />
-            </div>
-
-            {/* Language Switcher (includes Google Translate) - Fixed width to prevent layout shift */}
-            <div className="flex-shrink-0 flex items-center h-6 scale-75 origin-center">
-              <LanguageSwitcher />
             </div>
 
             {/* Support link */}
@@ -650,12 +645,14 @@ const Header = () => {
                 className="relative p-1.5 rounded-lg hover:bg-[#E7E1D4] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#11998E]/30 focus:ring-offset-0"
                 aria-label={`Shopping cart with ${itemCount} items`}
               >
-                <ShoppingCart className="w-4 h-4 text-[#1F2933] hover:text-[#11998E] transition-colors duration-200" />
+                <span className="px-1 text-sm font-medium text-[#1F2933] hover:text-[#11998E] transition-colors duration-200">
+                  Cart
+                </span>
                 {mounted && itemCount > 0 && (
                   <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
-                    className="absolute -top-1 -right-1 bg-gradient-to-br from-[#11998E] to-[#38EF7D] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium"
+                    className="absolute -top-1 -right-1 bg-gradient-to-br from-[#232526] to-[#414345] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium"
                     aria-label={`${itemCount} items in cart`}
                   >
                     {itemCount}
@@ -671,7 +668,7 @@ const Header = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
                     transition={{ duration: 0.2 }}
-                    className="absolute right-0 mt-2 w-80 bg-bg border border-border rounded-lg shadow-soft-lg z-50 max-h-96 overflow-hidden flex flex-col"
+                    className="absolute right-0 mt-3 w-80 bg-white border border-border rounded-xl shadow-soft-lg z-50 max-h-96 overflow-hidden flex flex-col"
                   >
                     <div className="p-4 border-b border-border">
                       <h3 className="font-semibold text-text">{t('cart.title')}</h3>
@@ -717,7 +714,7 @@ const Header = () => {
                             <Link
                               href="/checkout"
                               onClick={() => setIsCartOpen(false)}
-                              className="flex-1 btn-primary flex items-center justify-center gap-2 py-2.5 text-sm"
+                              className="flex-1 bg-gradient-to-br from-[#232526] to-[#414345] hover:from-[#111827] hover:to-[#232526] text-white font-medium py-2.5 px-4 rounded-lg text-sm uppercase tracking-wide shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2"
                             >
                               <ShoppingCart className="w-4 h-4" />
                               <span>{t('cart.checkout')}</span>
@@ -725,7 +722,7 @@ const Header = () => {
                             <Link
                               href="/cart"
                               onClick={() => setIsCartOpen(false)}
-                              className="flex-1 bg-white border border-border text-text hover:bg-gray-50 hover:border-primary hover:text-primary flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg font-medium text-sm transition-all duration-200"
+                              className="flex-1 bg-white border border-border text-text hover:bg-gray-50 hover:border-[#232526] hover:text-[#232526] flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg font-medium text-sm transition-all duration-200"
                             >
                               <span>{t('cart.viewCart')}</span>
                             </Link>
@@ -741,6 +738,11 @@ const Header = () => {
                   </motion.div>
                 )}
               </AnimatePresence>
+            </div>
+
+            {/* Language Switcher (includes Google Translate) - Fixed width to prevent layout shift */}
+            <div className="hidden md:flex flex-shrink-0 items-center h-6 scale-75 origin-center">
+              <LanguageSwitcher />
             </div>
 
             {/* Build Routine CTA */}

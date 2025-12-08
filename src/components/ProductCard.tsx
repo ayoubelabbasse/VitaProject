@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { ShoppingCart, Star, Heart, Eye, Package, GaugeCircle, ArrowRight } from 'lucide-react';
+import { ShoppingCart, Star, Eye, Package, GaugeCircle, ArrowRight } from 'lucide-react';
 import { Product } from '@/types';
 import { useCartStore } from '@/store/cartStore';
 import { useTranslation } from 'react-i18next';
@@ -23,7 +23,6 @@ const getDefaultVariant = (product: Product) => {
 };
 
 const ProductCard = ({ product, viewMode = 'grid' }: ProductCardProps) => {
-  const [isWishlisted, setIsWishlisted] = useState(false);
   const { addItem } = useCartStore();
   const { t } = useTranslation();
   const router = useRouter();
@@ -44,12 +43,6 @@ const ProductCard = ({ product, viewMode = 'grid' }: ProductCardProps) => {
     e.stopPropagation();
     addItem(product, 1, { variant: defaultVariant, openDrawer: false });
     router.push('/checkout');
-  };
-
-  const handleWishlist = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsWishlisted(!isWishlisted);
   };
 
   const renderMetaBadges = (compact = false) => (
@@ -96,7 +89,7 @@ const ProductCard = ({ product, viewMode = 'grid' }: ProductCardProps) => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         whileHover={{ y: -2 }}
-        className="group bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden"
+        className="group bg-white rounded-lg shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden"
       >
         <Link href={`/product/${product.id}`}>
           <div className="flex">
@@ -116,13 +109,6 @@ const ProductCard = ({ product, viewMode = 'grid' }: ProductCardProps) => {
                   className="object-contain group-hover:scale-105 transition-transform duration-300"
                 />
               )}
-
-              <button
-                onClick={handleWishlist}
-                className="absolute top-3 right-3 p-2 bg-white/80 backdrop-blur-sm rounded-full hover:bg-white transition-colors duration-200"
-              >
-                <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-red-500 text-red-500' : 'text-charcoal'}`} />
-              </button>
 
               {!product.inStock && (
                 <div className="absolute top-3 left-3 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
@@ -210,25 +196,17 @@ const ProductCard = ({ product, viewMode = 'grid' }: ProductCardProps) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -4 }}
-      className="group bg-white rounded-2xl border border-border-soft shadow-sm hover:shadow-xl transition-all duration-300 h-full flex flex-col"
+      className="group bg-white rounded-xl border border-border-soft shadow-sm hover:shadow-xl transition-all duration-300 h-full flex flex-col"
     >
       <Link href={`/product/${product.id}`}>
         <div className="relative px-4 pt-4">
-          <button
-            onClick={handleWishlist}
-            className="absolute top-2 right-2 z-10 w-6 h-6 flex items-center justify-center text-text-muted hover:text-red-500 transition-colors duration-200"
-            aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
-          >
-            <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-red-500 text-red-500' : 'stroke-2'}`} />
-          </button>
-
           {!product.inStock && (
             <div className="absolute top-0 left-0 bg-red-500 text-white text-xs px-3 py-1 rounded-full">
               {t('products.outOfStock')}
             </div>
           )}
 
-          <div className="relative mt-2 rounded-xl bg-[#F9FAFB] h-[140px] sm:h-[150px] md:h-[160px] flex items-center justify-center overflow-hidden">
+          <div className="relative mt-2 rounded-lg bg-[#F9FAFB] h-[140px] sm:h-[150px] md:h-[160px] flex items-center justify-center overflow-hidden">
             <div className="absolute inset-x-8 bottom-3 h-3 bg-black/10 rounded-full blur-xl opacity-20" />
             <div className="relative w-full h-[75%]">
               {isDataUri ? (

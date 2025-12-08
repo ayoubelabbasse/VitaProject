@@ -31,7 +31,7 @@ const curatedCollections = [
   {
     key: 'wellness',
     label: 'Wellness',
-    image: '/images/products/magnesium-and-lactobif-nature.jpg',
+    image: '/images/products/Magnesium-and-lactobif-nature.jpg',
     icon: Shield,
     href: '/products?category=Wellness',
   },
@@ -50,8 +50,8 @@ const heroSlides = [
     image: '/images/products/hero-carousel-1.png',
     alt: 'TAQA hero – classics curated for daily rituals',
     eyebrow: 'TAQA ESSENTIALS',
-    titleLines: ['Classics Curated', 'for Daily Rituals'],
-    subtitle: '',
+    titleLines: ['Classics curated', 'for daily rituals'],
+    subtitle: 'Build a simple daily stack and save up to 20% extra.',
     mode: 'light' as const,
     ctaLabel: 'Shop Now',
     ctaHref: '/products',
@@ -60,24 +60,24 @@ const heroSlides = [
   {
     key: 'build-save',
     image: '/images/products/hero-carousel-2.jpg',
-    alt: 'Build your TAQA routine and save 25 MAD',
-    eyebrow: 'BUILD ROUTINE · 25 MAD OFF',
-    titleLines: ['Build your TAQA routine', 'and pay less'],
-    subtitle: 'Answer a few questions and get a stack with savings.',
+    alt: 'Build your TAQA routine and save 10%',
+    eyebrow: '',
+    titleLines: [],
+    subtitle: '',
     mode: 'dark' as const,
-    ctaLabel: 'Build Routine',
+    ctaLabel: 'Build Routine · 10% OFF',
     ctaHref: '/products',
     ctaVariant: 'green' as const,
   },
   {
     key: 'morocco-first',
     image: '/images/products/hero-carousel-3.jpg',
-    alt: 'Take the TAQA quiz and save 25 MAD',
-    eyebrow: 'TAQA QUIZ · 25 MAD OFF',
-    titleLines: ['Take the TAQA quiz', 'and save 25 MAD'],
-    subtitle: 'Find your routine in under a minute.',
+    alt: 'Take the TAQA quiz and save 10%',
+    eyebrow: '',
+    titleLines: [],
+    subtitle: '',
     mode: 'dark' as const,
-    ctaLabel: 'Take Quiz',
+    ctaLabel: 'Take Quiz · 10% OFF',
     ctaHref: '/products',
     ctaVariant: 'green' as const,
   },
@@ -112,6 +112,7 @@ export default function HomePage() {
   const [heroIndex, setHeroIndex] = useState(0)
   const [isHeroPlaying, setIsHeroPlaying] = useState(true)
   const heroFirstRun = useRef(true)
+  const featuredScrollRef = useRef<HTMLDivElement | null>(null)
 
   // Fetch featured products from database
   useEffect(() => {
@@ -120,10 +121,10 @@ export default function HomePage() {
         const response = await fetch('/api/products')
         const data = await response.json()
         if (data.products && data.products.length > 0) {
-          setFeaturedProducts(data.products.slice(0, 5))
+          setFeaturedProducts(data.products.slice(0, 10))
         } else {
           // Fallback to static catalog
-          setFeaturedProducts(productCatalog.slice(0, 5))
+          setFeaturedProducts(productCatalog.slice(0, 10))
         }
       } catch (error) {
         console.error('Error fetching featured products:', error)
@@ -179,13 +180,20 @@ export default function HomePage() {
   const currentHero = heroSlides[heroIndex]
   const isLightMode = currentHero.mode === 'light'
 
+  const scrollFeatured = (direction: 'left' | 'right') => {
+    const node = featuredScrollRef.current
+    if (!node) return
+    const amount = node.clientWidth * 0.6
+    node.scrollBy({ left: direction === 'left' ? -amount : amount, behavior: 'smooth' })
+  }
+
   return (
     <div className="min-h-screen bg-bg-main">
       <Header />
       
       {/* Hero Section - Carousel */}
       <section className="bg-gradient-to-br from-[#ECE9E6] to-[#FFFFFF]">
-        <div className="vita-container py-6">
+        <div className="vita-container py-4">
           <div className="relative h-[280px] sm:h-[340px] md:h-[380px] border-x border-[#E5E7EB] overflow-hidden rounded-none">
             <motion.div
               key={currentHero.key}
@@ -214,24 +222,28 @@ export default function HomePage() {
                 transition={{ duration: 0.4, delay: 0.05 }}
                 className="text-left space-y-3 max-w-md"
               >
-                <p
-                  className={`text-[11px] tracking-[0.45em] uppercase font-semibold ${
-                    isLightMode ? 'text-white drop-shadow-md' : 'text-[#11998E]'
-                  }`}
-                >
-                  {currentHero.eyebrow}
-                </p>
-                <h1
-                  className={`text-3xl sm:text-[2.3rem] font-semibold leading-tight ${
-                    isLightMode ? 'text-white drop-shadow-md' : 'text-[#111827]'
-                  }`}
-                >
-                  {currentHero.titleLines.map((line) => (
-                    <span key={line} className="block">
-                      {line}
-                    </span>
-                  ))}
-                </h1>
+                {currentHero.eyebrow && (
+                  <p
+                    className={`text-[11px] tracking-[0.45em] uppercase font-semibold ${
+                      isLightMode ? 'text-white drop-shadow-md' : 'text-[#11998E]'
+                    }`}
+                  >
+                    {currentHero.eyebrow}
+                  </p>
+                )}
+                {currentHero.titleLines.length > 0 && (
+                  <h1
+                    className={`text-3xl sm:text-[2.3rem] font-semibold leading-tight ${
+                      isLightMode ? 'text-white drop-shadow-md' : 'text-[#111827]'
+                    }`}
+                  >
+                    {currentHero.titleLines.map((line) => (
+                      <span key={line} className="block">
+                        {line}
+                      </span>
+                    ))}
+                  </h1>
+                )}
                 {currentHero.subtitle && (
                   <p
                     className={`text-sm sm:text-base max-w-sm ${
@@ -362,16 +374,13 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Trust Signals / Value Props */}
+      {/* How TAQA works – 3 simple steps */}
       <section className="bg-[#F5F7FA] py-8">
         <div className="vita-container">
-          <div className="text-center mb-6">
+          <div className="mb-4">
             <p className="text-[11px] uppercase tracking-[0.3em] text-text-muted font-semibold">
               How TAQA works
             </p>
-            <h2 className="mt-2 text-2xl md:text-3xl font-semibold text-text-main">
-              From order to delivery in 3 clear steps
-            </h2>
           </div>
           <div className="grid gap-4 md:gap-6 md:grid-cols-3">
             {trustSignals.map((signal) => {
@@ -404,71 +413,78 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Featured Products - Champion's Choice */}
+      {/* Featured Products - horizontal scroller */}
       <section className="pt-8 pb-6 bg-[#F5F7FA]">
         <div className="vita-container">
-          <div className="text-center mb-6">
+          <div className="text-center mb-5">
             <motion.span
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="inline-block text-xs uppercase tracking-[0.3em] text-[#6B7280] font-semibold mb-4"
+              className="inline-block text-xs uppercase tracking-[0.3em] text-[#6B7280] font-semibold"
             >
               CHAMPION'S CHOICE
             </motion.span>
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="text-3xl md:text-4xl font-semibold text-[#111827] mb-4 leading-tight"
-            >
-              Featured Products
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              className="text-base text-[#6B7280]"
-            >
-              Trusted supplements for performance and daily wellness.
-            </motion.p>
           </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            {featuredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-          
-          <div className="text-center mt-12">
-            <Link href="/products">
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="inline-flex items-center justify-center rounded-xl bg-gradient-to-br from-[#232526] to-[#414345] px-6 py-2.5 text-[11px] font-semibold uppercase tracking-[0.3em] text-white shadow-md transition-all hover:from-[#11998E] hover:to-[#38EF7D] focus:outline-none focus:ring-2 focus:ring-[#11998E]/40 focus:ring-offset-2"
+          <div className="relative">
+            <div
+              ref={featuredScrollRef}
+              className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide"
+            >
+              {featuredProducts.slice(0, 10).map((product) => (
+                <div
+                  key={product.id}
+                  className="min-w-[220px] sm:min-w-[260px] lg:min-w-[240px] flex-shrink-0"
+                >
+                  <ProductCard product={product} />
+                </div>
+              ))}
+            </div>
+
+            {/* Scroll arrows */}
+            <div className="hidden md:flex absolute inset-y-0 left-0 items-center pointer-events-none">
+              <button
+                type="button"
+                onClick={() => scrollFeatured('left')}
+                className="pointer-events-auto inline-flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-md text-[#111827] hover:bg-[#F3F4F6] transition-colors"
+                aria-label="Scroll featured products left"
               >
-                <span>{t('homepage.featured.viewAll')}</span>
-                <ArrowRight className="w-4 h-4" />
-              </motion.button>
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+            </div>
+            <div className="hidden md:flex absolute inset-y-0 right-0 items-center pointer-events-none">
+              <button
+                type="button"
+                onClick={() => scrollFeatured('right')}
+                className="pointer-events-auto inline-flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-md text-[#111827] hover:bg-[#F3F4F6] transition-colors"
+                aria-label="Scroll featured products right"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+
+          <div className="mt-6 flex justify-center">
+            <Link href="/products" className="inline-flex items-center gap-2 text-sm font-semibold text-[#111827] hover:text-[#11998E] transition-colors">
+              <span>Browse full catalog</span>
+              <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>
       </section>
 
       {/* Lifestyle Motivation */}
-      <section className="bg-white pt-4">
-        <div className="vita-container py-12 grid gap-10 lg:grid-cols-[1.1fr,0.9fr] items-center">
+      <section className="bg-white">
+        <div className="vita-container grid gap-6 lg:grid-cols-[1.05fr,0.95fr] items-center">
           <div className="space-y-4">
             <span className="text-xs uppercase tracking-[0.3em] text-text-muted">
               Stronger Every Day
             </span>
             <h2 className="heading-lg">
-              Build Your Daily Ritual
+              Stronger every day
             </h2>
-            <p className="text-body text-text-muted max-w-xl">
-              Pair targeted stacks with intentional movement. TAQA curates performance-driven protocols so you can lift, recover, and show up energized — all week.
+            <p className="text-sm md:text-base text-text-muted max-w-xl">
+              Start with one or two essentials, stay consistent, and let TAQA handle the quality, sourcing and delivery. Small choices, repeated daily, compound into real energy.
             </p>
             <div className="flex flex-wrap gap-4">
               <Link
@@ -483,7 +499,7 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
-          <div className="relative h-[320px] md:h-[360px] rounded-3xl overflow-hidden shadow-lg">
+          <div className="relative h-[320px] md:h-[360px] overflow-hidden shadow-lg">
             <Image
               src="/images/hero/front-1.jpg"
               alt="Active lifestyle inspiration"

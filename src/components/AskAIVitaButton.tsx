@@ -26,7 +26,7 @@ const AskAIVitaButton = () => {
         aria-label="Build Routine"
         disabled
       >
-        <span>Build Routine · 25 MAD off</span>
+        <span>Build Routine · 10% OFF</span>
       </button>
     );
   }
@@ -40,7 +40,7 @@ const AskAIVitaButton = () => {
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
       >
-        <span>Build Routine · 25 MAD off</span>
+        <span>Build Routine · 10% OFF</span>
       </motion.button>
 
       {/* Render VitaAI modal when button is clicked */}
