@@ -113,6 +113,7 @@ export default function HomePage() {
   const [isHeroPlaying, setIsHeroPlaying] = useState(true)
   const heroFirstRun = useRef(true)
   const featuredScrollRef = useRef<HTMLDivElement | null>(null)
+  const recentScrollRef = useRef<HTMLDivElement | null>(null)
 
   // Fetch featured products from database
   useEffect(() => {
@@ -182,6 +183,13 @@ export default function HomePage() {
 
   const scrollFeatured = (direction: 'left' | 'right') => {
     const node = featuredScrollRef.current
+    if (!node) return
+    const amount = node.clientWidth * 0.6
+    node.scrollBy({ left: direction === 'left' ? -amount : amount, behavior: 'smooth' })
+  }
+
+  const scrollRecent = (direction: 'left' | 'right') => {
+    const node = recentScrollRef.current
     if (!node) return
     const amount = node.clientWidth * 0.6
     node.scrollBy({ left: direction === 'left' ? -amount : amount, behavior: 'smooth' })
@@ -301,14 +309,17 @@ export default function HomePage() {
       {recentlyViewed.length >= 3 && (
         <section className="bg-white py-8">
           <div className="vita-container">
-            <div className="mb-4 text-center">
+            <div className="mb-3">
               <p className="text-[11px] uppercase tracking-[0.3em] text-text-main font-semibold">
                 Recently viewed
               </p>
             </div>
-            <div className="overflow-x-auto">
-              <div className="flex gap-4 md:gap-6 py-1">
-                {recentlyViewed.slice(0, 8).map((product) => (
+            <div className="relative">
+              <div
+                ref={recentScrollRef}
+                className="flex gap-4 md:gap-6 overflow-x-auto pb-2"
+              >
+                {recentlyViewed.slice(0, 12).map((product) => (
                   <Link
                     key={product.id}
                     href={`/product/${product.id}`}
@@ -317,7 +328,7 @@ export default function HomePage() {
                     <motion.div
                       whileHover={{ y: -6, scale: 1.03 }}
                       transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-                      className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-xl flex items-center justify-center border border-border-soft/60 bg-transparent hover:border-primary/70 hover:shadow-md transition-all duration-200"
+                      className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 flex items-center justify-center transition-transform duration-200"
                     >
                       <div className="relative w-[78%] h-[78%]">
                         <Image
@@ -332,6 +343,27 @@ export default function HomePage() {
                   </Link>
                 ))}
               </div>
+
+              {recentlyViewed.length > 4 && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => scrollRecent('left')}
+                    className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 h-7 w-7 items-center justify-center rounded-full bg-white shadow-md text-[#111827] hover:bg-[#F3F4F6] transition-colors"
+                    aria-label="Scroll recently viewed left"
+                  >
+                    <ChevronLeft className="w-3.5 h-3.5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => scrollRecent('right')}
+                    className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 h-7 w-7 items-center justify-center rounded-full bg-white shadow-md text-[#111827] hover:bg-[#F3F4F6] transition-colors"
+                    aria-label="Scroll recently viewed right"
+                  >
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </section>

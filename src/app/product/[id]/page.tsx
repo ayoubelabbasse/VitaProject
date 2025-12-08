@@ -4,7 +4,19 @@ import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { Star, Heart, ShoppingCart, Check, Truck, Shield, RotateCcw, Minus, Plus, ArrowLeft, ArrowRight } from 'lucide-react'
+import {
+  Star,
+  Heart,
+  ShoppingCart,
+  Check,
+  Truck,
+  Shield,
+  RotateCcw,
+  Minus,
+  Plus,
+  ArrowLeft,
+  ArrowRight,
+} from 'lucide-react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import ProductCard from '@/components/ProductCard'
@@ -26,6 +38,8 @@ export default function ProductDetailPage() {
   const [selectedImage, setSelectedImage] = useState(0)
   const [selectedVariantId, setSelectedVariantId] = useState<string | null>(null)
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([])
+  const [bundleProducts, setBundleProducts] = useState<Product[]>([])
+  const [bundleSelectedIds, setBundleSelectedIds] = useState<string[]>([])
   const { addItem } = useCartStore()
 
   useEffect(() => {
@@ -92,6 +106,14 @@ export default function ProductDetailPage() {
       console.warn('Failed to update recently viewed products', e)
     }
   }, [product])
+
+  // Build "frequently purchased together" bundle (current product + top 2 related)
+  useEffect(() => {
+    if (!product) return
+    const bundle: Product[] = [product, ...relatedProducts.filter((p) => p.id !== product.id).slice(0, 2)]
+    setBundleProducts(bundle)
+    setBundleSelectedIds(bundle.map((p) => String(p.id)))
+  }, [product, relatedProducts])
 
   // Fetch related products
   useEffect(() => {
@@ -200,6 +222,24 @@ export default function ProductDetailPage() {
           ...productImages,
           ...Array(3 - productImages.length).fill(productImages[0] || getProductImage(product, 800, 800)),
         ]
+
+  const toggleBundleSelection = (id: string) => {
+    setBundleSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
+    )
+  }
+
+  const bundleTotal = bundleProducts
+    .filter((p) => bundleSelectedIds.includes(String(p.id)))
+    .reduce((sum, p) => sum + (p.price ?? 0), 0)
+
+  const handleAddBundleToCart = () => {
+    bundleProducts
+      .filter((p) => bundleSelectedIds.includes(String(p.id)))
+      .forEach((p) => {
+        addItem(p, 1, { variant: undefined, openDrawer: false })
+      })
+  }
 
   return (
     <div className="min-h-screen bg-bg">
@@ -440,6 +480,96 @@ export default function ProductDetailPage() {
             </div>
           </div>
         </div>
+
+        {/* Frequently purchased together */}
+        {bundleProducts.length > 1 && (
+          <section className="mb-14">
+            <div className="bg-white border border-border rounded-lg shadow-soft p-5 md:p-6">
+              <h2 className="text-xs md:text-sm font-semibold uppercase tracking-[0.25em] text-text-muted mb-4">
+                Frequently purchased together
+              </h2>
+              <div className="grid gap-6 md:grid-cols-[2fr,1.2fr] items-start">
+                {/* Small product previews with plus signs */}
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                  <div className="flex items-center gap-4">
+                    {bundleProducts.map((bp, index) => (
+                      <div key={bp.id} className="flex flex-col items-center">
+                        <div className="relative w-24 h-28 md:w-28 md:h-32 flex items-center justify-center">
+                          <Image
+                            src={getProductImage(bp)}
+                            alt={bp.name}
+                            fill
+                            className="object-contain"
+                          />
+                        </div>
+                        <p className="mt-3 text-xs text-center text-text max-w-[8rem] line-clamp-2">
+                          {bp.name}
+                        </p>
+                        {index < bundleProducts.length - 1 && (
+                          <span className="mt-3 text-2xl text-text-muted">
+                            +
+                          </span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Selection + total */}
+                <div className="space-y-3">
+                  <div className="space-y-2">
+                    {bundleProducts.map((bp) => {
+                      const id = String(bp.id)
+                      const checked = bundleSelectedIds.includes(id)
+                      return (
+                        <button
+                          key={id}
+                          type="button"
+                          onClick={() => toggleBundleSelection(id)}
+                          className="w-full flex items-center justify-between gap-3 rounded-lg border border-border bg-bg px-3 py-2 text-left hover:border-[#232526] transition-colors"
+                        >
+                          <div className="flex items-center gap-2">
+                            <span
+                              className={`inline-flex h-4 w-4 items-center justify-center rounded-[4px] border text-[10px] ${
+                                checked
+                                  ? 'border-[#232526] bg-[#232526] text-white'
+                                  : 'border-border bg-white text-transparent'
+                              }`}
+                            >
+                              <Check className="w-3 h-3" />
+                            </span>
+                            <span className="text-xs text-text line-clamp-2">
+                              {bp.name}
+                            </span>
+                          </div>
+                          <span className="text-xs font-semibold text-text">
+                            {formatPrice(bp.price)}
+                          </span>
+                        </button>
+                      )
+                    })}
+                  </div>
+                  <div className="flex items-center justify-between pt-2">
+                    <span className="text-sm font-semibold text-text">
+                      Total
+                    </span>
+                    <span className="text-lg font-bold text-text">
+                      {formatPrice(bundleTotal)}
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    disabled={bundleSelectedIds.length === 0}
+                    onClick={handleAddBundleToCart}
+                    className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-br from-[#232526] to-[#414345] px-4 py-2.5 text-sm font-semibold uppercase tracking-[0.16em] text-white shadow-md hover:from-[#111827] hover:to-[#232526] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <span>Add selected to cart</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Product Details Tabs */}
         <div className="bg-bg border border-border rounded-lg shadow-soft p-8 mb-16">

@@ -668,7 +668,7 @@ const Header = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
                     transition={{ duration: 0.2 }}
-                    className="absolute right-0 mt-3 w-80 bg-white border border-border rounded-xl shadow-soft-lg z-50 max-h-96 overflow-hidden flex flex-col"
+                    className="absolute right-0 mt-5 w-80 bg-white border border-border rounded-xl shadow-soft-lg z-50 max-h-96 overflow-hidden flex flex-col"
                   >
                     <div className="p-4 border-b border-border">
                       <h3 className="font-semibold text-text">{t('cart.title')}</h3>
@@ -691,8 +691,12 @@ const Header = () => {
                                 </div>
                                 <div className="flex-1 min-w-0">
                                   <p className="text-sm font-medium text-text truncate">{item.product.name}</p>
-                                  <p className="text-xs text-muted">Qty: {item.quantity}</p>
-                                  <p className="text-sm font-semibold text-text">{formatPrice(item.product.price * item.quantity)}</p>
+                              <p className="text-xs text-muted">
+                                {formatPrice(item.product.price)} each · Qty {item.quantity}
+                              </p>
+                              <p className="text-sm font-semibold text-text mt-0.5">
+                                {formatPrice(item.product.price * item.quantity)}
+                              </p>
                                 </div>
                                 <button
                                   onClick={() => removeItem(Number(item.product.id))}
