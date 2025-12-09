@@ -245,7 +245,7 @@ export default function ProductDetailPage() {
     <div className="min-h-screen bg-bg">
       <Header />
       
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Back Button */}
         <button
           onClick={() => router.back()}
@@ -255,10 +255,10 @@ export default function ProductDetailPage() {
           Back
         </button>
 
-        <div className="grid lg:grid-cols-2 gap-10 mb-14">
+        <div className="grid lg:grid-cols-2 gap-8 mb-10">
           {/* Product Images */}
           <div className="space-y-4">
-            <div className="relative aspect-square bg-gradient-to-br from-white via-white to-primary/10 border border-border rounded-2xl overflow-hidden shadow-soft p-6">
+            <div className="relative max-w-md mx-auto aspect-[3/4] bg-gradient-to-br from-white via-white to-primary/10 border border-border rounded-2xl overflow-hidden shadow-soft p-4">
               <Image
                 src={images[selectedImage]}
                 alt={product.name}
@@ -302,8 +302,8 @@ export default function ProductDetailPage() {
             </div>
           </div>
 
-          {/* Product Info */}
-          <div className="space-y-7">
+            {/* Product Info */}
+          <div className="space-y-6">
             <div>
               <p className="text-primary font-medium text-sm mb-2">{product.brand}</p>
               <h1 className="text-2xl md:text-3xl font-bold text-text mb-3">{product.name}</h1>
@@ -483,7 +483,7 @@ export default function ProductDetailPage() {
 
         {/* Frequently purchased together */}
         {bundleProducts.length > 1 && (
-          <section className="mb-14">
+          <section className="mb-10">
             <div className="bg-white border border-border rounded-lg shadow-soft p-5 md:p-6">
               <h2 className="text-xs md:text-sm font-semibold uppercase tracking-[0.25em] text-text-muted mb-4">
                 Frequently purchased together
@@ -572,7 +572,7 @@ export default function ProductDetailPage() {
         )}
 
         {/* Product Details Tabs */}
-        <div className="bg-bg border border-border rounded-lg shadow-soft p-8 mb-16">
+        <div className="bg-bg border border-border rounded-lg shadow-soft p-6 mb-12">
           <div className="space-y-6">
             <div>
               <h2 className="text-2xl font-bold text-text mb-4">Ingredients</h2>
