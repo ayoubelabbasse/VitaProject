@@ -1,127 +1,207 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Send, Sparkles, MessageCircle, Pill, Heart, Brain, Zap } from 'lucide-react';
-
-interface Message {
-  id: string;
-  text: string;
-  sender: 'user' | 'ai';
-  timestamp: Date;
-}
+import Link from 'next/link';
+import { X, Sparkles } from 'lucide-react';
+import { productCatalog } from '@/data/products';
+import type { Product } from '@/types';
 
 interface VitaAIModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-// Static AI responses for demo
-const aiResponses: Record<string, string> = {
-  'heart': 'Based on your interest in heart health, I recommend our Omega-3 Fish Oil Premium and CoQ10 200mg. These supplements work synergistically to support cardiovascular health and reduce inflammation. Would you like to know more about either of these?',
-  'brain': 'For brain health and cognitive function, I suggest our DHA Omega-3 Brain Support and Lion\'s Mane Mushroom. DHA is essential for brain structure, while Lion\'s Mane promotes neurogenesis. Interested in learning more?',
-  'immune': 'To boost your immune system, I recommend Vitamin D3 5000IU and Elderberry Extract. Vitamin D3 is crucial for immune response, and elderberry has powerful antiviral properties. Would you like dosage recommendations?',
-  'performance': 'For athletic performance, our Whey Protein Isolate and Creatine Monohydrate are excellent choices. Protein supports muscle recovery, while creatine enhances strength and power output. Need a workout supplement plan?',
-  'energy': 'Feeling tired? I recommend B-Complex Vitamins for sustained energy and CoQ10 for cellular energy production. These work great together. Want to know more about energy-boosting supplements?',
-  'sleep': 'For better sleep, try Magnesium Glycinate. It helps relax muscles and calm the nervous system. Taken 30 minutes before bed, it can significantly improve sleep quality. Interested?',
-  'default': 'Hi! I\'m Vita AI, your personal supplement advisor. I can help you find the perfect supplements based on your health goals. What are you looking to improve? (Heart health, brain function, immunity, performance, energy, or sleep?)',
+type QuizGoal = 'energy' | 'sleep' | 'heart' | 'immune' | 'performance';
+type QuizActivity = 'low' | 'moderate' | 'high';
+type QuizDiet = 'none' | 'vegan' | 'vegetarian' | 'pescatarian';
+type QuizForm = 'none' | 'capsules' | 'softgels' | 'gummies' | 'tablets';
+type QuizBudget = 'any' | 'under-100' | '100-150' | '150-plus';
+type QuizAvoid = 'none' | 'fish' | 'gelatin';
+
+type QuizAnswers = {
+  goal?: QuizGoal;
+  activity?: QuizActivity;
+  diet?: QuizDiet;
+  form?: QuizForm;
+  budget?: QuizBudget;
+  avoid?: QuizAvoid;
 };
 
-const quickActions = [
-  { icon: Heart, label: 'Heart Health', key: 'heart' },
-  { icon: Brain, label: 'Brain Power', key: 'brain' },
-  { icon: Sparkles, label: 'Immune Support', key: 'immune' },
-  { icon: Zap, label: 'Performance', key: 'performance' },
+const QUESTIONS: Array<{
+  id: keyof QuizAnswers;
+  title: string;
+  options: Array<{ label: string; value: NonNullable<QuizAnswers[keyof QuizAnswers]> }>;
+}> = [
+  {
+    id: 'goal',
+    title: 'Your goal?',
+    options: [
+      { label: 'Energy', value: 'energy' },
+      { label: 'Sleep', value: 'sleep' },
+      { label: 'Heart', value: 'heart' },
+      { label: 'Immunity', value: 'immune' },
+      { label: 'Performance', value: 'performance' },
+    ],
+  },
+  {
+    id: 'activity',
+    title: 'Activity level?',
+    options: [
+      { label: 'Low', value: 'low' },
+      { label: 'Moderate', value: 'moderate' },
+      { label: 'High', value: 'high' },
+    ],
+  },
+  {
+    id: 'diet',
+    title: 'Diet preference?',
+    options: [
+      { label: 'No preference', value: 'none' },
+      { label: 'Vegan', value: 'vegan' },
+      { label: 'Vegetarian', value: 'vegetarian' },
+      { label: 'Pescatarian', value: 'pescatarian' },
+    ],
+  },
+  {
+    id: 'form',
+    title: 'Preferred form?',
+    options: [
+      { label: 'No preference', value: 'none' },
+      { label: 'Capsules', value: 'capsules' },
+      { label: 'Softgels', value: 'softgels' },
+      { label: 'Gummies', value: 'gummies' },
+      { label: 'Tablets', value: 'tablets' },
+    ],
+  },
+  {
+    id: 'budget',
+    title: 'Budget (MAD)?',
+    options: [
+      { label: 'Any', value: 'any' },
+      { label: '< 100', value: 'under-100' },
+      { label: '100–150', value: '100-150' },
+      { label: '150+', value: '150-plus' },
+    ],
+  },
+  {
+    id: 'avoid',
+    title: 'Avoid?',
+    options: [
+      { label: 'Nothing', value: 'none' },
+      { label: 'Fish', value: 'fish' },
+      { label: 'Gelatin', value: 'gelatin' },
+    ],
+  },
 ];
 
+const GOAL_CATEGORIES: Record<QuizGoal, string[]> = {
+  energy: ['Performance', 'Minerals', 'Wellness', 'Immune Support', 'Stress Support'],
+  sleep: ['Relaxation & Sleep', 'Stress Support', 'Minerals'],
+  heart: ['Heart Health', 'Immune Support', 'Minerals'],
+  immune: ['Immune Support', 'Minerals', 'Wellness'],
+  performance: ['Performance', 'Minerals', 'Wellness'],
+};
+
+function normalizeText(value: string) {
+  return value.toLowerCase().replace(/\s+/g, ' ').trim();
+}
+
+function matchesForm(product: Product, form: QuizForm): boolean {
+  if (form === 'none') return true;
+  const haystack = normalizeText(
+    `${product.packageQuantity ?? ''} ${product.variants?.map((v) => v.label).join(' ') ?? ''}`
+  );
+  if (form === 'softgels') return haystack.includes('softgel');
+  if (form === 'gummies') return haystack.includes('gumm');
+  if (form === 'capsules') return haystack.includes('capsule');
+  if (form === 'tablets') return haystack.includes('tablet');
+  return true;
+}
+
+function withinBudget(price: number, budget: QuizBudget): boolean {
+  if (budget === 'any') return true;
+  if (budget === 'under-100') return price < 100;
+  if (budget === '100-150') return price >= 100 && price <= 150;
+  if (budget === '150-plus') return price > 150;
+  return true;
+}
+
+function applyAvoidFilters(product: Product, avoid: QuizAvoid): boolean {
+  if (avoid === 'none') return true;
+  const ingredients = normalizeText(product.ingredients?.join(' ') ?? '');
+  if (avoid === 'fish') {
+    return !ingredients.includes('fish') && !normalizeText(product.category).includes('omega');
+  }
+  if (avoid === 'gelatin') {
+    return !ingredients.includes('gelatin');
+  }
+  return true;
+}
+
+function pickTop3Products(answers: QuizAnswers): Product[] {
+  const goal = answers.goal ?? 'immune';
+  const activity = answers.activity ?? 'moderate';
+  const diet = answers.diet ?? 'none';
+  const form = answers.form ?? 'none';
+  const budget = answers.budget ?? 'any';
+  const avoid = answers.avoid ?? 'none';
+
+  const basePreferred = GOAL_CATEGORIES[goal] ?? [];
+  const preferredCategories =
+    activity === 'high'
+      ? ['Performance', ...basePreferred]
+      : activity === 'low'
+        ? ['Stress Support', 'Relaxation & Sleep', ...basePreferred]
+        : basePreferred;
+
+  let candidates = productCatalog.filter((p) => p.inStock);
+
+  // Prefer matching categories first, but keep fallback if too few
+  const categoryMatches = candidates.filter((p) => preferredCategories.includes(p.category));
+  if (categoryMatches.length >= 3) {
+    candidates = categoryMatches;
+  }
+
+  if (diet !== 'none') {
+    candidates = candidates.filter((p) => (p.diets ?? []).some((d) => normalizeText(d) === diet));
+  }
+
+  candidates = candidates.filter((p) => matchesForm(p, form));
+  candidates = candidates.filter((p) => withinBudget(p.price, budget));
+  candidates = candidates.filter((p) => applyAvoidFilters(p, avoid));
+
+  if (candidates.length < 3) {
+    candidates = productCatalog.filter((p) => p.inStock);
+    const catFallback = candidates.filter((p) => preferredCategories.includes(p.category));
+    candidates = catFallback.length >= 3 ? catFallback : candidates;
+  }
+
+  return [...candidates]
+    .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0) || (b.reviews ?? 0) - (a.reviews ?? 0))
+    .slice(0, 3);
+}
+
 const VitaAIModal: React.FC<VitaAIModalProps> = ({ isOpen, onClose }) => {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [input, setInput] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+  const [answers, setAnswers] = useState<QuizAnswers>({});
+  const [showResults, setShowResults] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
-      setMessages([
-        {
-          id: '1',
-          text: aiResponses.default,
-          sender: 'ai',
-          timestamp: new Date(),
-        },
-      ]);
-      setInput('');
-      setIsTyping(false);
+      setAnswers({});
+      setShowResults(false);
     } else {
-      setMessages([]);
-      setInput('');
-      setIsTyping(false);
+      setAnswers({});
+      setShowResults(false);
     }
   }, [isOpen]);
 
-  const getAIResponse = (userMessage: string): string => {
-    const lowerMessage = userMessage.toLowerCase();
-    
-    if (lowerMessage.includes('heart') || lowerMessage.includes('cardiovascular')) {
-      return aiResponses.heart;
-    }
-    if (lowerMessage.includes('brain') || lowerMessage.includes('cognitive') || lowerMessage.includes('memory')) {
-      return aiResponses.brain;
-    }
-    if (lowerMessage.includes('immune') || lowerMessage.includes('immunity') || lowerMessage.includes('cold') || lowerMessage.includes('flu')) {
-      return aiResponses.immune;
-    }
-    if (lowerMessage.includes('performance') || lowerMessage.includes('workout') || lowerMessage.includes('muscle') || lowerMessage.includes('protein')) {
-      return aiResponses.performance;
-    }
-    if (lowerMessage.includes('energy') || lowerMessage.includes('tired') || lowerMessage.includes('fatigue')) {
-      return aiResponses.energy;
-    }
-    if (lowerMessage.includes('sleep') || lowerMessage.includes('insomnia')) {
-      return aiResponses.sleep;
-    }
-    
-    return 'That\'s interesting! Could you tell me more about your health goals? I can provide personalized supplement recommendations for heart health, brain function, immunity, performance, energy, or sleep.';
-  };
+  const isComplete = QUESTIONS.every((q) => answers[q.id] !== undefined);
 
-  const handleSend = (overrideText?: string) => {
-    const textToSend = (overrideText ?? input).trim();
-    if (!textToSend) return;
-
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      text: textToSend,
-      sender: 'user',
-      timestamp: new Date(),
-    };
-    setMessages(prev => [...prev, userMessage]);
-    setInput('');
-    setIsTyping(true);
-
-    setTimeout(() => {
-      const aiMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        text: getAIResponse(textToSend),
-        sender: 'ai',
-        timestamp: new Date(),
-      };
-      setMessages(prev => [...prev, aiMessage]);
-      setIsTyping(false);
-    }, 1200);
-  };
-
-  const handleQuickAction = (key: string) => {
-    const message = key.charAt(0).toUpperCase() + key.slice(1) + ' health';
-    handleSend(message);
-  };
+  const top3 = useMemo(() => {
+    if (!showResults) return [];
+    return pickTop3Products(answers);
+  }, [answers, showResults]);
 
   if (!isOpen) return null;
 
@@ -139,7 +219,7 @@ const VitaAIModal: React.FC<VitaAIModalProps> = ({ isOpen, onClose }) => {
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.9, opacity: 0 }}
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-          className="bg-bg rounded-2xl shadow-2xl max-w-2xl w-full max-h-[600px] flex flex-col overflow-hidden"
+          className="bg-bg rounded-2xl shadow-2xl max-w-2xl w-full max-h-[650px] flex flex-col overflow-hidden"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
@@ -150,8 +230,8 @@ const VitaAIModal: React.FC<VitaAIModalProps> = ({ isOpen, onClose }) => {
                   <Sparkles className="w-6 h-6" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold">Vita AI</h2>
-                  <p className="text-sm text-white/80">Your Personal Supplement Advisor</p>
+                  <h2 className="text-2xl font-bold">TAQA AI</h2>
+                  <p className="text-sm text-white/80">6 quick questions → top 3 picks</p>
                 </div>
               </div>
               <button
@@ -164,113 +244,99 @@ const VitaAIModal: React.FC<VitaAIModalProps> = ({ isOpen, onClose }) => {
             </div>
           </div>
 
-          {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-bg">
-            {messages.map((message) => (
-              <motion.div
-                key={message.id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
-              >
-                <div
-                  className={`max-w-[80%] rounded-2xl px-4 py-3 ${
-                    message.sender === 'user'
-                      ? 'bg-primary text-white'
-                      : 'bg-border text-text'
-                  }`}
-                >
-                  {message.sender === 'ai' && (
-                    <div className="flex items-center space-x-2 mb-1">
-                      <Sparkles className="w-4 h-4 text-primary" />
-                      <span className="text-xs font-semibold text-primary">Vita AI</span>
+          {/* Body */}
+          <div className="flex-1 overflow-y-auto p-6 bg-bg">
+            {!showResults ? (
+              <div className="space-y-4">
+                <p className="text-xs text-muted">
+                  Quick + simple. Answer 6 questions and TAQA AI will suggest 3 products.
+                </p>
+
+                <div className="space-y-3">
+                  {QUESTIONS.map((q) => (
+                    <div key={q.id} className="rounded-xl border border-border bg-white p-4">
+                      <p className="text-xs font-semibold text-text mb-3">{q.title}</p>
+                      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                        {q.options.map((opt) => {
+                          const selected = answers[q.id] === opt.value;
+                          return (
+                            <button
+                              key={String(opt.value)}
+                              type="button"
+                              onClick={() => setAnswers((prev) => ({ ...prev, [q.id]: opt.value }))}
+                              className={`text-xs px-3 py-2 rounded-lg border transition-colors text-left ${
+                                selected
+                                  ? 'border-primary bg-primary/10 text-primary'
+                                  : 'border-border hover:border-primary/50 hover:bg-primary/5 text-text'
+                              }`}
+                            >
+                              {opt.label}
+                            </button>
+                          );
+                        })}
+                      </div>
                     </div>
-                  )}
-                  <p className="text-sm leading-relaxed">{message.text}</p>
+                  ))}
                 </div>
-              </motion.div>
-            ))}
-            
-            {isTyping && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="flex justify-start"
-              >
-                <div className="bg-border text-text max-w-[80%] rounded-2xl px-4 py-3">
-                  <div className="flex items-center space-x-2">
-                    <div className="flex space-x-1">
-                      <motion.div
-                        animate={{ scale: [1, 1.2, 1] }}
-                        transition={{ repeat: Infinity, duration: 0.8, delay: 0 }}
-                        className="w-2 h-2 bg-primary rounded-full"
-                      />
-                      <motion.div
-                        animate={{ scale: [1, 1.2, 1] }}
-                        transition={{ repeat: Infinity, duration: 0.8, delay: 0.2 }}
-                        className="w-2 h-2 bg-primary rounded-full"
-                      />
-                      <motion.div
-                        animate={{ scale: [1, 1.2, 1] }}
-                        transition={{ repeat: Infinity, duration: 0.8, delay: 0.4 }}
-                        className="w-2 h-2 bg-primary rounded-full"
-                      />
-                    </div>
-                    <span className="text-xs text-muted">Vita AI is thinking...</span>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div className="rounded-xl border border-border bg-white p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Sparkles className="w-4 h-4 text-primary" />
+                    <p className="text-xs font-semibold text-primary">TAQA AI</p>
                   </div>
+                  <p className="text-sm font-semibold text-text">Top 3 picks for you:</p>
+                  <p className="text-xs text-muted mt-1">Based on your answers.</p>
                 </div>
-              </motion.div>
+
+                <div className="grid gap-3 sm:grid-cols-3">
+                  {top3.map((product) => (
+                    <div key={product.id} className="rounded-xl border border-border bg-white p-4">
+                      <p className="text-xs font-semibold text-text leading-snug">{product.name}</p>
+                      <p className="text-[11px] text-muted mt-1">{product.brand}</p>
+                      <p className="text-sm font-semibold text-text mt-3">{product.price.toFixed(2)} MAD</p>
+                      <Link
+                        href={`/product/${product.id}`}
+                        onClick={onClose}
+                        className="mt-3 inline-flex text-xs font-semibold text-primary hover:text-primary/80"
+                      >
+                        View
+                      </Link>
+                    </div>
+                  ))}
+                </div>
+              </div>
             )}
-            <div ref={messagesEndRef} />
           </div>
 
-          {/* Quick Actions */}
-          {messages.length === 1 && (
-            <div className="px-6 py-3 border-t border-border bg-bg">
-              <p className="text-xs text-muted mb-3">Quick suggestions:</p>
-              <div className="grid grid-cols-2 gap-2">
-                {quickActions.map((action) => {
-                  const IconComponent = action.icon;
-                  return (
-                    <button
-                      key={action.key}
-                      onClick={() => handleQuickAction(action.key)}
-                      className="flex items-center space-x-2 px-3 py-2 bg-border hover:bg-primary/10 rounded-lg transition-colors text-sm text-text hover:text-primary"
-                    >
-                      <IconComponent className="w-4 h-4" />
-                      <span>{action.label}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-
-          {/* Input */}
-          <div className="p-6 border-t border-border bg-bg">
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleSend();
+          {/* Footer */}
+          <div className="p-6 border-t border-border bg-bg flex items-center justify-between gap-3">
+            <button
+              type="button"
+              onClick={() => {
+                setAnswers({});
+                setShowResults(false);
               }}
-              className="flex items-center space-x-3"
+              className="text-xs font-semibold text-muted hover:text-text transition-colors"
             >
-              <input
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask Vita AI anything..."
-                className="flex-1 px-4 py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary focus:border-primary bg-bg text-text placeholder:text-muted"
-              />
+              Reset
+            </button>
+
+            {!showResults ? (
               <button
-                type="submit"
-                disabled={!input.trim() || isTyping}
-                className="btn-primary p-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed"
-                aria-label="Send message"
+                type="button"
+                disabled={!isComplete}
+                onClick={() => setShowResults(true)}
+                className="btn-primary py-2 px-4 rounded-xl text-xs disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <Send className="w-5 h-5" />
+                Show my top 3
               </button>
-            </form>
+            ) : (
+              <button type="button" onClick={onClose} className="btn-primary py-2 px-4 rounded-xl text-xs">
+                Done
+              </button>
+            )}
           </div>
         </motion.div>
       </motion.div>

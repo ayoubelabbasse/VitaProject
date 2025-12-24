@@ -108,6 +108,7 @@ export default function AdminProductsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedProduct, setSelectedProduct] = useState<AdminProduct | null>(
     null,
@@ -149,6 +150,7 @@ export default function AdminProductsPage() {
     setIsFormOpen(true);
     setError(null);
     setSuccess(null);
+    setFormErrors({});
   };
 
   const openEditForm = (product: AdminProduct) => {
@@ -183,6 +185,7 @@ export default function AdminProductsPage() {
     setIsFormOpen(true);
     setError(null);
     setSuccess(null);
+    setFormErrors({});
   };
 
   const closeForm = () => {
@@ -190,6 +193,7 @@ export default function AdminProductsPage() {
     setIsFormOpen(false);
     setSelectedProduct(null);
     setForm(emptyForm);
+    setFormErrors({});
   };
 
   const handleInputChange = (
@@ -200,11 +204,38 @@ export default function AdminProductsPage() {
       ...prev,
       [field]: value,
     }));
+    setFormErrors((prev) => {
+      if (!prev[field as string]) return prev;
+      const next = { ...prev };
+      delete next[field as string];
+      return next;
+    });
+  };
+
+  const validateProductForm = () => {
+    const next: Record<string, string> = {};
+
+    if (!form.name.trim()) next.name = 'Required';
+    if (!form.brand.trim()) next.brand = 'Required';
+    if (!form.category.trim()) next.category = 'Required';
+
+    const price = form.price ? Number(form.price) : NaN;
+    if (!Number.isFinite(price) || price <= 0) next.price = 'Enter a valid price';
+
+    if (!form.image.trim()) next.image = 'Main image is required';
+
+    setFormErrors(next);
+    return Object.keys(next).length === 0;
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (isSubmitting) return;
+
+    if (!validateProductForm()) {
+      setError('Please fill the required fields.');
+      return;
+    }
 
     setIsSubmitting(true);
     setError(null);
@@ -263,6 +294,9 @@ export default function AdminProductsPage() {
 
       if (!response.ok) {
         const data = await response.json().catch(() => ({}));
+        if (data?.fieldErrors && typeof data.fieldErrors === 'object') {
+          setFormErrors(data.fieldErrors);
+        }
         throw new Error(data.error || 'Failed to save product');
       }
 
@@ -722,6 +756,9 @@ export default function AdminProductsPage() {
                     </button>
                   )}
                 </div>
+                {formErrors.image && (
+                  <p className="text-xs text-red-600">{formErrors.image}</p>
+                )}
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -734,8 +771,11 @@ export default function AdminProductsPage() {
                     value={form.name}
                     onChange={(e) => handleInputChange('name', e.target.value)}
                     required
-                    className="w-full px-3 py-2 border border-border rounded-md bg-bg text-sm text-text focus:ring-2 focus:ring-primary focus:border-primary"
+                    className={`w-full px-3 py-2 border rounded-md bg-bg text-sm text-text focus:ring-2 focus:ring-primary focus:border-primary ${formErrors.name ? 'border-red-400' : 'border-border'}`}
                   />
+                  {formErrors.name && (
+                    <p className="mt-1 text-[11px] text-red-600">{formErrors.name}</p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-text mb-1.5">
@@ -747,8 +787,11 @@ export default function AdminProductsPage() {
                     onChange={(e) => handleInputChange('brand', e.target.value)}
                     required
                     list="admin-brand-options"
-                    className="w-full px-3 py-2 border border-border rounded-md bg-bg text-sm text-text focus:ring-2 focus:ring-primary focus:border-primary"
+                    className={`w-full px-3 py-2 border rounded-md bg-bg text-sm text-text focus:ring-2 focus:ring-primary focus:border-primary ${formErrors.brand ? 'border-red-400' : 'border-border'}`}
                   />
+                  {formErrors.brand && (
+                    <p className="mt-1 text-[11px] text-red-600">{formErrors.brand}</p>
+                  )}
                 </div>
               </div>
 
@@ -765,8 +808,11 @@ export default function AdminProductsPage() {
                     }
                     required
                     list="admin-category-options"
-                    className="w-full px-3 py-2 border border-border rounded-md bg-bg text-sm text-text focus:ring-2 focus:ring-primary focus:border-primary"
+                    className={`w-full px-3 py-2 border rounded-md bg-bg text-sm text-text focus:ring-2 focus:ring-primary focus:border-primary ${formErrors.category ? 'border-red-400' : 'border-border'}`}
                   />
+                  {formErrors.category && (
+                    <p className="mt-1 text-[11px] text-red-600">{formErrors.category}</p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-text mb-1.5">
@@ -779,8 +825,11 @@ export default function AdminProductsPage() {
                     value={form.price}
                     onChange={(e) => handleInputChange('price', e.target.value)}
                     required
-                    className="w-full px-3 py-2 border border-border rounded-md bg-bg text-sm text-text focus:ring-2 focus:ring-primary focus:border-primary"
+                    className={`w-full px-3 py-2 border rounded-md bg-bg text-sm text-text focus:ring-2 focus:ring-primary focus:border-primary ${formErrors.price ? 'border-red-400' : 'border-border'}`}
                   />
+                  {formErrors.price && (
+                    <p className="mt-1 text-[11px] text-red-600">{formErrors.price}</p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-text mb-1.5">
@@ -810,7 +859,7 @@ export default function AdminProductsPage() {
                     step="1"
                     value={form.stock}
                     onChange={(e) => handleInputChange('stock', e.target.value)}
-                    className="w-full px-3 py-2 border border-border rounded-lg bg-bg text-sm text-text focus:ring-2 focus:ring-primary focus:border-primary"
+                    className="w-full px-3 py-2 border border-border rounded-md bg-bg text-sm text-text focus:ring-2 focus:ring-primary focus:border-primary"
                   />
                 </div>
                 <div>
@@ -825,27 +874,23 @@ export default function AdminProductsPage() {
                     onChange={(e) =>
                       handleInputChange('weight', e.target.value)
                     }
-                    className="w-full px-3 py-2 border border-border rounded-lg bg-bg text-sm text-text focus:ring-2 focus:ring-primary focus:border-primary"
+                    className="w-full px-3 py-2 border border-border rounded-md bg-bg text-sm text-text focus:ring-2 focus:ring-primary focus:border-primary"
                   />
                 </div>
-                <div className="flex items-center gap-2 mt-5 md:mt-7">
-                  <input
-                    id="inStock"
-                    type="checkbox"
-                    checked={form.inStock}
-                    onChange={(e) =>
-                      handleInputChange('inStock', e.target.checked)
-                    }
-                    className="w-4 h-4 text-primary border-border rounded"
-                  />
-                  <label
-                    htmlFor="inStock"
-                    className="text-xs font-medium text-text"
-                  >
+                <div className="flex items-end">
+                  <label className="flex items-center gap-2 text-xs font-medium text-text h-[42px] select-none">
+                    <input
+                      id="inStock"
+                      type="checkbox"
+                      checked={form.inStock}
+                      onChange={(e) =>
+                        handleInputChange('inStock', e.target.checked)
+                      }
+                      className="w-4 h-4 text-primary border-border rounded"
+                    />
                     Product is in stock
                   </label>
                 </div>
-                <div />
               </div>
 
               <div>
@@ -920,7 +965,7 @@ export default function AdminProductsPage() {
                       handleInputChange('ingredients', e.target.value)
                     }
                     rows={4}
-                    className="w-full px-3 py-2 border border-border rounded-lg bg-bg text-sm text-text focus:ring-2 focus:ring-primary focus:border-primary"
+                    className="w-full px-3 py-2 border border-border rounded-md bg-bg text-sm text-text focus:ring-2 focus:ring-primary focus:border-primary"
                   />
                 </div>
               </div>

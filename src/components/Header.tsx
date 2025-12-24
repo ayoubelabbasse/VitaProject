@@ -264,10 +264,10 @@ const Header = () => {
                   setIsProductsMenuOpen((open) => !open);
                 }}
                 onFocus={() => setIsProductsMenuOpen(true)}
-                className={`flex items-center space-x-1 font-medium text-sm px-3 py-2 rounded relative transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#11998E]/40 focus:ring-offset-0 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-gradient-to-r after:from-[#11998E] after:to-[#38EF7D] after:transition-all ${
+                className={`flex items-center space-x-1 font-medium text-sm px-3 py-2 rounded transition-colors duration-200 ${
                   isProductsMenuOpen
-                    ? 'text-[#11998E] after:w-full'
-                    : 'text-[#1F2933] hover:text-[#11998E] after:w-0 hover:after:w-full'
+                    ? 'text-[#11998E]'
+                    : 'text-[#1F2933] hover:text-[#11998E]'
                 }`}
               >
                 <span>{navItems[0].label}</span>
@@ -366,10 +366,10 @@ const Header = () => {
                   setIsExploreMenuOpen((open) => !open);
                 }}
                 onFocus={() => setIsExploreMenuOpen(true)}
-                className={`flex items-center space-x-1 font-medium text-sm px-3 py-2 rounded relative transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#11998E]/40 focus:ring-offset-0 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-gradient-to-r after:from-[#11998E] after:to-[#38EF7D] after:transition-all ${
+                className={`flex items-center space-x-1 font-medium text-sm px-3 py-2 rounded transition-colors duration-200 ${
                   isExploreMenuOpen
-                    ? 'text-[#11998E] after:w-full'
-                    : 'text-[#1F2933] hover:text-[#11998E] after:w-0 hover:after:w-full'
+                    ? 'text-[#11998E]'
+                    : 'text-[#1F2933] hover:text-[#11998E]'
                 }`}
               >
                 <span>{navItems[1].label}</span>
@@ -437,17 +437,17 @@ const Header = () => {
             {!authLoading && (
               <>
                 {user ? (
-                  <div className="hidden sm:block relative flex items-center h-9" ref={userMenuRef}>
+                  <div className="relative flex items-center h-9" ref={userMenuRef}>
                     <button
                       onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                      className="flex items-center gap-2 px-3 py-1.5 rounded-full hover:bg-[#EDE7DB] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#11998E]/30 focus:ring-offset-0"
+                      className="flex items-center gap-2 px-2.5 py-1.5 rounded-full hover:bg-[#EDE7DB] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#11998E]/30 focus:ring-offset-0"
                       aria-label="User menu"
                     >
                       <div className="w-7 h-7 rounded-full bg-[#111827] text-white flex items-center justify-center text-xs font-semibold">
                         {getUserInitials(user.firstName, user.lastName)}
                       </div>
-                      <span className="text-sm font-medium text-[#1F2933] hidden lg:block">
-                        {user.role === 'admin' ? 'Admin' : getUserInitials(user.firstName, user.lastName)}
+                      <span className="text-sm font-medium text-[#1F2933] hidden md:block">
+                        {user.firstName}
                       </span>
                     </button>
 
@@ -470,7 +470,7 @@ const Header = () => {
                                 </p>
                                 <p className="text-xs text-muted truncate">{user.email}</p>
                                 <span className="inline-flex items-center gap-1 mt-2 text-[11px] font-medium px-2 py-1 rounded-full bg-primary/10 text-primary">
-                                  {user.role === 'admin' ? 'Admin access' : 'Vita member'}
+                                  {user.role === 'admin' ? 'Admin access' : 'Logged in'}
                                 </span>
                               </div>
                             </div>
@@ -546,7 +546,7 @@ const Header = () => {
                               })}
                             </div>
                             <div className="px-5 py-4 space-y-2">
-                              <p className="text-[11px] uppercase tracking-wide text-muted">More from Vita</p>
+                              <p className="text-[11px] uppercase tracking-wide text-muted">More from TAQA</p>
                               {customerSecondaryActions.map((action) => {
                                 const IconComponent = action.icon;
                                 return (
@@ -601,7 +601,7 @@ const Header = () => {
                     </AnimatePresence>
                   </div>
                 ) : (
-                  <div className="hidden sm:block relative h-9" ref={userMenuRef}>
+                  <div className="relative h-9" ref={userMenuRef}>
                     <button
                       onClick={() => setIsUserMenuOpen((open) => !open)}
                       className="px-3 py-1.5 text-sm font-medium text-[#1F2933] rounded-full hover:bg-[#EDE7DB] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#11998E]/30 focus:ring-offset-0"
@@ -794,7 +794,7 @@ const Header = () => {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="block text-text hover:text-primary transition-colors duration-200 font-medium py-2 rounded-lg px-2 hover:bg-bg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                    className="block text-text hover:text-primary transition-colors duration-200 font-medium py-2 rounded-lg px-2 hover:bg-bg"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {item.label}
@@ -873,7 +873,7 @@ const Header = () => {
                           </div>
 
                           <div className="mt-3 space-y-2">
-                            <p className="text-[11px] uppercase tracking-wide text-muted px-1">More from Vita</p>
+                            <p className="text-[11px] uppercase tracking-wide text-muted px-1">More from TAQA</p>
                             {customerSecondaryActions.map((action) => {
                               const IconComponent = action.icon;
                               return (

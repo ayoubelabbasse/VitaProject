@@ -5,7 +5,7 @@ import Footer from '@/components/Footer'
 const wishlistTips = [
   {
     title: 'Plan your next stack',
-    description: 'Save supplements you want to test and Vita AI will nudge you when bundles go on sale.',
+    description: 'Save supplements you want to test and TAQA AI will nudge you when bundles go on sale.',
   },
   {
     title: 'Share with friends',

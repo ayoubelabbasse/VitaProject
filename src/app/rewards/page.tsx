@@ -11,7 +11,7 @@ const rewardsTiers = [
   {
     tier: 'Elevate',
     points: '500 – 1,499 pts',
-    benefits: 'Enjoy 6% back, early sale access and free samples tailored by Vita AI.',
+    benefits: 'Enjoy 6% back, early sale access and free samples tailored by TAQA AI.',
   },
   {
     tier: 'Elite',
@@ -48,7 +48,7 @@ export default function RewardsPage() {
             <h2 className="text-xl font-semibold text-text mb-3">Boost your balance faster</h2>
             <ul className="space-y-2 text-sm text-muted list-disc list-inside">
               <li>Refer friends and family with a personalised Vita invite link.</li>
-              <li>Complete seasonal wellness challenges inside the Vita AI hub.</li>
+              <li>Complete seasonal wellness challenges inside the TAQA AI hub.</li>
               <li>Subscribe to auto-refill bundles for double points every renewal.</li>
             </ul>
             <Link href="/products" className="btn-primary mt-6 inline-block">Shop and earn</Link>

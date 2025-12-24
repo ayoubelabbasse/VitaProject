@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAuthToken } from '@/lib/middleware';
 import { verifyToken } from '@/lib/auth';
-import { getUserById } from '@/lib/users';
+import { getUserById } from '@/lib/auth';
 
 // Mark this route as dynamic because it reads request cookies
 export const dynamic = 'force-dynamic';
@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ user: null });
     }
 
-    const user = getUserById(decoded.id);
+    const user = await getUserById(decoded.id);
 
     if (!user) {
       return NextResponse.json({ user: null });

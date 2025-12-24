@@ -19,6 +19,13 @@ const AskAIVitaButton = () => {
     setMounted(true);
   }, []);
 
+  useEffect(() => {
+    if (!mounted) return;
+    const handleOpenQuiz = () => setIsOpen(true);
+    window.addEventListener('openTaqaQuiz', handleOpenQuiz);
+    return () => window.removeEventListener('openTaqaQuiz', handleOpenQuiz);
+  }, [mounted]);
+
   if (!mounted) {
     return (
       <button

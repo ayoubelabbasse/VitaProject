@@ -20,19 +20,8 @@ export function useAuth() {
 
   const checkAuth = async () => {
     try {
-      // Skip network call entirely when there's no auth-token cookie
-      if (typeof document !== 'undefined') {
-        const hasToken = document.cookie
-          .split(';')
-          .some((cookie) => cookie.trim().startsWith('auth-token='));
-
-        if (!hasToken) {
-          setUser(null);
-          setLoading(false);
-          return;
-        }
-      }
-
+      // auth-token is httpOnly, so JS cannot reliably detect it via document.cookie.
+      // Always ask the server; it can read request cookies.
       const response = await fetch('/api/auth/me');
       if (!response.ok) {
         setUser(null);

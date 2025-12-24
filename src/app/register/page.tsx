@@ -89,7 +89,9 @@ export default function RegisterPage() {
       const data = await response.json()
 
       if (!response.ok) {
-        if (data.error) {
+        if (data?.fieldErrors && typeof data.fieldErrors === 'object') {
+          setErrors(data.fieldErrors)
+        } else if (data?.error) {
           setErrors({ email: data.error })
         }
         setIsLoading(false)

@@ -263,16 +263,34 @@ export default function HomePage() {
                     {currentHero.subtitle}
                   </p>
                 )}
-                <Link
-                  href={currentHero.ctaHref}
-                  className={`inline-flex items-center justify-center rounded-sm px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.4em] shadow-lg transition hover:opacity-95 ${
-                    currentHero.ctaVariant === 'green'
-                      ? 'bg-gradient-to-br from-[#11998E] to-[#38EF7D] text-white'
-                      : 'bg-gradient-to-br from-[#232526] to-[#414345] text-white'
-                  }`}
-                >
-                  {currentHero.ctaLabel}
-                </Link>
+                {currentHero.key === 'morocco-first' ? (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (typeof window !== 'undefined') {
+                        window.dispatchEvent(new Event('openTaqaQuiz'))
+                      }
+                    }}
+                    className={`inline-flex items-center justify-center rounded-sm px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.4em] shadow-lg transition hover:opacity-95 ${
+                      currentHero.ctaVariant === 'green'
+                        ? 'bg-gradient-to-br from-[#11998E] to-[#38EF7D] text-white'
+                        : 'bg-gradient-to-br from-[#232526] to-[#414345] text-white'
+                    }`}
+                  >
+                    {currentHero.ctaLabel}
+                  </button>
+                ) : (
+                  <Link
+                    href={currentHero.ctaHref}
+                    className={`inline-flex items-center justify-center rounded-sm px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.4em] shadow-lg transition hover:opacity-95 ${
+                      currentHero.ctaVariant === 'green'
+                        ? 'bg-gradient-to-br from-[#11998E] to-[#38EF7D] text-white'
+                        : 'bg-gradient-to-br from-[#232526] to-[#414345] text-white'
+                    }`}
+                  >
+                    {currentHero.ctaLabel}
+                  </Link>
+                )}
               </motion.div>
             </div>
 

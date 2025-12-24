@@ -3,6 +3,19 @@ import { requireAdmin } from '@/lib/middleware';
 import { prisma } from '@/lib/prisma';
 import { normalizeProductImagePath, PRODUCT_IMAGE_FALLBACK, resolveProductMedia } from '@/constants/paths';
 
+function isNonEmptyString(value: unknown): value is string {
+  return typeof value === 'string' && value.trim().length > 0;
+}
+
+function parseNumber(value: unknown): number | null {
+  if (typeof value === 'number') return Number.isFinite(value) ? value : null;
+  if (typeof value === 'string' && value.trim() !== '') {
+    const num = Number(value);
+    return Number.isFinite(num) ? num : null;
+  }
+  return null;
+}
+
 export async function GET(request: NextRequest) {
   const authResult = await requireAdmin(request);
   
@@ -79,8 +92,29 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
+
+    // Validation
+    const fieldErrors: Record<string, string> = {};
+    const name = isNonEmptyString(body?.name) ? body.name.trim() : '';
+    const brand = isNonEmptyString(body?.brand) ? body.brand.trim() : '';
+    const category = isNonEmptyString(body?.category) ? body.category.trim() : '';
+    const price = parseNumber(body?.price);
+
     const normalizedPrimary =
-      normalizeProductImagePath(body.image || (body.images?.[0])) || body.image;
+      normalizeProductImagePath(body?.image || (body?.images?.[0])) || body?.image;
+
+    if (!name) fieldErrors.name = 'Required';
+    if (!brand) fieldErrors.brand = 'Required';
+    if (!category) fieldErrors.category = 'Required';
+    if (price === null || price <= 0) fieldErrors.price = 'Enter a valid price';
+    if (!isNonEmptyString(normalizedPrimary)) fieldErrors.image = 'Main image is required';
+
+    if (Object.keys(fieldErrors).length > 0) {
+      return NextResponse.json(
+        { error: 'Validation error', fieldErrors },
+        { status: 400 },
+      );
+    }
 
     const galleryImages: string[] =
       Array.isArray(body.images) && body.images.length > 0
@@ -95,13 +129,13 @@ export async function POST(request: NextRequest) {
         : [];
 
     const createData: any = {
-      name: body.name,
-      category: body.category,
-      brand: body.brand,
+      name,
+      category,
+      brand,
       color: body.color,
       colorFamily: body.colorFamily,
       weight: body.weight ? parseFloat(body.weight) : null,
-      price: parseFloat(body.price),
+      price,
       originalPrice: body.originalPrice ? parseFloat(body.originalPrice) : null,
       image: normalizedPrimary,
       galleryImages:

@@ -13,7 +13,7 @@ const accountHighlights = [
   },
   {
     title: 'Health profile',
-    description: 'Tell Vita AI about your goals so every recommendation is on-point.',
+    description: 'Tell TAQA AI about your goals so every recommendation is on-point.',
   },
 ]
 
@@ -28,7 +28,7 @@ export default function AccountPage() {
             <p className="text-sm uppercase tracking-wide text-primary font-semibold mb-3">Your Vita account</p>
             <h1 className="text-3xl sm:text-4xl font-bold text-text mb-4">Account overview</h1>
             <p className="text-muted text-base sm:text-lg max-w-3xl">
-              Everything about you in one secure space. Keep your personal details fresh, manage saved payment methods and guide Vita AI with up-to-date preferences.
+              Everything about you in one secure space. Keep your personal details fresh, manage saved payment methods and guide TAQA AI with up-to-date preferences.
             </p>
           </div>
 
